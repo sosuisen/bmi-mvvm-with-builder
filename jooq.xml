@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <jdbc>
+        <driver>org.sqlite.JDBC</driver>
+        <url>jdbc:sqlite:./bmi.db</url>
+    </jdbc>
+
+    <generator>
+        <database>
+            <!-- The database type. The format here is:
+           org.jooq.meta.[database].[database]Database -->
+            <name>org.jooq.meta.sqlite.SQLiteDatabase</name>
+            <forcedTypes>
+                <forcedType>
+                    <name>LOCALDATETIME</name>
+                    <includeExpression>datetime</includeExpression>
+                </forcedType>
+                <!-- SQLiteのREAL型は指定のない場合JavaのFloat型になります。よってDoubleへ変換。-->
+                <forcedType>
+                    <name>DOUBLE</name>
+                    <includeExpression>bmi</includeExpression>
+                </forcedType>
+            </forcedTypes>
+        </database>
+
+        <target>
+            <directory>./src/main/java</directory>
+            <packageName>jooq</packageName>
+        </target>
+
+    </generator>
+</configuration>

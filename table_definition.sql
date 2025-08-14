@@ -1,0 +1,6 @@
+CREATE TABLE bmi_history (
+	id INTEGER NOT NULL,
+	bmi REAL NOT NULL,
+	datetime TEXT NOT NULL,
+	CONSTRAINT bmi_pk PRIMARY KEY (id)
+);
