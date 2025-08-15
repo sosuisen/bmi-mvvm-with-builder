@@ -9,7 +9,6 @@ import com.example.ui.View;
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
-import io.github.sosuisen.jfxbuilder.controls.ScrollBarBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ScrollPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
@@ -18,13 +17,12 @@ import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -48,7 +46,35 @@ public class MainView implements View {
     public MainView(MainViewModel viewModel) {
         this.viewModel = viewModel;
         scene = buildSceneGraph();
+
+        scene.getStylesheets().add("data:text/css;base64," +
+                java.util.Base64.getEncoder().encodeToString(mainCSS.getBytes()));
+
     }
+
+    private static final String mainCSS = """
+            .button {
+                -fx-background-color: #006000;
+                -fx-text-fill: white;
+            }
+
+            .button:hover {
+                -fx-background-color: #009000;
+                -fx-text-fill: white;
+                -fx-cursor: hand;
+            }
+
+            .label {
+                -fx-font-weight: bold;
+            }
+
+            .gridPane {
+                -fx-background-color: "#f0f0f0";
+                -fx-border-width: 1;
+                -fx-border-color: #000000;
+                -fx-border-style: solid;
+            }
+            """;
 
     private Scene buildSceneGraph() {
         return SceneBuilder
@@ -57,8 +83,10 @@ public class MainView implements View {
                                 .withChildren(
                                         calculatorPanel(),
                                         historyPanel())
+                                .padding(new Insets(3))
+                                .style(mainCSS)
                                 .build(),
-                        240, 480)
+                        240, 550)
                 .build();
     }
 
@@ -67,58 +95,69 @@ public class MainView implements View {
                 .vgrow(Priority.SOMETIMES)
                 .minHeight(30)
                 .build();
+
         return GridPaneBuilder.create()
+                .style("""
+
+                        """)
+                .padding(new Insets(3))
                 .addRow(0,
                         LabelBuilder.create()
                                 .text(I18n.get("main.height"))
-                                .alignment(Pos.CENTER)
+                                .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
                                 .alignment(Pos.CENTER)
+                                .marginInContainer(new Insets(3))
                                 .build())
                 .addRow(1,
                         LabelBuilder.create()
                                 .text(I18n.get("main.weight"))
-                                .alignment(Pos.CENTER)
+                                .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
                                 .alignment(Pos.CENTER)
+                                .marginInContainer(new Insets(3))
                                 .build())
                 .addRow(2,
                         LabelBuilder.create()
                                 .text(I18n.get("main.bmi"))
-                                .alignment(Pos.CENTER)
+                                .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
                                 .text("0")
+                                .padding(new Insets(3))
+                                .marginInContainer(new Insets(3))
                                 .alignment(Pos.CENTER)
+                                .maxWidth(Double.MAX_VALUE)
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
                                 .text(I18n.get("main.obesity"))
-                                .alignment(Pos.CENTER)
+                                .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
                                 .text("-")
+                                .padding(new Insets(3))
+                                .marginInContainer(new Insets(3))
                                 .alignment(Pos.CENTER)
+                                .maxWidth(Double.MAX_VALUE)
                                 .build())
-                .addRow(4,
+                .add(
                         ButtonBuilder.create()
-                                .text("main.record")
-                                .alignment(Pos.CENTER)
-                                .build())
+                                .text(I18n.get("main.record"))
+                                .style("""
+                                        -fx-corner-radius: 12px;
+                                        """)
+                                .hAlignmentInContainer(HPos.CENTER)
+                                .build(),
+                        0, 4, 2, 1)
                 .columnConstraints(
                         ColumnConstraintsBuilder.create()
-                                .hgrow(Priority.SOMETIMES)
-                                .maxWidth(295)
-                                .minWidth(10)
-                                .prefWidth(65)
+                                .minWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .hgrow(Priority.SOMETIMES)
-                                .maxWidth(542)
-                                .minWidth(10)
-                                .prefWidth(115)
+                                .hgrow(Priority.ALWAYS)
                                 .build())
                 .rowConstraints(
                         rowConstraint,
