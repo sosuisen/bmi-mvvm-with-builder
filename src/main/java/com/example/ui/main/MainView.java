@@ -97,9 +97,6 @@ public class MainView implements View {
                 .build();
 
         return GridPaneBuilder.create()
-                .style("""
-
-                        """)
                 .padding(new Insets(3))
                 .addRow(0,
                         LabelBuilder.create()
