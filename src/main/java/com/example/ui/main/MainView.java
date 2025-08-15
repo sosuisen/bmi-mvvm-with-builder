@@ -66,13 +66,18 @@ public class MainView implements View {
 
             .label {
                 -fx-font-weight: bold;
+                -fx-alignment: center;
             }
 
-            .gridPane {
-                -fx-background-color: "#f0f0f0";
+            .grid-pane {
+                -fx-background-color: #f0f0f0;
                 -fx-border-width: 1;
-                -fx-border-color: #000000;
+                -fx-border-color: black;
                 -fx-border-style: solid;
+            }
+
+            .text-field {
+                -fx-alignment: center;
             }
             """;
 
@@ -84,7 +89,6 @@ public class MainView implements View {
                                         calculatorPanel(),
                                         historyPanel())
                                 .padding(new Insets(3))
-                                .style(mainCSS)
                                 .build(),
                         240, 550)
                 .build();
@@ -97,6 +101,7 @@ public class MainView implements View {
                 .build();
 
         return GridPaneBuilder.create()
+                .styleClass("grid-pane")
                 .padding(new Insets(3))
                 .addRow(0,
                         LabelBuilder.create()
@@ -104,7 +109,6 @@ public class MainView implements View {
                                 .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
-                                .alignment(Pos.CENTER)
                                 .marginInContainer(new Insets(3))
                                 .build())
                 .addRow(1,
@@ -113,7 +117,6 @@ public class MainView implements View {
                                 .hAlignmentInContainer(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
-                                .alignment(Pos.CENTER)
                                 .marginInContainer(new Insets(3))
                                 .build())
                 .addRow(2,
@@ -123,9 +126,7 @@ public class MainView implements View {
                                 .build(),
                         LabelBuilder.create()
                                 .text("0")
-                                .padding(new Insets(3))
                                 .marginInContainer(new Insets(3))
-                                .alignment(Pos.CENTER)
                                 .maxWidth(Double.MAX_VALUE)
                                 .build())
                 .addRow(3,
@@ -135,9 +136,7 @@ public class MainView implements View {
                                 .build(),
                         LabelBuilder.create()
                                 .text("-")
-                                .padding(new Insets(3))
                                 .marginInContainer(new Insets(3))
-                                .alignment(Pos.CENTER)
                                 .maxWidth(Double.MAX_VALUE)
                                 .build())
                 .add(
