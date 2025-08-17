@@ -18,7 +18,6 @@ import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -26,6 +25,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.NumberStringConverter;
 
 public class MainView implements View {
     private final String TITLE = "BMI calculator";
@@ -47,8 +47,8 @@ public class MainView implements View {
         this.viewModel = viewModel;
         scene = buildSceneGraph();
 
-        scene.getStylesheets().add("data:text/css;base64," +
-                java.util.Base64.getEncoder().encodeToString(mainCSS.getBytes()));
+        // scene.getStylesheets().add("data:text/css;base64," +
+        // java.util.Base64.getEncoder().encodeToString(mainCSS.getBytes()));
 
     }
 
@@ -83,14 +83,16 @@ public class MainView implements View {
 
     private Scene buildSceneGraph() {
         return SceneBuilder
-                .create(
+                .withRoot(
                         VBoxBuilder
                                 .withChildren(
                                         calculatorPanel(),
                                         historyPanel())
                                 .padding(new Insets(3))
-                                .build(),
-                        240, 550)
+                                .build())
+                .width(240)
+                .height(450)
+                .stylesheetText(mainCSS)
                 .build();
     }
 
@@ -106,38 +108,49 @@ public class MainView implements View {
                 .addRow(0,
                         LabelBuilder.create()
                                 .text(I18n.get("main.height"))
-                                .hAlignmentInContainer(HPos.CENTER)
+                                .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
-                                .marginInContainer(new Insets(3))
+                                .marginInGridPane(new Insets(3))
+                                .textPropertyApply(prop -> prop
+                                        .bindBidirectional(viewModel.heightProperty(), new NumberStringConverter()))
                                 .build())
                 .addRow(1,
                         LabelBuilder.create()
                                 .text(I18n.get("main.weight"))
-                                .hAlignmentInContainer(HPos.CENTER)
+                                .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
-                                .marginInContainer(new Insets(3))
+                                .marginInGridPane(new Insets(3))
+                                .textPropertyApply(prop -> prop
+                                        .bindBidirectional(viewModel.weightProperty(), new NumberStringConverter()))
                                 .build())
                 .addRow(2,
                         LabelBuilder.create()
                                 .text(I18n.get("main.bmi"))
-                                .hAlignmentInContainer(HPos.CENTER)
+                                .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
                                 .text("0")
-                                .marginInContainer(new Insets(3))
+                                .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
+                                .textPropertyApply(
+                                        prop -> prop
+                                                .bind(viewModel.bmiProperty()
+                                                        .map(bmi -> bmi
+                                                                .map(value -> String.format("%.1f", value))
+                                                                .orElse("-"))))
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
                                 .text(I18n.get("main.obesity"))
-                                .hAlignmentInContainer(HPos.CENTER)
+                                .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
                                 .text("-")
-                                .marginInContainer(new Insets(3))
+                                .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
+                                .textPropertyApply(prop -> prop.bind(viewModel.obesityProperty()))
                                 .build())
                 .add(
                         ButtonBuilder.create()
@@ -145,7 +158,7 @@ public class MainView implements View {
                                 .style("""
                                         -fx-corner-radius: 12px;
                                         """)
-                                .hAlignmentInContainer(HPos.CENTER)
+                                .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         0, 4, 2, 1)
                 .columnConstraints(

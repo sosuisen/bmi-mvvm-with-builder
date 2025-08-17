@@ -3,6 +3,7 @@ package com.example;
 import java.util.Locale;
 
 import com.example.model.BmiService;
+import com.example.model.repository.BmiRepositoryJooqImpl;
 import com.example.ui.AlertDialog;
 import com.example.ui.I18n;
 import com.example.ui.View;
@@ -26,7 +27,7 @@ public class App extends Application {
     public void start(Stage stage) {
         I18n.getInstance().setResources("com.example.i18n.Messages", Locale.getDefault());
 
-        var service = new BmiService();
+        var service = new BmiService(new BmiRepositoryJooqImpl());
 
         var mainViewModel = new MainViewModel(service);
 
