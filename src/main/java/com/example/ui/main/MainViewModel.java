@@ -20,7 +20,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MainViewModel {
-    private final BmiService service;
 
     private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
 
@@ -63,7 +62,6 @@ public class MainViewModel {
     }
 
     public MainViewModel(BmiService service) {
-        this.service = service;
         try {
             bmiList.setAll(service.loadBmiRecords());
         } catch (RepositoryException e) {
