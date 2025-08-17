@@ -3,7 +3,6 @@ package com.example.ui.main;
 import java.util.Optional;
 
 import com.example.model.BmiService;
-import com.example.model.domain.BmiCalculator;
 import com.example.model.domain.BmiRecord;
 import com.example.model.domain.Unit;
 import com.example.model.repository.RepositoryException;
