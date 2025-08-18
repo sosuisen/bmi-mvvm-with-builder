@@ -137,8 +137,8 @@ public class MainView implements View {
                                 .textPropertyApply(
                                         prop -> prop
                                                 .bind(viewModel.bmiProperty()
-                                                        .map(bmi -> bmi
-                                                                .map(value -> String.format("%.1f", value))
+                                                        .map(opt -> opt
+                                                                .map(bmi -> String.format("%.1f", bmi))
                                                                 .orElse("-"))))
                                 .build())
                 .addRow(3,
@@ -150,7 +150,11 @@ public class MainView implements View {
                                 .text("-")
                                 .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
-                                .textPropertyApply(prop -> prop.bind(viewModel.obesityProperty()))
+                                .textPropertyApply(prop -> prop
+                                        .bind(viewModel.obesityProperty()
+                                                .map(opt -> opt
+                                                        .map(category -> I18n.get("main.obesity.category." + category))
+                                                        .orElse("-"))))
                                 .build())
                 .add(
                         ButtonBuilder.create()

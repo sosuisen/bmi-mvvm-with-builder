@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import com.example.model.BmiService;
 import com.example.model.domain.BmiRecord;
-import com.example.model.domain.Unit;
+import com.example.model.domain.Obesity;
+import com.example.model.domain.unit.Units;
 import com.example.model.repository.RepositoryException;
 import com.example.ui.AlertDialog;
 
@@ -13,8 +14,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,7 +21,7 @@ public class MainViewModel {
 
     private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
 
-    private final ObjectProperty<Unit.UnitSystem> unitSystem = new SimpleObjectProperty<>(Unit.UnitSystem.SI);
+    private final ObjectProperty<Units> units = new SimpleObjectProperty<>();
 
     // SI unit value
     private final DoubleProperty mHeight = new SimpleDoubleProperty();
@@ -34,7 +33,7 @@ public class MainViewModel {
 
     // BMI
     private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
-    private final StringProperty obesity = new SimpleStringProperty();
+    private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
 
     public DoubleProperty heightProperty() {
         return displayHeight;
@@ -48,19 +47,21 @@ public class MainViewModel {
         return bmi;
     }
 
-    public StringProperty obesityProperty() {
+    public ObjectProperty<Optional<String>> obesityProperty() {
         return obesity;
     }
 
-    public ObjectProperty<Unit.UnitSystem> unitSystemProperty() {
-        return unitSystem;
+    public ObjectProperty<Units> unitsProperty() {
+        return units;
     }
 
     public ObservableList<BmiRecord> getBmiList() {
         return bmiList;
     }
 
-    public MainViewModel(BmiService service) {
+    public MainViewModel(BmiService service, Units units) {
+        this.units.set(units);
+
         try {
             bmiList.setAll(service.loadBmiRecords());
         } catch (RepositoryException e) {
@@ -73,16 +74,21 @@ public class MainViewModel {
 
         displayHeight
                 .subscribe(
-                        newValue -> mHeight.set(service.convertHeightToSI(unitSystem.get(), newValue.doubleValue())));
+                        newValue -> mHeight.set(units.convertHeightToSI(newValue.doubleValue())));
 
         displayWeight
                 .subscribe(
-                        newValue -> kgWeight.set(service.convertWeightToSI(unitSystem.get(), newValue.doubleValue())));
+                        newValue -> kgWeight.set(units.convertWeightToSI(newValue.doubleValue())));
 
-        unitSystem.subscribe(newValue -> {
-            displayHeight.set(service.convertHeightFromSI(newValue, mHeight.get()));
-            displayWeight.set(service.convertWeightFromSI(newValue, kgWeight.get()));
+        this.units.subscribe(newValue -> {
+            displayHeight.set(newValue.convertHeightFromSI(mHeight.get()));
+            displayWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
         });
+
+        obesity.bind(
+                bmi.map(opt -> opt.map(Obesity::getCategory)
+                        .map(Obesity.Category::toString)
+                        .map(String::toLowerCase)));
     }
 
 }

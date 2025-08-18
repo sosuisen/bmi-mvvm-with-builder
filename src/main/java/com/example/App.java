@@ -3,6 +3,7 @@ package com.example;
 import java.util.Locale;
 
 import com.example.model.BmiService;
+import com.example.model.domain.unit.SIUnitsWithCentimeters;
 import com.example.model.repository.BmiRepositoryJooqImpl;
 import com.example.ui.AlertDialog;
 import com.example.ui.I18n;
@@ -29,7 +30,9 @@ public class App extends Application {
 
         var service = new BmiService(new BmiRepositoryJooqImpl());
 
-        var mainViewModel = new MainViewModel(service);
+        var defaultUnits = new SIUnitsWithCentimeters();
+
+        var mainViewModel = new MainViewModel(service, defaultUnits);
 
         var mainView = new MainView(mainViewModel);
 
