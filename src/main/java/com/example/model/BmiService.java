@@ -31,7 +31,7 @@ public class BmiService {
     }
 
     public BmiRecord saveBmi(double bmi) throws RepositoryException {
-        return repository.saveBmiRecord(BmiRecord.withoutId(bmi, LocalDateTime.now()));
+        return repository.saveBmiRecord(bmi, LocalDateTime.now());
     }
 
 }
