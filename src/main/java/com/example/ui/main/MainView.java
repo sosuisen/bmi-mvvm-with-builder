@@ -3,6 +3,7 @@ package com.example.ui.main;
 import java.time.format.DateTimeFormatter;
 
 import com.example.model.domain.BmiRecord;
+import com.example.ui.Formatters;
 import com.example.ui.I18n;
 import com.example.ui.View;
 
@@ -112,6 +113,7 @@ public class MainView implements View {
                                 .build(),
                         TextFieldBuilder.create()
                                 .marginInGridPane(new Insets(3))
+                                .textFormatter(Formatters.forNonNegativeNumbers())
                                 .textPropertyApply(prop -> prop
                                         .bindBidirectional(viewModel.heightProperty(), new NumberStringConverter()))
                                 .build())
@@ -122,6 +124,7 @@ public class MainView implements View {
                                 .build(),
                         TextFieldBuilder.create()
                                 .marginInGridPane(new Insets(3))
+                                .textFormatter(Formatters.forNonNegativeNumbers())
                                 .textPropertyApply(prop -> prop
                                         .bindBidirectional(viewModel.weightProperty(), new NumberStringConverter()))
                                 .build())
