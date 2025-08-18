@@ -163,6 +163,9 @@ public class MainView implements View {
                                         -fx-corner-radius: 12px;
                                         """)
                                 .hAlignmentInGridPane(HPos.CENTER)
+                                .disablePropertyApply(prop -> prop.bind(viewModel.bmiProperty()
+                                        .map(opt -> !opt.isPresent() || opt.isEmpty())))
+                                .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
                         0, 4, 2, 1)
                 .columnConstraints(

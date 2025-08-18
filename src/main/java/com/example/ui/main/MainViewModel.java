@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MainViewModel {
+    private final BmiService service;
 
     private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
 
@@ -60,6 +61,8 @@ public class MainViewModel {
     }
 
     public MainViewModel(BmiService service, Units units) {
+        this.service = service;
+
         this.units.set(units);
 
         try {
@@ -89,6 +92,17 @@ public class MainViewModel {
                 bmi.map(opt -> opt.map(Obesity::getCategory)
                         .map(Obesity.Category::toString)
                         .map(String::toLowerCase)));
+    }
+
+    protected void saveBmiRecord() {
+        bmi.get().ifPresent(bmi -> {
+            try {
+                var newRecord = service.saveBmi(bmi);
+                bmiList.addFirst(newRecord);
+            } catch (RepositoryException e) {
+                AlertDialog.showError(e);
+            }
+        });
     }
 
 }

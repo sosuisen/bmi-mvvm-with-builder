@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +30,8 @@ public class BmiService {
         return repository.loadBmiRecords();
     }
 
-    public BmiRecord saveBmiRecord(BmiRecord recordToSave) throws RepositoryException {
-        var newRecord = repository.saveBmiRecord(recordToSave);
-        return newRecord;
+    public BmiRecord saveBmi(double bmi) throws RepositoryException {
+        return repository.saveBmiRecord(BmiRecord.withoutId(bmi, LocalDateTime.now()));
     }
 
 }

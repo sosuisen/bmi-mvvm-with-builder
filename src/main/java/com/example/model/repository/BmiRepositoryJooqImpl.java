@@ -2,7 +2,6 @@ package com.example.model.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static jooq.Tables.*;
@@ -30,12 +29,16 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
         if (bmiValue <= 0) {
             throw new IllegalArgumentException();
         }
+        var dateTime = bmiRecord.datetime();
+        if (dateTime == null) {
+            throw new IllegalArgumentException();
+        }
 
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
             return context.insertInto(BMI_HISTORY)
                     .set(BMI_HISTORY.BMI, bmiValue)
-                    .set(BMI_HISTORY.DATETIME, LocalDateTime.now())
+                    .set(BMI_HISTORY.DATETIME, dateTime)
                     .returning()
                     .fetchOne(mapper);
 
