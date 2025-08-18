@@ -28,20 +28,20 @@ public class MainViewModel {
     private final DoubleProperty mHeight = new SimpleDoubleProperty();
     private final DoubleProperty kgWeight = new SimpleDoubleProperty();
 
-    // Converted value using some unit system
-    private final DoubleProperty displayHeight = new SimpleDoubleProperty();
-    private final DoubleProperty displayWeight = new SimpleDoubleProperty();
+    // User input value using some unit system
+    private final DoubleProperty inputHeight = new SimpleDoubleProperty();
+    private final DoubleProperty inputWeight = new SimpleDoubleProperty();
 
     // BMI
     private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
     private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
 
     public DoubleProperty heightProperty() {
-        return displayHeight;
+        return inputHeight;
     }
 
     public DoubleProperty weightProperty() {
-        return displayWeight;
+        return inputWeight;
     }
 
     public ObjectProperty<Optional<Double>> bmiProperty() {
@@ -75,23 +75,19 @@ public class MainViewModel {
                 () -> service.calculateBmi(mHeight.get(), kgWeight.get()),
                 kgWeight, mHeight));
 
-        displayHeight
-                .subscribe(
-                        newValue -> mHeight.set(units.convertHeightToSI(newValue.doubleValue())));
-
-        displayWeight
-                .subscribe(
-                        newValue -> kgWeight.set(units.convertWeightToSI(newValue.doubleValue())));
+        mHeight.bind(inputHeight.map(value -> units.convertHeightToSI(value.doubleValue())));
+        kgWeight.bind(inputWeight.map(value -> units.convertWeightToSI(value.doubleValue())));
 
         this.units.subscribe(newValue -> {
-            displayHeight.set(newValue.convertHeightFromSI(mHeight.get()));
-            displayWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
+            inputHeight.set(newValue.convertHeightFromSI(mHeight.get()));
+            inputWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
         });
 
         obesity.bind(
                 bmi.map(opt -> opt.map(Obesity::getCategory)
                         .map(Obesity.Category::toString)
                         .map(String::toLowerCase)));
+
     }
 
     protected void saveBmiRecord() {
