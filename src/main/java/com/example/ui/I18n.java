@@ -44,6 +44,11 @@ public enum I18n {
 
     private String getString(String key) throws NullPointerException {
         Objects.requireNonNull(key, "key must not be null");
-        return resources != null ? resources.getString(key) : key;
+        try {
+            return resources != null ? resources.getString(key) : key;
+        } catch (Exception e) {
+            System.err.println("I18n: Missing resource key : " + key);
+            return key;
+        }
     }
 }

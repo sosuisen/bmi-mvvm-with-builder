@@ -7,29 +7,43 @@ import com.example.ui.Formatters;
 import com.example.ui.I18n;
 import com.example.ui.View;
 
+import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
+import io.github.sosuisen.jfxbuilder.controls.ButtonTypeBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
+import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
+import io.github.sosuisen.jfxbuilder.controls.MenuBuilder;
+import io.github.sosuisen.jfxbuilder.controls.MenuItemBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ScrollPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
+import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import javafx.util.converter.NumberStringConverter;
 
 public class MainView implements View {
-    private final String TITLE = "BMI calculator";
+    private final String TITLE = "BMI Calc";
 
     private final MainViewModel viewModel;
     private final Scene scene;
@@ -47,10 +61,6 @@ public class MainView implements View {
     public MainView(MainViewModel viewModel) {
         this.viewModel = viewModel;
         scene = buildSceneGraph();
-
-        // scene.getStylesheets().add("data:text/css;base64," +
-        // java.util.Base64.getEncoder().encodeToString(mainCSS.getBytes()));
-
     }
 
     private static final String mainCSS = """
@@ -87,13 +97,32 @@ public class MainView implements View {
                 .withRoot(
                         VBoxBuilder
                                 .withChildren(
+                                        menuBar(),
                                         calculatorPanel(),
                                         historyPanel())
                                 .padding(new Insets(3))
                                 .build())
                 .width(240)
                 .height(450)
-                .stylesheetText(mainCSS)
+                .addStylesheetText(mainCSS)
+                .build();
+    }
+
+    private MenuBar menuBar() {
+        return MenuBarBuilder.create()
+                .addMenus(
+                        MenuBuilder.create()
+                                .text(I18n.get("menu.file"))
+                                .addItems(
+                                        MenuItemBuilder.create()
+                                                .text(I18n.get("menu.settings"))
+                                                .onAction(_ -> openSettingsWindow())
+                                                .build(),
+                                        MenuItemBuilder.create()
+                                                .text(I18n.get("menu.close"))
+                                                .onAction(_ -> Platform.exit())
+                                                .build())
+                                .build())
                 .build();
     }
 
@@ -170,14 +199,14 @@ public class MainView implements View {
                                 .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
                         0, 4, 2, 1)
-                .columnConstraints(
+                .addColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
                                 .hgrow(Priority.ALWAYS)
                                 .build())
-                .rowConstraints(
+                .addRowConstraints(
                         rowConstraint,
                         rowConstraint,
                         rowConstraint,
@@ -214,6 +243,14 @@ public class MainView implements View {
                 }
             }
         };
+    }
+
+    private void openSettingsWindow() {
+        StageBuilder.create(StageStyle.DECORATED)
+                .height(0)
+                .width(0)
+                .build()
+                .show();
     }
 
 }

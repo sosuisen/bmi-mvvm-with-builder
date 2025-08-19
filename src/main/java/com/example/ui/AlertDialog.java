@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.example.model.repository.RepositoryException;
 
+import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -27,19 +28,22 @@ public class AlertDialog {
             case IllegalStateException _ -> "error.unexpected";
             default -> "error.unexpected";
         };
-        var errStr = I18n.get(resourceName);
 
         Platform.runLater(() -> {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(I18n.get("error"));
-            alert.setHeaderText(I18n.get("error"));
-            alert.getDialogPane().setPrefWidth(480);
-            alert.getDialogPane().setPrefHeight(240);
-            // Resizable dialog
-            alert.getDialogPane().setExpandableContent(new Label(errStr));
-            alert.getDialogPane().setExpanded(true);
-            alert.showAndWait();
+            AlertBuilder.create(Alert.AlertType.ERROR)
+                    .title(I18n.get("error"))
+                    .headerText(I18n.get("error"))
+                    .height(240)
+                    .width(480)
+                    .apply(alert -> {
+                        alert.getDialogPane().setExpandableContent(new Label(I18n.get(resourceName)));
+                        alert.getDialogPane().setExpanded(true);
+                    })
+                    .build()
+                    .showAndWait();
+
         });
+
     }
 
     /**
@@ -55,15 +59,20 @@ public class AlertDialog {
         Objects.requireNonNull(e, "e must not be null");
         e.printStackTrace();
 
-        var alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(I18n.get("error"));
-        alert.setHeaderText(I18n.get("error"));
-        alert.getDialogPane().setPrefWidth(320);
-        alert.getDialogPane().setPrefHeight(160);
-        // Make the dialog resizable
-        alert.getDialogPane().setExpandableContent(new Label(message + ": " + e.getMessage()));
-        alert.getDialogPane().setExpanded(true);
-        alert.setOnHidden(_ -> Platform.exit());
-        alert.show();
+        Platform.runLater(() -> {
+            AlertBuilder.create(Alert.AlertType.ERROR)
+                    .title(I18n.get("error"))
+                    .headerText(I18n.get("error"))
+                    .height(240)
+                    .width(480)
+                    .apply(alert -> {
+                        alert.getDialogPane().setExpandableContent(new Label(message + ": " + e.getMessage()));
+                        alert.getDialogPane().setExpanded(true);
+                    })
+                    .onHidden(_ -> Platform.exit())
+                    .build()
+                    .show();
+        });
+
     }
 }
