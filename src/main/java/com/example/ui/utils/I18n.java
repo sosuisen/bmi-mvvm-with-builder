@@ -1,4 +1,4 @@
-package com.example.ui;
+package com.example.ui.utils;
 
 import java.util.Locale;
 import java.util.Objects;

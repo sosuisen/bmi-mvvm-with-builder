@@ -1,8 +1,9 @@
-package com.example.ui;
+package com.example.ui.view.common;
 
 import java.util.Objects;
 
 import com.example.model.repository.RepositoryException;
+import com.example.ui.utils.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import javafx.application.Platform;

@@ -1,4 +1,4 @@
-package com.example.ui;
+package com.example.ui.utils;
 
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.DefaultStringConverter;

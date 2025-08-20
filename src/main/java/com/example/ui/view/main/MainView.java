@@ -1,15 +1,14 @@
-package com.example.ui.main;
+package com.example.ui.view.main;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import com.example.model.domain.BmiRecord;
-import com.example.ui.Formatters;
-import com.example.ui.I18n;
-import com.example.ui.View;
+import com.example.ui.utils.Formatters;
+import com.example.ui.utils.I18n;
+import com.example.ui.view.View;
 
-import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
-import io.github.sosuisen.jfxbuilder.controls.ButtonTypeBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
@@ -27,30 +26,23 @@ import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
 import javafx.util.converter.NumberStringConverter;
 
 public class MainView implements View {
     private final String TITLE = "BMI Calc";
-
-    private final MainViewModel viewModel;
     private final Scene scene;
+    private final MainViewModel viewModel;
 
-    @Override
-    public Scene getScene() {
-        return scene;
+    public MainView(MainViewModel viewModel) throws NullPointerException {
+        this.viewModel = Objects.requireNonNull(viewModel);
+        scene = buildSceneGraph();
     }
 
     @Override
@@ -58,9 +50,9 @@ public class MainView implements View {
         return TITLE;
     }
 
-    public MainView(MainViewModel viewModel) {
-        this.viewModel = viewModel;
-        scene = buildSceneGraph();
+    @Override
+    public Scene getScene() {
+        return scene;
     }
 
     private static final String mainCSS = """
@@ -116,7 +108,7 @@ public class MainView implements View {
                                 .addItems(
                                         MenuItemBuilder.create()
                                                 .text(I18n.get("menu.settings"))
-                                                .onAction(_ -> openSettingsWindow())
+                                                .onAction(_ -> viewModel.openSettingsWindow())
                                                 .build(),
                                         MenuItemBuilder.create()
                                                 .text(I18n.get("menu.close"))
@@ -243,14 +235,6 @@ public class MainView implements View {
                 }
             }
         };
-    }
-
-    private void openSettingsWindow() {
-        StageBuilder.create(StageStyle.DECORATED)
-                .height(0)
-                .width(0)
-                .build()
-                .show();
     }
 
 }

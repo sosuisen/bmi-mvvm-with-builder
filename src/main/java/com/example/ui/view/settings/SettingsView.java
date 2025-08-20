@@ -1,11 +1,11 @@
-package com.example.ui.settings;
+package com.example.ui.view.settings;
 
 import java.time.format.DateTimeFormatter;
 
 import com.example.model.domain.BmiRecord;
-import com.example.ui.I18n;
-import com.example.ui.Languages;
-import com.example.ui.View;
+import com.example.ui.utils.I18n;
+import com.example.ui.utils.Languages;
+import com.example.ui.view.View;
 
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;

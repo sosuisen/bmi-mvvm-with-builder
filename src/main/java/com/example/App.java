@@ -5,11 +5,14 @@ import java.util.Locale;
 import com.example.model.BmiService;
 import com.example.model.domain.unit.SIUnitsWithCentimeters;
 import com.example.model.repository.BmiRepositoryJooqImpl;
-import com.example.ui.AlertDialog;
-import com.example.ui.I18n;
-import com.example.ui.View;
-import com.example.ui.main.MainView;
-import com.example.ui.main.MainViewModel;
+import com.example.ui.utils.I18n;
+import com.example.ui.view.View;
+import com.example.ui.view.WindowManagerImpl;
+import com.example.ui.view.common.AlertDialog;
+import com.example.ui.view.main.MainView;
+import com.example.ui.view.main.MainViewModel;
+import com.example.ui.view.settings.SettingsView;
+import com.example.ui.view.settings.SettingsViewModel;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -28,31 +31,17 @@ public class App extends Application {
     public void start(Stage stage) {
         I18n.getInstance().setResources("com.example.i18n.Messages", Locale.getDefault());
 
-        var service = new BmiService(new BmiRepositoryJooqImpl());
+        var bmiService = new BmiService(new BmiRepositoryJooqImpl());
+
+        var windowManager = new WindowManagerImpl();
 
         var defaultUnits = new SIUnitsWithCentimeters();
 
-        var mainViewModel = new MainViewModel(service, defaultUnits);
+        windowManager.registerView(new SettingsView(new SettingsViewModel()));
 
-        var mainView = new MainView(mainViewModel);
+        windowManager.registerView(new MainView(new MainViewModel(bmiService, windowManager, defaultUnits)));
 
-        showMainWindow(stage, mainView);
+        windowManager.showWindow(MainView.class, stage);
     }
 
-    /**
-     * Shows the main window of the application.
-     * 
-     * @param stage the primary stage
-     * @param model the application model
-     */
-    private void showMainWindow(Stage stage, View view) {
-        try {
-
-            stage.setScene(view.getScene());
-            stage.setTitle(view.getTitle());
-            stage.show();
-        } catch (Exception e) {
-            AlertDialog.showErrorAndExit("Failed to start the app", e);
-        }
-    }
 }
