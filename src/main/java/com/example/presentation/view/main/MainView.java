@@ -101,10 +101,10 @@ public class MainView implements View {
 
     private MenuBar menuBar() {
         return MenuBarBuilder.create()
-                .addMenus(
+                .observableMenus(
                         MenuBuilder.create()
                                 .text(I18n.get("menu.file"))
-                                .addItems(
+                                .observableItems(
                                         MenuItemBuilder.create()
                                                 .text(I18n.get("menu.settings"))
                                                 .onAction(_ -> viewModel.openSettingsWindow())
@@ -190,14 +190,14 @@ public class MainView implements View {
                                 .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
                         0, 4, 2, 1)
-                .addColumnConstraints(
+                .observableColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
                                 .hgrow(Priority.ALWAYS)
                                 .build())
-                .addRowConstraints(
+                .observableRowConstraints(
                         rowConstraint,
                         rowConstraint,
                         rowConstraint,

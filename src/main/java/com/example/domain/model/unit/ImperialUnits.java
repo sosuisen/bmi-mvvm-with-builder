@@ -1,6 +1,6 @@
 package com.example.domain.model.unit;
 
-public final class ImperialUnits implements Units {
+public final class ImperialUnits implements UnitSystem {
 
     public static final double M_TO_FT_FACTOR = 3.2808;
     public static final double KG_TO_LB_FACTOR = 2.2046;

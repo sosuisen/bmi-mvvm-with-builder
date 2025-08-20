@@ -1,6 +1,6 @@
 package com.example.domain.model.unit;
 
-public final class SIUnitsWithCentimeters implements Units {
+public final class SIUnitsWithCentimeters implements UnitSystem {
 
     public static final double M_TO_CM_FACTOR = 100.0;
 

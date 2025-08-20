@@ -1,10 +1,10 @@
 package com.example.presentation.view.settings;
 
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-import com.example.domain.model.BmiRecord;
+import com.example.domain.model.Languages;
+import com.example.domain.model.unit.UnitSystem;
 import com.example.presentation.utils.I18n;
-import com.example.presentation.utils.Languages;
 import com.example.presentation.view.CommonViewModel;
 import com.example.presentation.view.View;
 
@@ -17,9 +17,8 @@ import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.Priority;
+import javafx.util.StringConverter;
 
 public class SettingsView implements View {
     private final String TITLE = "Settings";
@@ -75,6 +74,7 @@ public class SettingsView implements View {
         var rowConstraint = RowConstraintsBuilder.create()
                 .vgrow(Priority.SOMETIMES)
                 .minHeight(30)
+                .maxHeight(50)
                 .build();
 
         return SceneBuilder
@@ -83,44 +83,65 @@ public class SettingsView implements View {
                                 .padding(new Insets(3))
                                 .addRow(0,
                                         LabelBuilder.create()
-                                                .text(I18n.get("main.height"))
+                                                .text(I18n.get("settings.language"))
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
-                                        ComboBoxBuilder.create()
-                                                .addItems(Languages.getValues())
+                                        ComboBoxBuilder.<Languages>create()
+                                                .observableItems(Languages.getValues())
+                                                .value(commonViewModel.languageProperty().get())
+                                                .converter(new StringConverter<Languages>() {
+                                                    @Override
+                                                    public String toString(Languages language) {
+                                                        return I18n
+                                                                .get("language." + language.toString().toLowerCase());
+                                                    }
+
+                                                    @Override
+                                                    public Languages fromString(String string) {
+                                                        return null;
+                                                    }
+                                                })
                                                 .build()
 
                                 )
-                                .addColumnConstraints(
+                                .addRow(1,
+                                        LabelBuilder.create()
+                                                .text(I18n.get("settings.unitsystem"))
+                                                .hAlignmentInGridPane(HPos.CENTER)
+                                                .build(),
+                                        ComboBoxBuilder.<UnitSystem>create()
+                                                .observableItems(UnitSystem.getAll())
+                                                .value(commonViewModel.unitSystemProperty().get())
+                                                .converter(new StringConverter<UnitSystem>() {
+                                                    @Override
+                                                    public String toString(UnitSystem unitSystem) {
+                                                        return I18n
+                                                                .get("unitsystem."
+                                                                        + unitSystem.getClass().getSimpleName()
+                                                                                .toLowerCase());
+                                                    }
+
+                                                    @Override
+                                                    public UnitSystem fromString(String string) {
+                                                        return null;
+                                                    }
+                                                })
+                                                .build()
+
+                                )
+                                .observableColumnConstraints(
                                         ColumnConstraintsBuilder.create()
                                                 .minWidth(70)
                                                 .build(),
                                         ColumnConstraintsBuilder.create()
                                                 .hgrow(Priority.ALWAYS)
                                                 .build())
-                                .addRowConstraints(rowConstraint, rowConstraint)
+                                .observableRowConstraints(rowConstraint, rowConstraint)
                                 .build())
                 .width(240)
-                .height(450)
+                .height(350)
                 .addStylesheetText(mainCSS)
                 .build();
-    }
-
-    private ListCell<BmiRecord> recordsCellFactory(ListView<BmiRecord> listView) {
-        return new ListCell<BmiRecord>() {
-            @Override
-            protected void updateItem(BmiRecord item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("[%s] %.1f (%s)",
-                            item.datetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                            item.bmi(),
-                            I18n.get("main.obesity.category." + item.obesity().toString().toLowerCase())));
-                }
-            }
-        };
     }
 
 }

@@ -31,6 +31,10 @@ public enum I18n {
         this.resources = ResourceBundle.getBundle(baseName, locale);
     }
 
+    public static Locale getCurrentLocale() {
+        return INSTANCE.resources.getLocale();
+    }
+
     /**
      * Retrieves the resource string corresponding to the given key.
      * 

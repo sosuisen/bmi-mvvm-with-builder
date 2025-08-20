@@ -75,7 +75,7 @@ public class MainViewModel {
         mHeight.bind(inputHeight.map(value -> commonViewModel.convertHeightToSI(value.doubleValue())));
         kgWeight.bind(inputWeight.map(value -> commonViewModel.convertWeightToSI(value.doubleValue())));
 
-        commonViewModel.unitsProperty().subscribe(newValue -> {
+        commonViewModel.unitSystemProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(mHeight.get()));
             inputWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
         });
