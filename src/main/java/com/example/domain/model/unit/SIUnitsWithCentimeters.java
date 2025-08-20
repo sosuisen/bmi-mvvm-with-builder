@@ -19,4 +19,12 @@ public final class SIUnitsWithCentimeters implements UnitSystem {
     public double convertWeightFromSI(double kg) {
         return kg;
     }
+
+    public String getHeightUnit() {
+        return "cm";
+    }
+
+    public String getWeightUnit() {
+        return "kg";
+    }
 }

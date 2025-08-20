@@ -24,4 +24,8 @@ public sealed interface UnitSystem permits SIUnitsWithCentimeters, ImperialUnits
     double convertHeightFromSI(double value);
 
     double convertWeightFromSI(double value);
+
+    String getHeightUnit();
+
+    String getWeightUnit();
 }

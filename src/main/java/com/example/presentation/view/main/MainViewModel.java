@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.example.domain.model.BmiRecord;
 import com.example.domain.model.Obesity;
+import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.BmiService;
 import com.example.presentation.view.CommonViewModel;
@@ -23,6 +24,8 @@ import javafx.stage.Stage;
 public class MainViewModel {
     private final BmiService bmiService;
     private final WindowManager windowManager;
+
+    private final CommonViewModel commonViewModel;
 
     private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
 
@@ -58,9 +61,14 @@ public class MainViewModel {
         return bmiList;
     }
 
+    public ObjectProperty<UnitSystem> unitSystemProperty() {
+        return commonViewModel.unitSystemProperty();
+    }
+
     public MainViewModel(BmiService service, WindowManager windowManager, CommonViewModel commonViewModel) {
         this.bmiService = service;
         this.windowManager = windowManager;
+        this.commonViewModel = commonViewModel;
 
         try {
             bmiList.setAll(service.loadBmiRecords());

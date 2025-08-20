@@ -135,6 +135,10 @@ public class MainView implements View {
                                 .textFormatter(Formatters.forNonNegativeNumbers())
                                 .textPropertyApply(prop -> prop
                                         .bindBidirectional(viewModel.heightProperty(), new NumberStringConverter()))
+                                .build(),
+                        LabelBuilder.create()
+                                .textPropertyApply(prop -> prop.bind(viewModel.unitSystemProperty()
+                                        .map(unitSystem -> unitSystem.getHeightUnit())))
                                 .build())
                 .addRow(1,
                         LabelBuilder.create()
@@ -146,6 +150,10 @@ public class MainView implements View {
                                 .textFormatter(Formatters.forNonNegativeNumbers())
                                 .textPropertyApply(prop -> prop
                                         .bindBidirectional(viewModel.weightProperty(), new NumberStringConverter()))
+                                .build(),
+                        LabelBuilder.create()
+                                .textPropertyApply(prop -> prop.bind(viewModel.unitSystemProperty()
+                                        .map(unitSystem -> unitSystem.getWeightUnit())))
                                 .build())
                 .addRow(2,
                         LabelBuilder.create()
@@ -196,6 +204,10 @@ public class MainView implements View {
                                 .build(),
                         ColumnConstraintsBuilder.create()
                                 .hgrow(Priority.ALWAYS)
+                                .build(),
+                        ColumnConstraintsBuilder.create()
+                                .minWidth(50)
+                                .maxWidth(50)
                                 .build())
                 .observableRowConstraints(
                         rowConstraint,

@@ -20,4 +20,12 @@ public final class ImperialUnits implements UnitSystem {
     public double convertWeightFromSI(double value) {
         return value * KG_TO_LB_FACTOR;
     }
+
+    public String getHeightUnit() {
+        return "ft";
+    }
+
+    public String getWeightUnit() {
+        return "lb";
+    }
 }
