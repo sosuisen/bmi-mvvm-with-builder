@@ -20,7 +20,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Units getUnits() throws RepositoryException {
-        String unitType = configRepository.getProperty(UNIT_SYSTEM_KEY);
+        String unitType = configRepository.getConfig(UNIT_SYSTEM_KEY);
         if (IMPERIAL_UNITS.equals(unitType)) {
             return new ImperialUnits();
         }
@@ -30,16 +30,16 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public void setUnits(Units units) throws RepositoryException {
         String unitType = (units instanceof SIUnitsWithCentimeters) ? SI_UNITS : IMPERIAL_UNITS;
-        configRepository.setProperty(UNIT_SYSTEM_KEY, unitType);
+        configRepository.setConfig(UNIT_SYSTEM_KEY, unitType);
     }
 
     @Override
     public String getLanguage() throws RepositoryException {
-        return configRepository.getProperty(LANGUAGE_KEY);
+        return configRepository.getConfig(LANGUAGE_KEY);
     }
 
     @Override
     public void setLanguage(String language) throws RepositoryException {
-        configRepository.setProperty(LANGUAGE_KEY, language);
+        configRepository.setConfig(LANGUAGE_KEY, language);
     }
 }

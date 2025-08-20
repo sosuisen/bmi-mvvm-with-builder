@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import com.example.model.domain.BmiRecord;
 import com.example.ui.utils.I18n;
 import com.example.ui.utils.Languages;
+import com.example.ui.view.CommonViewModel;
 import com.example.ui.view.View;
 
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
@@ -23,7 +24,7 @@ import javafx.scene.layout.Priority;
 public class SettingsView implements View {
     private final String TITLE = "Settings";
 
-    private final SettingsViewModel viewModel;
+    private final CommonViewModel commonViewModel;
     private final Scene scene;
 
     @Override
@@ -36,8 +37,8 @@ public class SettingsView implements View {
         return TITLE;
     }
 
-    public SettingsView(SettingsViewModel viewModel) {
-        this.viewModel = viewModel;
+    public SettingsView(CommonViewModel commonViewModel) {
+        this.commonViewModel = commonViewModel;
         scene = buildSceneGraph();
     }
 

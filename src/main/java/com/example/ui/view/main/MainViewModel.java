@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import com.example.model.domain.BmiRecord;
 import com.example.model.domain.Obesity;
-import com.example.model.domain.unit.Units;
 import com.example.model.repository.RepositoryException;
 import com.example.model.service.BmiService;
+import com.example.ui.view.CommonViewModel;
 import com.example.ui.view.WindowManager;
-import com.example.ui.view.common.AlertDialog;
+import com.example.ui.view.alert.AlertDialog;
 import com.example.ui.view.settings.SettingsView;
 
 import javafx.beans.binding.Bindings;
@@ -58,11 +58,9 @@ public class MainViewModel {
         return bmiList;
     }
 
-    public MainViewModel(BmiService service, WindowManager windowManager, Units units) {
+    public MainViewModel(BmiService service, WindowManager windowManager, CommonViewModel commonViewModel) {
         this.bmiService = service;
         this.windowManager = windowManager;
-
-        this.units.set(units);
 
         try {
             bmiList.setAll(service.loadBmiRecords());
@@ -74,10 +72,10 @@ public class MainViewModel {
                 () -> service.calculateBmi(mHeight.get(), kgWeight.get()),
                 kgWeight, mHeight));
 
-        mHeight.bind(inputHeight.map(value -> units.convertHeightToSI(value.doubleValue())));
-        kgWeight.bind(inputWeight.map(value -> units.convertWeightToSI(value.doubleValue())));
+        mHeight.bind(inputHeight.map(value -> commonViewModel.convertHeightToSI(value.doubleValue())));
+        kgWeight.bind(inputWeight.map(value -> commonViewModel.convertWeightToSI(value.doubleValue())));
 
-        this.units.subscribe(newValue -> {
+        commonViewModel.unitsProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(mHeight.get()));
             inputWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
         });

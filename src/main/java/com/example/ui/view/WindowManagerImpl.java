@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.example.ui.view.common.AlertDialog;
+import com.example.ui.view.alert.AlertDialog;
 
 import javafx.stage.Stage;
 

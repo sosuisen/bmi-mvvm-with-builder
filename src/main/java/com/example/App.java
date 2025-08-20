@@ -2,17 +2,16 @@ package com.example;
 
 import java.util.Locale;
 
-import com.example.model.domain.unit.SIUnitsWithCentimeters;
 import com.example.model.repository.BmiRepositoryJooqImpl;
 import com.example.model.repository.ConfigRepositoryPropertyImpl;
-import com.example.model.service.BmiService;
+import com.example.model.service.BmiServiceImpl;
 import com.example.model.service.ConfigServiceImpl;
 import com.example.ui.utils.I18n;
+import com.example.ui.view.CommonViewModel;
 import com.example.ui.view.WindowManagerImpl;
 import com.example.ui.view.main.MainView;
 import com.example.ui.view.main.MainViewModel;
 import com.example.ui.view.settings.SettingsView;
-import com.example.ui.view.settings.SettingsViewModel;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -32,15 +31,15 @@ public class App extends Application {
 
         var configService = new ConfigServiceImpl(new ConfigRepositoryPropertyImpl());
 
-        var bmiService = new BmiService(new BmiRepositoryJooqImpl());
+        var bmiService = new BmiServiceImpl(new BmiRepositoryJooqImpl());
 
         var windowManager = new WindowManagerImpl();
 
-        var defaultUnits = new SIUnitsWithCentimeters();
+        var commonViewModel = new CommonViewModel(configService);
 
-        windowManager.registerView(new SettingsView(new SettingsViewModel()));
+        windowManager.registerView(new SettingsView(commonViewModel));
 
-        windowManager.registerView(new MainView(new MainViewModel(bmiService, windowManager, defaultUnits)));
+        windowManager.registerView(new MainView(new MainViewModel(bmiService, windowManager, commonViewModel)));
 
         windowManager.showWindow(MainView.class, stage);
     }

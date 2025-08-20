@@ -1,4 +1,4 @@
-package com.example.ui.view.common;
+package com.example.ui.view.alert;
 
 import java.util.Objects;
 
