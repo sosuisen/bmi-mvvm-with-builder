@@ -32,12 +32,12 @@ public class AlertDialog {
 
         Platform.runLater(() -> {
             AlertBuilder.create(Alert.AlertType.ERROR)
-                    .title(I18n.get("error"))
-                    .headerText(I18n.get("error"))
+                    .title(I18n.text("error"))
+                    .headerText(I18n.text("error"))
                     .height(240)
                     .width(480)
                     .apply(alert -> {
-                        alert.getDialogPane().setExpandableContent(new Label(I18n.get(resourceName)));
+                        alert.getDialogPane().setExpandableContent(new Label(I18n.text(resourceName)));
                         alert.getDialogPane().setExpanded(true);
                     })
                     .build()
@@ -62,8 +62,8 @@ public class AlertDialog {
 
         Platform.runLater(() -> {
             AlertBuilder.create(Alert.AlertType.ERROR)
-                    .title(I18n.get("error"))
-                    .headerText(I18n.get("error"))
+                    .title(I18n.text("error"))
+                    .headerText(I18n.text("error"))
                     .height(240)
                     .width(480)
                     .apply(alert -> {

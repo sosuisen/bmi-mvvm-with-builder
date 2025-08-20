@@ -1,15 +1,24 @@
 package com.example.presentation.view.common;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public enum I18n {
     INSTANCE;
 
     private static final String BASE_NAME = "com.example.i18n.Messages";
 
-    private ResourceBundle resources;
+    private final ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>();
+
+    private final Map<String, StringProperty> stringProperties = new HashMap<>();
 
     public static I18n getInstance() {
         return INSTANCE;
@@ -30,28 +39,41 @@ public enum I18n {
         // 1) search Messages_fr.properties
         // 2) search OS default locale, e.g. Messages_en.properties
         // 3) search Messages.properties
-        resources = ResourceBundle.getBundle(BASE_NAME, locale);
+        resources.set(ResourceBundle.getBundle(BASE_NAME, locale));
+    }
+
+    public ObjectProperty<ResourceBundle> resourcesProperty() {
+        return resources;
     }
 
     public Locale getCurrentLocale() {
-        return INSTANCE.resources.getLocale();
+        return INSTANCE.resources.get().getLocale();
     }
 
-    /**
-     * Retrieves the resource string corresponding to the given key.
-     * 
-     * @param key the resource key
-     * @return the resource string, or the key itself if no resource is set
-     * @throws NullPointerException if key is null
-     */
-    public static String get(String key) throws NullPointerException {
+    public static StringProperty textProperty(String key) throws NullPointerException {
+        Objects.requireNonNull(key, "key must not be null");
+        return INSTANCE.getStringProperty(key);
+    }
+
+    public static String text(String key) throws NullPointerException {
+        Objects.requireNonNull(key, "key must not be null");
         return INSTANCE.getString(key);
+    }
+
+    private StringProperty getStringProperty(String key) {
+        return stringProperties.computeIfAbsent(key, _ -> {
+            var prop = new SimpleStringProperty();
+            resources.subscribe(_ -> {
+                prop.set(getString(key));
+            });
+            return prop;
+        });
     }
 
     private String getString(String key) throws NullPointerException {
         Objects.requireNonNull(key, "key must not be null");
         try {
-            return resources != null ? resources.getString(key) : key;
+            return resources != null ? resources.get().getString(key) : key;
         } catch (Exception e) {
             System.err.println("I18n: Missing resource key : " + key);
             return key;

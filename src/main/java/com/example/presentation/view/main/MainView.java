@@ -22,6 +22,7 @@ import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -103,14 +104,16 @@ public class MainView implements View {
         return MenuBarBuilder.create()
                 .observableMenus(
                         MenuBuilder.create()
-                                .text(I18n.get("menu.file"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
                                 .observableItems(
                                         MenuItemBuilder.create()
-                                                .text(I18n.get("menu.settings"))
+                                                .textPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("menu.settings")))
                                                 .onAction(_ -> viewModel.openSettingsWindow())
                                                 .build(),
                                         MenuItemBuilder.create()
-                                                .text(I18n.get("menu.close"))
+                                                .textPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("menu.close")))
                                                 .onAction(_ -> Platform.exit())
                                                 .build())
                                 .build())
@@ -127,7 +130,7 @@ public class MainView implements View {
                 .padding(new Insets(3))
                 .addRow(0,
                         LabelBuilder.create()
-                                .text(I18n.get("main.height"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.height")))
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
@@ -142,7 +145,7 @@ public class MainView implements View {
                                 .build())
                 .addRow(1,
                         LabelBuilder.create()
-                                .text(I18n.get("main.weight"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.weight")))
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         TextFieldBuilder.create()
@@ -157,7 +160,7 @@ public class MainView implements View {
                                 .build())
                 .addRow(2,
                         LabelBuilder.create()
-                                .text(I18n.get("main.bmi"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.bmi")))
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
@@ -173,7 +176,7 @@ public class MainView implements View {
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
-                                .text(I18n.get("main.obesity"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.obesity")))
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
@@ -181,14 +184,17 @@ public class MainView implements View {
                                 .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
                                 .textPropertyApply(prop -> prop
-                                        .bind(viewModel.obesityProperty()
-                                                .map(opt -> opt
-                                                        .map(category -> I18n.get("main.obesity.category." + category))
-                                                        .orElse("-"))))
+                                        .bind(Bindings.createStringBinding(() -> viewModel.obesityProperty()
+                                                .map(opt -> opt.map(
+                                                        category -> I18n.text("main.obesity.category." + category))
+                                                        .orElse("-"))
+                                                .getValue(),
+                                                viewModel.obesityProperty(),
+                                                I18n.INSTANCE.resourcesProperty())))
                                 .build())
                 .add(
                         ButtonBuilder.create()
-                                .text(I18n.get("main.record"))
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.record")))
                                 .style("""
                                         -fx-corner-radius: 12px;
                                         """)
@@ -236,13 +242,17 @@ public class MainView implements View {
             @Override
             protected void updateItem(BmiRecord item, boolean empty) {
                 super.updateItem(item, empty);
+
+                textProperty().unbind();
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(String.format("[%s] %.1f (%s)",
-                            item.datetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                            item.bmi(),
-                            I18n.get("main.obesity.category." + item.obesity().toResourceString())));
+                    textProperty().bind(
+                            I18n.textProperty("main.obesity.category." + item.obesity().toResourceString())
+                                    .map(obesity -> String.format("[%s] %.1f (%s)",
+                                            item.datetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                                            item.bmi(),
+                                            obesity)));
                 }
             }
         };

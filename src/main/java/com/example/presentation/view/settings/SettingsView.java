@@ -12,6 +12,7 @@ import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -81,50 +82,31 @@ public class SettingsView implements View {
                                 .padding(new Insets(3))
                                 .addRow(0,
                                         LabelBuilder.create()
-                                                .text(I18n.get("settings.language"))
+                                                .textPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("settings.language")))
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
                                         ComboBoxBuilder.<Languages>create()
                                                 .observableItems(Languages.getLanguageList())
                                                 .valuePropertyApply(prop -> prop
                                                         .bindBidirectional(commonViewModel.languageProperty()))
-                                                .converter(new StringConverter<Languages>() {
-                                                    @Override
-                                                    public String toString(Languages language) {
-                                                        return I18n
-                                                                .get("language." + language.toLanguageString());
-                                                    }
-
-                                                    @Override
-                                                    public Languages fromString(String string) {
-                                                        return null;
-                                                    }
-                                                })
-                                                .build()
-
-                                )
+                                                .converterPropertyApply(prop -> prop.bind(Bindings
+                                                        .createObjectBinding(() -> new LanguagesSystemConverter(),
+                                                                I18n.INSTANCE.resourcesProperty())))
+                                                .build())
                                 .addRow(1,
                                         LabelBuilder.create()
-                                                .text(I18n.get("settings.unitsystem"))
+                                                .textPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("settings.unitsystem")))
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
                                         ComboBoxBuilder.<UnitSystem>create()
                                                 .observableItems(UnitSystem.getAll())
                                                 .valuePropertyApply(prop -> prop
                                                         .bindBidirectional(commonViewModel.unitSystemProperty()))
-                                                .converter(new StringConverter<UnitSystem>() {
-                                                    @Override
-                                                    public String toString(UnitSystem unitSystem) {
-                                                        return I18n
-                                                                .get("unitsystem."
-                                                                        + unitSystem.toResourceString());
-                                                    }
-
-                                                    @Override
-                                                    public UnitSystem fromString(String string) {
-                                                        return null;
-                                                    }
-                                                })
+                                                .converterPropertyApply(prop -> prop.bind(Bindings
+                                                        .createObjectBinding(() -> new UnitSystemStringConverter(),
+                                                                I18n.INSTANCE.resourcesProperty())))
                                                 .build())
                                 .observableColumnConstraints(
                                         ColumnConstraintsBuilder.create()
@@ -139,6 +121,34 @@ public class SettingsView implements View {
                 .height(350)
                 .addStylesheetText(mainCSS)
                 .build();
+    }
+
+    class LanguagesSystemConverter extends StringConverter<Languages> {
+        @Override
+        public String toString(Languages language) {
+            return I18n.text(
+                    "language." + language
+                            .toLanguageString());
+        }
+
+        @Override
+        public Languages fromString(String string) {
+            return null;
+        }
+    }
+
+    class UnitSystemStringConverter extends StringConverter<UnitSystem> {
+        @Override
+        public String toString(UnitSystem unitSystem) {
+            return I18n.text(
+                    "unitsystem." + unitSystem
+                            .toResourceString());
+        }
+
+        @Override
+        public UnitSystem fromString(String string) {
+            return null;
+        }
     }
 
 }
