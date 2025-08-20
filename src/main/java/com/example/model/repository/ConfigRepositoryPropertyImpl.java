@@ -18,17 +18,18 @@ public class ConfigRepositoryPropertyImpl implements ConfigRepository {
     }
 
     @Override
-    public String getProperty(String key) {
+    public String getProperty(String key) throws RepositoryException {
+        load();
         return properties.getProperty(key);
     }
 
     @Override
     public void setProperty(String key, String value) throws RepositoryException {
         properties.setProperty(key, value);
+        save();
     }
 
-    @Override
-    public void save() throws RepositoryException {
+    private void save() throws RepositoryException {
         try {
             configPath.getParent().toFile().mkdirs();
             try (FileOutputStream out = new FileOutputStream(configPath.toFile())) {
@@ -39,8 +40,7 @@ public class ConfigRepositoryPropertyImpl implements ConfigRepository {
         }
     }
 
-    @Override
-    public void load() throws RepositoryException {
+    private void load() throws RepositoryException {
         if (configPath.toFile().exists()) {
             try (FileInputStream in = new FileInputStream(configPath.toFile())) {
                 properties.load(in);
