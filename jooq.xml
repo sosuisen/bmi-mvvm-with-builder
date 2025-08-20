@@ -24,8 +24,8 @@
         </database>
 
         <target>
-            <directory>./src/main/java</directory>
-            <packageName>jooq</packageName>
+            <directory>./src/main/java/</directory>
+            <packageName>com.example.repository.jooq</packageName>
         </target>
 
     </generator>

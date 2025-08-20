@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static jooq.Tables.*;
+import static com.example.repository.jooq.Tables.*;
 
 import org.jooq.RecordMapper;
 import org.jooq.SQLDialect;
@@ -15,7 +15,7 @@ import com.example.domain.model.BmiRecord;
 import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
 
-import jooq.tables.records.BmiHistoryRecord;
+import com.example.repository.jooq.tables.records.BmiHistoryRecord;
 
 public class BmiRepositoryJooqImpl implements BmiRepository {
     private final String DB_PATH = "jdbc:sqlite:./bmi.db";
