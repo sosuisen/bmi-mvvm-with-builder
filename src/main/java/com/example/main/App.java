@@ -2,9 +2,9 @@ package com.example.main;
 
 import java.util.Locale;
 
-import com.example.presentation.utils.I18n;
-import com.example.presentation.view.CommonViewModel;
 import com.example.presentation.view.WindowManagerImpl;
+import com.example.presentation.view.common.CommonViewModel;
+import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 import com.example.presentation.view.settings.SettingsView;
@@ -27,7 +27,7 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
-        I18n.getInstance().setResources("com.example.i18n.Messages", Locale.getDefault());
+        I18n.getInstance().setResources(Locale.getDefault());
 
         var configService = new ConfigServiceImpl(new ConfigRepositoryPropertyImpl());
 

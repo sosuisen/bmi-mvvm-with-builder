@@ -3,13 +3,13 @@ package com.example.presentation.view.main;
 import java.util.Optional;
 
 import com.example.domain.model.BmiRecord;
-import com.example.domain.model.Obesity;
+import com.example.domain.model.ObesityCategory;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.BmiService;
-import com.example.presentation.view.CommonViewModel;
 import com.example.presentation.view.WindowManager;
 import com.example.presentation.view.alert.AlertDialog;
+import com.example.presentation.view.common.CommonViewModel;
 import com.example.presentation.view.settings.SettingsView;
 
 import javafx.beans.binding.Bindings;
@@ -89,9 +89,8 @@ public class MainViewModel {
         });
 
         obesity.bind(
-                bmi.map(opt -> opt.map(Obesity::getCategory)
-                        .map(Obesity.Category::toString)
-                        .map(String::toLowerCase)));
+                bmi.map(opt -> opt.map(ObesityCategory::getCategory)
+                        .map(ObesityCategory::toResourceString)));
 
     }
 

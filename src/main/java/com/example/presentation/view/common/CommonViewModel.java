@@ -1,7 +1,10 @@
-package com.example.presentation.view;
+package com.example.presentation.view.common;
 
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
+
+import java.util.Locale;
+
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
 import com.example.presentation.view.alert.AlertDialog;
@@ -32,6 +35,7 @@ public class CommonViewModel {
         language.addListener((_, _, newValue) -> {
             try {
                 configService.setLanguage(newValue);
+                I18n.getInstance().setResources(Locale.of(newValue.toLanguageString()));
             } catch (RepositoryException e) {
                 AlertDialog.showError(e);
             }

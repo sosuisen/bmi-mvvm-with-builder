@@ -7,11 +7,15 @@ public enum Languages {
     EN,
     JA;
 
-    public static List<Languages> getValues() {
+    public static List<Languages> getLanguageList() {
         return Arrays.asList(Languages.values());
     }
 
-    public static Languages fromString(String value) {
+    public static Languages getLanguage(String value) {
         return Languages.valueOf(value.toUpperCase());
+    }
+
+    public String toLanguageString() {
+        return toString().toLowerCase();
     }
 }

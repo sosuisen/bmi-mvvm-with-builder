@@ -7,7 +7,7 @@ import com.example.domain.repository.ConfigRepository;
 
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
-import com.example.presentation.utils.I18n;
+import com.example.presentation.view.common.I18n;
 
 public class ConfigServiceImpl implements ConfigService {
     private static final String UNIT_SYSTEM_KEY = "unit.system";
@@ -47,10 +47,10 @@ public class ConfigServiceImpl implements ConfigService {
     public Languages getLanguage() throws RepositoryException {
         var langStr = configRepository.getConfig(LANGUAGE_KEY);
         if (langStr == null) {
-            langStr = I18n.getCurrentLocale().getLanguage();
+            langStr = I18n.getInstance().getCurrentLocale().getLanguage();
         }
 
-        var language = Languages.fromString(langStr);
+        var language = Languages.getLanguage(langStr);
         if (language == null) {
             throw new RepositoryException("No such language: " + langStr);
         }
@@ -60,6 +60,6 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public void setLanguage(Languages language) throws RepositoryException {
-        configRepository.setConfig(LANGUAGE_KEY, language.toString().toLowerCase());
+        configRepository.setConfig(LANGUAGE_KEY, language.toLanguageString());
     }
 }

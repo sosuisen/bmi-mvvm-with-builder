@@ -1,12 +1,10 @@
 package com.example.presentation.view.settings;
 
-import java.util.List;
-
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
-import com.example.presentation.utils.I18n;
-import com.example.presentation.view.CommonViewModel;
 import com.example.presentation.view.View;
+import com.example.presentation.view.common.CommonViewModel;
+import com.example.presentation.view.common.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
@@ -87,14 +85,14 @@ public class SettingsView implements View {
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
                                         ComboBoxBuilder.<Languages>create()
-                                                .observableItems(Languages.getValues())
+                                                .observableItems(Languages.getLanguageList())
                                                 .valuePropertyApply(prop -> prop
                                                         .bindBidirectional(commonViewModel.languageProperty()))
                                                 .converter(new StringConverter<Languages>() {
                                                     @Override
                                                     public String toString(Languages language) {
                                                         return I18n
-                                                                .get("language." + language.toString().toLowerCase());
+                                                                .get("language." + language.toLanguageString());
                                                     }
 
                                                     @Override
@@ -119,8 +117,7 @@ public class SettingsView implements View {
                                                     public String toString(UnitSystem unitSystem) {
                                                         return I18n
                                                                 .get("unitsystem."
-                                                                        + unitSystem.getClass().getSimpleName()
-                                                                                .toLowerCase());
+                                                                        + unitSystem.toResourceString());
                                                     }
 
                                                     @Override

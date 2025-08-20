@@ -1,4 +1,4 @@
-package com.example.presentation.utils;
+package com.example.presentation.view.common;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 public enum I18n {
     INSTANCE;
+
+    private static final String BASE_NAME = "com.example.i18n.Messages";
 
     private ResourceBundle resources;
 
@@ -21,17 +23,17 @@ public enum I18n {
      * @throws NullPointerException     if baseName or locale is null
      * @throws IllegalArgumentException if baseName is empty
      */
-    public void setResources(String baseName, Locale locale)
+    public void setResources(Locale locale)
             throws NullPointerException, IllegalArgumentException {
-        Objects.requireNonNull(baseName, "baseName must not be null");
         Objects.requireNonNull(locale, "locale must not be null");
-        if (baseName.isBlank()) {
-            throw new IllegalArgumentException("baseName must not be empty");
-        }
-        this.resources = ResourceBundle.getBundle(baseName, locale);
+        // When locale is "fr",
+        // 1) search Messages_fr.properties
+        // 2) search OS default locale, e.g. Messages_en.properties
+        // 3) search Messages.properties
+        resources = ResourceBundle.getBundle(BASE_NAME, locale);
     }
 
-    public static Locale getCurrentLocale() {
+    public Locale getCurrentLocale() {
         return INSTANCE.resources.getLocale();
     }
 

@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import com.example.domain.model.BmiRecord;
 import com.example.presentation.utils.Formatters;
-import com.example.presentation.utils.I18n;
 import com.example.presentation.view.View;
+import com.example.presentation.view.common.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
@@ -242,7 +242,7 @@ public class MainView implements View {
                     setText(String.format("[%s] %.1f (%s)",
                             item.datetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                             item.bmi(),
-                            I18n.get("main.obesity.category." + item.obesity().toString().toLowerCase())));
+                            I18n.get("main.obesity.category." + item.obesity().toResourceString())));
                 }
             }
         };

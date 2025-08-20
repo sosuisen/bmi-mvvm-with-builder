@@ -28,4 +28,9 @@ public sealed interface UnitSystem permits SIUnitsWithCentimeters, ImperialUnits
     String getHeightUnit();
 
     String getWeightUnit();
+
+    default String toResourceString() {
+        return this.getClass().getSimpleName().toLowerCase();
+    }
+
 }
