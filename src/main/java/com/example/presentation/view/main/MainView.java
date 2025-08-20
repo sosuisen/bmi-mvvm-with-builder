@@ -164,15 +164,13 @@ public class MainView implements View {
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
-                                .text("0")
                                 .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
-                                .textPropertyApply(
-                                        prop -> prop
-                                                .bind(viewModel.bmiProperty()
-                                                        .map(opt -> opt
-                                                                .map(bmi -> String.format("%.1f", bmi))
-                                                                .orElse("-"))))
+                                .textPropertyApply(prop -> prop
+                                        .bind(viewModel.bmiProperty()
+                                                .map(opt -> opt
+                                                        .map(bmi -> String.format("%.1f", bmi))
+                                                        .orElse("-"))))
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
@@ -180,7 +178,6 @@ public class MainView implements View {
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .build(),
                         LabelBuilder.create()
-                                .text("-")
                                 .marginInGridPane(new Insets(3))
                                 .maxWidth(Double.MAX_VALUE)
                                 .textPropertyApply(prop -> prop
