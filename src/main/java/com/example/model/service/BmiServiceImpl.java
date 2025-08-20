@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.model.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,11 +9,11 @@ import com.example.model.domain.BmiRecord;
 import com.example.model.repository.BmiRepository;
 import com.example.model.repository.RepositoryException;
 
-public class BmiService {
+public class BmiServiceImpl implements BmiService {
     private final BmiRepository repository;
     private final BmiCalculator calculator;
 
-    public BmiService(BmiRepository repository) {
+    public BmiServiceImpl(BmiRepository repository) {
         this.repository = repository;
         calculator = new BmiCalculator();
     }
@@ -33,5 +33,4 @@ public class BmiService {
     public BmiRecord saveBmi(double bmi) throws RepositoryException {
         return repository.saveBmiRecord(bmi, LocalDateTime.now());
     }
-
 }

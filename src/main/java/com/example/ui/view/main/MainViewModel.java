@@ -2,11 +2,11 @@ package com.example.ui.view.main;
 
 import java.util.Optional;
 
-import com.example.model.BmiService;
 import com.example.model.domain.BmiRecord;
 import com.example.model.domain.Obesity;
 import com.example.model.domain.unit.Units;
 import com.example.model.repository.RepositoryException;
+import com.example.model.service.BmiService;
 import com.example.ui.view.WindowManager;
 import com.example.ui.view.common.AlertDialog;
 import com.example.ui.view.settings.SettingsView;
@@ -25,8 +25,6 @@ public class MainViewModel {
     private final WindowManager windowManager;
 
     private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
-
-    private final ObjectProperty<Units> units = new SimpleObjectProperty<>();
 
     // SI unit value
     private final DoubleProperty mHeight = new SimpleDoubleProperty();
@@ -54,10 +52,6 @@ public class MainViewModel {
 
     public ObjectProperty<Optional<String>> obesityProperty() {
         return obesity;
-    }
-
-    public ObjectProperty<Units> unitsProperty() {
-        return units;
     }
 
     public ObservableList<BmiRecord> getBmiList() {
