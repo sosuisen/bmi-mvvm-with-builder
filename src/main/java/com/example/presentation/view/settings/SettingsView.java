@@ -88,7 +88,8 @@ public class SettingsView implements View {
                                                 .build(),
                                         ComboBoxBuilder.<Languages>create()
                                                 .observableItems(Languages.getValues())
-                                                .value(commonViewModel.languageProperty().get())
+                                                .valuePropertyApply(prop -> prop
+                                                        .bindBidirectional(commonViewModel.languageProperty()))
                                                 .converter(new StringConverter<Languages>() {
                                                     @Override
                                                     public String toString(Languages language) {
@@ -111,7 +112,8 @@ public class SettingsView implements View {
                                                 .build(),
                                         ComboBoxBuilder.<UnitSystem>create()
                                                 .observableItems(UnitSystem.getAll())
-                                                .value(commonViewModel.unitSystemProperty().get())
+                                                .valuePropertyApply(prop -> prop
+                                                        .bindBidirectional(commonViewModel.unitSystemProperty()))
                                                 .converter(new StringConverter<UnitSystem>() {
                                                     @Override
                                                     public String toString(UnitSystem unitSystem) {
@@ -126,9 +128,7 @@ public class SettingsView implements View {
                                                         return null;
                                                     }
                                                 })
-                                                .build()
-
-                                )
+                                                .build())
                                 .observableColumnConstraints(
                                         ColumnConstraintsBuilder.create()
                                                 .minWidth(70)
