@@ -20,7 +20,6 @@ import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
-import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.application.Platform;
 import javafx.geometry.HPos;

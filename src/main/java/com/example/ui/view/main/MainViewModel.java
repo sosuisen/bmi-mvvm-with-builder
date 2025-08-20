@@ -11,7 +11,6 @@ import com.example.ui.view.WindowManager;
 import com.example.ui.view.common.AlertDialog;
 import com.example.ui.view.settings.SettingsView;
 
-import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
