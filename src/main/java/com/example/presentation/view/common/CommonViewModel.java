@@ -50,20 +50,4 @@ public class CommonViewModel {
         return language;
     }
 
-    public double convertHeightFromSI(double value) {
-        return unitSystem.get().convertHeightFromSI(value);
-    }
-
-    public double convertHeightToSI(double value) {
-        return unitSystem.get().convertHeightToSI(value);
-    }
-
-    public double convertWeightFromSI(double value) {
-        return unitSystem.get().convertWeightFromSI(value);
-    }
-
-    public double convertWeightToSI(double value) {
-        return unitSystem.get().convertWeightToSI(value);
-    }
-
 }

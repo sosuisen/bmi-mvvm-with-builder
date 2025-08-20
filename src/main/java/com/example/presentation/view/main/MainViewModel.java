@@ -80,8 +80,11 @@ public class MainViewModel {
                 () -> service.calculateBmi(mHeight.get(), kgWeight.get()),
                 kgWeight, mHeight));
 
-        mHeight.bind(inputHeight.map(value -> commonViewModel.convertHeightToSI(value.doubleValue())));
-        kgWeight.bind(inputWeight.map(value -> commonViewModel.convertWeightToSI(value.doubleValue())));
+        mHeight.bind(inputHeight
+                .map(value -> commonViewModel.unitSystemProperty().get().convertHeightToSI(value.doubleValue())));
+
+        kgWeight.bind(inputWeight
+                .map(value -> commonViewModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
         commonViewModel.unitSystemProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(mHeight.get()));
