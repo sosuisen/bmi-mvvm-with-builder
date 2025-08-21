@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.example.presentation.view.alert.AlertDialog;
 
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 
 public class WindowManagerImpl implements WindowManager {

@@ -12,6 +12,7 @@ import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.CommonViewModel;
 import com.example.presentation.view.settings.SettingsView;
 
+import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -19,9 +20,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 
 public class MainViewModel {
+    private static final Point2D OFFSET_POSITION_OF_NEW_WINDOW = new Point2D(30, 30);
+
     private final BmiService bmiService;
     private final WindowManager windowManager;
 
@@ -108,8 +112,15 @@ public class MainViewModel {
         });
     }
 
-    protected void openSettingsWindow() {
-        windowManager.showWindow(SettingsView.class, new Stage());
+    protected void openSettingsWindow(Stage currentStage) {
+        var newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
+
+        var newStage = StageBuilder.create()
+                .x(newPosition.getX())
+                .y(newPosition.getY())
+                .build();
+
+        windowManager.showWindow(SettingsView.class, newStage);
     }
 
 }

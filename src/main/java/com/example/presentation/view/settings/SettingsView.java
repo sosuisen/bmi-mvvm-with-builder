@@ -110,7 +110,7 @@ public class SettingsView implements View {
                                                 .build())
                                 .observableColumnConstraints(
                                         ColumnConstraintsBuilder.create()
-                                                .minWidth(70)
+                                                .minWidth(120)
                                                 .build(),
                                         ColumnConstraintsBuilder.create()
                                                 .hgrow(Priority.ALWAYS)
@@ -118,7 +118,7 @@ public class SettingsView implements View {
                                 .observableRowConstraints(rowConstraint, rowConstraint)
                                 .build())
                 .width(240)
-                .height(350)
+                .height(240)
                 .addStylesheetText(mainCSS)
                 .build();
     }

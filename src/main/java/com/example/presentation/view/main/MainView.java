@@ -33,6 +33,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 public class MainView implements View {
@@ -109,7 +110,7 @@ public class MainView implements View {
                                         MenuItemBuilder.create()
                                                 .textPropertyApply(
                                                         prop -> prop.bind(I18n.textProperty("menu.settings")))
-                                                .onAction(_ -> viewModel.openSettingsWindow())
+                                                .onAction(_ -> viewModel.openSettingsWindow((Stage) scene.getWindow()))
                                                 .build(),
                                         MenuItemBuilder.create()
                                                 .textPropertyApply(
