@@ -9,6 +9,8 @@ import com.example.domain.exception.RepositoryException;
 public interface BmiService {
     public Optional<Double> calculateBmi(double mHeight, double kgWeight);
 
+    public void removeAllRecords() throws RepositoryException;
+
     public List<BmiRecord> loadBmiRecords() throws RepositoryException;
 
     public BmiRecord saveBmi(double bmi) throws RepositoryException;

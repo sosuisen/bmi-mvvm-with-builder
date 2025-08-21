@@ -1,11 +1,14 @@
 package com.example.presentation.view.settings;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.presentation.view.View;
-import com.example.presentation.view.common.CommonViewModel;
+import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.I18n;
 
+import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
+import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
@@ -16,13 +19,16 @@ import javafx.beans.binding.Bindings;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Priority;
 import javafx.util.StringConverter;
 
 public class SettingsView implements View {
     private final String TITLE = "Settings";
 
-    private final CommonViewModel commonViewModel;
+    private final SettingsViewModel viewModel;
     private final Scene scene;
 
     @Override
@@ -35,19 +41,19 @@ public class SettingsView implements View {
         return TITLE;
     }
 
-    public SettingsView(CommonViewModel commonViewModel) {
-        this.commonViewModel = commonViewModel;
+    public SettingsView(SettingsViewModel viewModel) {
+        this.viewModel = viewModel;
         scene = buildSceneGraph();
     }
 
     private static final String mainCSS = """
-            .button {
-                -fx-background-color: #006000;
+            #clear-button {
+                -fx-background-color: #900000;
                 -fx-text-fill: white;
             }
 
-            .button:hover {
-                -fx-background-color: #009000;
+            #clear-button:hover {
+                -fx-background-color: #c05050;
                 -fx-text-fill: white;
                 -fx-cursor: hand;
             }
@@ -62,10 +68,6 @@ public class SettingsView implements View {
                 -fx-border-width: 1;
                 -fx-border-color: black;
                 -fx-border-style: solid;
-            }
-
-            .text-field {
-                -fx-alignment: center;
             }
             """;
 
@@ -89,7 +91,7 @@ public class SettingsView implements View {
                                         ComboBoxBuilder.<Languages>create()
                                                 .observableItems(Languages.getLanguageList())
                                                 .valuePropertyApply(prop -> prop
-                                                        .bindBidirectional(commonViewModel.languageProperty()))
+                                                        .bindBidirectional(viewModel.languageProperty()))
                                                 .converterPropertyApply(prop -> prop.bind(Bindings
                                                         .createObjectBinding(() -> new LanguagesSystemConverter(),
                                                                 I18n.INSTANCE.resourcesProperty())))
@@ -103,10 +105,26 @@ public class SettingsView implements View {
                                         ComboBoxBuilder.<UnitSystem>create()
                                                 .observableItems(UnitSystem.getAll())
                                                 .valuePropertyApply(prop -> prop
-                                                        .bindBidirectional(commonViewModel.unitSystemProperty()))
+                                                        .bindBidirectional(viewModel.unitSystemProperty()))
                                                 .converterPropertyApply(prop -> prop.bind(Bindings
                                                         .createObjectBinding(() -> new UnitSystemStringConverter(),
                                                                 I18n.INSTANCE.resourcesProperty())))
+                                                .build())
+                                .addRow(2,
+                                        LabelBuilder.create()
+                                                .textPropertyApply(prop -> prop
+                                                        .bind(I18n.textProperty("settings.clearrecords.label")))
+                                                .hAlignmentInGridPane(HPos.CENTER)
+                                                .build(),
+                                        ButtonBuilder.create()
+                                                .id("clear-button")
+                                                .textPropertyApply(prop -> prop
+                                                        .bind(I18n.textProperty("settings.clearrecords.button")))
+                                                .style("""
+                                                        -fx-corner-radius: 12px;
+                                                        """)
+                                                .hAlignmentInGridPane(HPos.CENTER)
+                                                .onAction(_ -> removeAllRecords())
                                                 .build())
                                 .observableColumnConstraints(
                                         ColumnConstraintsBuilder.create()
@@ -115,12 +133,34 @@ public class SettingsView implements View {
                                         ColumnConstraintsBuilder.create()
                                                 .hgrow(Priority.ALWAYS)
                                                 .build())
-                                .observableRowConstraints(rowConstraint, rowConstraint)
+                                .observableRowConstraints(rowConstraint, rowConstraint, rowConstraint)
                                 .build())
                 .width(240)
-                .height(240)
+                .height(180)
                 .addStylesheetText(mainCSS)
                 .build();
+    }
+
+    private void removeAllRecords() {
+        AlertBuilder.create(Alert.AlertType.CONFIRMATION)
+                .title(I18n.text("settings.clearrecords.label"))
+                .headerText(I18n.text("settings.clearrecords.confirm"))
+                .apply(alert -> {
+                    var okBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                    okBtn.setDefaultButton(false);
+                    var cancelBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+                    cancelBtn.setDefaultButton(true);
+                })
+                .build()
+                .showAndWait()
+                .filter(buttonType -> buttonType == ButtonType.OK)
+                .ifPresent(_ -> {
+                    try {
+                        viewModel.removeAllRecords();
+                    } catch (RepositoryException e) {
+                        AlertDialog.showError(e);
+                    }
+                });
     }
 
     class LanguagesSystemConverter extends StringConverter<Languages> {

@@ -2,7 +2,6 @@ package com.example.main;
 
 import java.util.Locale;
 
-import com.example.domain.exception.RepositoryException;
 import com.example.presentation.view.WindowManagerImpl;
 import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.CommonViewModel;
@@ -10,6 +9,7 @@ import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 import com.example.presentation.view.settings.SettingsView;
+import com.example.presentation.view.settings.SettingsViewModel;
 import com.example.repository.BmiRepositoryJooqImpl;
 import com.example.repository.ConfigRepositoryPropertyImpl;
 import com.example.service.BmiServiceImpl;
@@ -43,7 +43,7 @@ public class App extends Application {
 
         var commonViewModel = new CommonViewModel(configService);
 
-        windowManager.registerView(new SettingsView(commonViewModel));
+        windowManager.registerView(new SettingsView(new SettingsViewModel(bmiService, commonViewModel)));
 
         windowManager.registerView(new MainView(new MainViewModel(bmiService, windowManager, commonViewModel)));
 

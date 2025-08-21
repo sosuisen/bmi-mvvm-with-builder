@@ -1,6 +1,5 @@
 package com.example.presentation.view;
 
-import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 
 public interface WindowManager {

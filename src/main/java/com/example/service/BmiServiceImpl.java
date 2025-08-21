@@ -19,6 +19,7 @@ public class BmiServiceImpl implements BmiService {
         calculator = new BmiCalculator();
     }
 
+    @Override
     public Optional<Double> calculateBmi(double mHeight, double kgWeight) {
         try {
             return Optional.of(calculator.calculateBmi(mHeight, kgWeight));
@@ -27,10 +28,17 @@ public class BmiServiceImpl implements BmiService {
         }
     }
 
+    @Override
+    public void removeAllRecords() throws RepositoryException {
+        repository.removeAllRecords();
+    }
+
+    @Override
     public List<BmiRecord> loadBmiRecords() throws RepositoryException {
         return repository.loadBmiRecords();
     }
 
+    @Override
     public BmiRecord saveBmi(double bmi) throws RepositoryException {
         return repository.saveBmiRecord(bmi, LocalDateTime.now());
     }

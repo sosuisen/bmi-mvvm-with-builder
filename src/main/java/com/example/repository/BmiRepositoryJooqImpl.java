@@ -27,6 +27,17 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
     }
 
     @Override
+    public void removeAllRecords() throws RepositoryException {
+        try (Connection conn = DriverManager.getConnection(DB_PATH)) {
+            var context = DSL.using(conn, SQLDialect.SQLITE);
+            context.delete(BMI_HISTORY)
+                    .execute();
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to remove all records.");
+        }
+    }
+
+    @Override
     public BmiRecord saveBmiRecord(double bmi, LocalDateTime localDateTime) throws RepositoryException {
         if (bmi <= 0) {
             throw new IllegalArgumentException();
@@ -59,6 +70,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
             throw new RepositoryException("Failed to load records.");
         }
     }
+
 }
 
 class BmiRecordMapper implements RecordMapper<BmiHistoryRecord, BmiRecord> {
