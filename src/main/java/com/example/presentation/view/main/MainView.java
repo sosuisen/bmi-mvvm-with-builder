@@ -201,7 +201,7 @@ public class MainView implements View {
                                         .map(opt -> !opt.isPresent() || opt.isEmpty())))
                                 .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
-                        0, 4, 2, 1)
+                        0, 4, 3, 1)
                 .observableColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
