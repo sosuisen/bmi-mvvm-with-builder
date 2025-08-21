@@ -15,6 +15,10 @@ public enum Languages {
         return Languages.valueOf(value.toUpperCase());
     }
 
+    public static Languages getDefaultLanguages() {
+        return EN;
+    }
+
     public String toLanguageString() {
         return toString().toLowerCase();
     }

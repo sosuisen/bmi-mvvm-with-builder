@@ -2,7 +2,9 @@ package com.example.main;
 
 import java.util.Locale;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.presentation.view.WindowManagerImpl;
+import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.CommonViewModel;
 import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainView;
@@ -27,9 +29,13 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
-        I18n.getInstance().setResources(Locale.getDefault());
-
         var configService = new ConfigServiceImpl(new ConfigRepositoryPropertyImpl());
+
+        try {
+            I18n.getInstance().setResources(Locale.of(configService.getLanguage().toLanguageString()));
+        } catch (Exception e) {
+            AlertDialog.showErrorAndExit("Cannot load language", e);
+        }
 
         var bmiService = new BmiServiceImpl(new BmiRepositoryJooqImpl());
 

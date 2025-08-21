@@ -1,6 +1,7 @@
 package com.example.presentation.view.common;
 
 import com.example.domain.model.Languages;
+import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
 
 import java.util.Locale;
@@ -19,8 +20,15 @@ public class CommonViewModel {
     public CommonViewModel(ConfigService configService) {
         try {
             unitSystem.set(configService.getUnitSystem());
+        } catch (RepositoryException e) {
+            unitSystem.set(new SIUnitsWithCentimeters());
+            AlertDialog.showError(e);
+        }
+
+        try {
             language.set(configService.getLanguage());
         } catch (RepositoryException e) {
+            language.set(Languages.getDefaultLanguages());
             AlertDialog.showError(e);
         }
 

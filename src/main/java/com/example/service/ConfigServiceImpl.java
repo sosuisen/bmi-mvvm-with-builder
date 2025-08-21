@@ -19,6 +19,14 @@ public class ConfigServiceImpl implements ConfigService {
         this.configRepository = configRepository;
     }
 
+    /**
+     * Get the selected unit system from the repository.
+     * If the repository has no unit system, use SI.
+     * If the app cannot handle the selected unit system,
+     * return SI.
+     * 
+     * @throws RepositoryException
+     */
     @Override
     public UnitSystem getUnitSystem() throws RepositoryException {
         String unitType = configRepository.getConfig(UNIT_SYSTEM_KEY);
@@ -31,7 +39,7 @@ public class ConfigServiceImpl implements ConfigService {
                 try {
                     return (UnitSystem) unitSystem.getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
-                    throw new RepositoryException("Failed to create UnitSystem instance", e);
+                    return new SIUnitsWithCentimeters();
                 }
             }
         }
@@ -43,16 +51,25 @@ public class ConfigServiceImpl implements ConfigService {
         configRepository.setConfig(UNIT_SYSTEM_KEY, unitSystem.getClass().getSimpleName());
     }
 
+    /**
+     * Get the selected language from the repository.
+     * If the repository has no language, use the default OS language.
+     * If the app cannot handle the selected language, return the app's default
+     * language.
+     * 
+     * @throws RepositoryException
+     */
     @Override
     public Languages getLanguage() throws RepositoryException {
-        var langStr = configRepository.getConfig(LANGUAGE_KEY);
+        String langStr = configRepository.getConfig(LANGUAGE_KEY);
+
         if (langStr == null) {
             langStr = I18n.getInstance().getCurrentLocale().getLanguage();
         }
 
         var language = Languages.getLanguage(langStr);
         if (language == null) {
-            throw new RepositoryException("No such language: " + langStr);
+            return Languages.getDefaultLanguages();
         }
 
         return language;
