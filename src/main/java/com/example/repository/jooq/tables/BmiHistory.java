@@ -8,7 +8,7 @@ import com.example.repository.jooq.DefaultSchema;
 import com.example.repository.jooq.Keys;
 import com.example.repository.jooq.tables.records.BmiHistoryRecord;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.jooq.Condition;
@@ -56,14 +56,19 @@ public class BmiHistory extends TableImpl<BmiHistoryRecord> {
     public final TableField<BmiHistoryRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>bmi_history.bmi</code>.
+     * The column <code>bmi_history.height_meter</code>.
      */
-    public final TableField<BmiHistoryRecord, Double> BMI = createField(DSL.name("bmi"), SQLDataType.DOUBLE.nullable(false), this, "");
+    public final TableField<BmiHistoryRecord, Double> HEIGHT_METER = createField(DSL.name("height_meter"), SQLDataType.DOUBLE.nullable(false), this, "");
 
     /**
-     * The column <code>bmi_history.datetime</code>.
+     * The column <code>bmi_history.weight_kg</code>.
      */
-    public final TableField<BmiHistoryRecord, LocalDateTime> DATETIME = createField(DSL.name("datetime"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<BmiHistoryRecord, Double> WEIGHT_KG = createField(DSL.name("weight_kg"), SQLDataType.DOUBLE.nullable(false), this, "");
+
+    /**
+     * The column <code>bmi_history.date</code>.
+     */
+    public final TableField<BmiHistoryRecord, LocalDate> DATE = createField(DSL.name("date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
     private BmiHistory(Name alias, Table<BmiHistoryRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

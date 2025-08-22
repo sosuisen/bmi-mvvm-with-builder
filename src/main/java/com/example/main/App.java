@@ -41,7 +41,7 @@ public class App extends Application {
 
         var windowManager = new WindowManagerImpl();
 
-        var commonViewModel = new CommonViewModel(configService);
+        var commonViewModel = new CommonViewModel(bmiService, configService);
 
         windowManager.registerView(new SettingsView(new SettingsViewModel(bmiService, commonViewModel)));
 

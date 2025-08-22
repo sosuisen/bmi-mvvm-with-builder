@@ -12,13 +12,17 @@
             <name>org.jooq.meta.sqlite.SQLiteDatabase</name>
             <forcedTypes>
                 <forcedType>
-                    <name>LOCALDATETIME</name>
-                    <includeExpression>datetime</includeExpression>
+                    <name>LOCALDATE</name>
+                    <includeExpression>date</includeExpression>
                 </forcedType>
                 <!-- SQLiteのREAL型は指定のない場合JavaのFloat型になります。よってDoubleへ変換。-->
                 <forcedType>
                     <name>DOUBLE</name>
-                    <includeExpression>bmi</includeExpression>
+                    <includeExpression>height_meter</includeExpression>
+                </forcedType>
+                <forcedType>
+                    <name>DOUBLE</name>
+                    <includeExpression>weight_kg</includeExpression>
                 </forcedType>
             </forcedTypes>
         </database>

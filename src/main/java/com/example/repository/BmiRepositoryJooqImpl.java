@@ -2,8 +2,9 @@ package com.example.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.repository.jooq.Tables.*;
 
@@ -38,19 +39,19 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
     }
 
     @Override
-    public BmiRecord saveBmiRecord(double bmi, LocalDateTime localDateTime) throws RepositoryException {
-        if (bmi <= 0) {
+    public BmiRecord saveBmiRecord(double heightMeter, double weightKg, LocalDate localDate)
+            throws RepositoryException, NullPointerException, IllegalArgumentException {
+        if (heightMeter <= 0 || weightKg <= 0) {
             throw new IllegalArgumentException();
         }
-        if (localDateTime == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(localDate);
 
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
             return context.insertInto(BMI_HISTORY)
-                    .set(BMI_HISTORY.BMI, bmi)
-                    .set(BMI_HISTORY.DATETIME, localDateTime)
+                    .set(BMI_HISTORY.HEIGHT_METER, heightMeter)
+                    .set(BMI_HISTORY.WEIGHT_KG, weightKg)
+                    .set(BMI_HISTORY.DATE, localDate)
                     .returning()
                     .fetchOne(mapper);
 
@@ -64,7 +65,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
             return context.selectFrom(BMI_HISTORY)
-                    .orderBy(BMI_HISTORY.ID.desc())
+                    .orderBy(BMI_HISTORY.DATE.desc())
                     .fetchInto(BmiRecord.class);
         } catch (Exception e) {
             throw new RepositoryException("Failed to load records.");
@@ -83,7 +84,8 @@ class BmiRecordMapper implements RecordMapper<BmiHistoryRecord, BmiRecord> {
 
         return new BmiRecord(
                 record.get(BMI_HISTORY.ID),
-                record.get(BMI_HISTORY.BMI),
-                record.get(BMI_HISTORY.DATETIME));
+                record.get(BMI_HISTORY.HEIGHT_METER),
+                record.get(BMI_HISTORY.WEIGHT_KG),
+                record.get(BMI_HISTORY.DATE));
     }
 }

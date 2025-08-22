@@ -3,7 +3,6 @@ package com.example.presentation.view.main;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import com.example.domain.model.BmiRecord;
 import com.example.presentation.utils.Formatters;
 import com.example.presentation.view.View;
@@ -23,7 +22,6 @@ import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
 import io.github.sosuisen.jfxbuilder.controls.XYChartSeriesBuilder;
-import io.github.sosuisen.jfxbuilder.graphics.BorderPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
@@ -33,6 +31,7 @@ import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -41,9 +40,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -188,6 +185,7 @@ public class MainView implements View {
                                                 .map(opt -> opt
                                                         .map(bmi -> String.format("%.1f", bmi))
                                                         .orElse("-"))))
+                                .columnSpanInGridPane(2)
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
@@ -205,6 +203,7 @@ public class MainView implements View {
                                                 .getValue(),
                                                 viewModel.obesityProperty(),
                                                 I18n.INSTANCE.resourcesProperty())))
+                                .columnSpanInGridPane(2)
                                 .build())
                 .add(
                         ButtonBuilder.create()
@@ -224,12 +223,12 @@ public class MainView implements View {
                                 .prefWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(50)
-                                .prefWidth(50)
+                                .minWidth(60)
+                                .prefWidth(60)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(50)
-                                .prefWidth(50)
+                                .minWidth(40)
+                                .prefWidth(40)
                                 .build())
                 .observableRowConstraints(
                         rowConstraint,
@@ -280,35 +279,6 @@ public class MainView implements View {
 
     }
 
-    private BorderPane historyChartTab() {
-        var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
-        viewModel.getBmiList().forEach(bmiRecord -> chartData.add(
-                new XYChart.Data<>(bmiRecord.datetime().format(DateTimeFormatter.ofPattern("M/d")),
-                        bmiRecord.bmi())));
-
-        return BorderPaneBuilder
-                .withCenter(
-                        LineChartBuilder
-                                .<String, Number>create(
-                                        CategoryAxisBuilder.create()
-                                                .labelPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
-                                                .build(),
-                                        NumberAxisBuilder.create()
-                                                .labelPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
-                                                .build())
-                                .observableData(
-                                        XYChartSeriesBuilder.<String, Number>create()
-                                                .observableData(chartData)
-                                                .build())
-                                .title(I18n.text("history.chart.title"))
-                                .build())
-                .prefWidth(300)
-                .minWidth(200)
-                .build();
-    }
-
     private ListCell<BmiRecord> recordsCellFactory(ListView<BmiRecord> listView) {
         return new ListCell<BmiRecord>() {
             @Override
@@ -322,12 +292,51 @@ public class MainView implements View {
                     textProperty().bind(
                             I18n.textProperty("main.obesity.category." + item.obesity().toResourceString())
                                     .map(obesity -> String.format("[%s] %.1f (%s)",
-                                            item.datetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                                            item.date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                                             item.bmi(),
                                             obesity)));
                 }
             }
         };
+    }
+
+    private LineChart<String, Number> historyChartTab() {
+        var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
+        chartData.addAll(viewModel.getBmiList().stream().map(this::bmiToChartData).toList());
+        viewModel.getBmiList().addListener((ListChangeListener<BmiRecord>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    chartData.addAll(change.getAddedSubList().stream().map(this::bmiToChartData).toList());
+                } else if (change.wasRemoved()) {
+                    chartData.subList(change.getFrom(), change.getTo() + 1).clear();
+                }
+            }
+        });
+
+        return LineChartBuilder
+                .<String, Number>create(
+                        CategoryAxisBuilder.create()
+                                .labelPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
+                                .build(),
+                        NumberAxisBuilder.create()
+                                .labelPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
+                                .build())
+                .observableData(
+                        XYChartSeriesBuilder.<String, Number>create()
+                                .data(chartData)
+                                .build())
+                .title(I18n.text("history.chart.title"))
+                .legendVisible(false)
+                .prefWidth(300)
+                .minWidth(200)
+                .build();
+    }
+
+    private XYChart.Data<String, Number> bmiToChartData(BmiRecord bmiRecord) {
+        return new XYChart.Data<>(bmiRecord.date().format(DateTimeFormatter.ofPattern("M/d")),
+                bmiRecord.bmi());
     }
 
 }

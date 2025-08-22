@@ -6,7 +6,7 @@ package com.example.repository.jooq.tables.records;
 
 import com.example.repository.jooq.tables.BmiHistory;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -35,31 +35,45 @@ public class BmiHistoryRecord extends UpdatableRecordImpl<BmiHistoryRecord> {
     }
 
     /**
-     * Setter for <code>bmi_history.bmi</code>.
+     * Setter for <code>bmi_history.height_meter</code>.
      */
-    public void setBmi(Double value) {
+    public void setHeightMeter(Double value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>bmi_history.bmi</code>.
+     * Getter for <code>bmi_history.height_meter</code>.
      */
-    public Double getBmi() {
+    public Double getHeightMeter() {
         return (Double) get(1);
     }
 
     /**
-     * Setter for <code>bmi_history.datetime</code>.
+     * Setter for <code>bmi_history.weight_kg</code>.
      */
-    public void setDatetime(LocalDateTime value) {
+    public void setWeightKg(Double value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>bmi_history.datetime</code>.
+     * Getter for <code>bmi_history.weight_kg</code>.
      */
-    public LocalDateTime getDatetime() {
-        return (LocalDateTime) get(2);
+    public Double getWeightKg() {
+        return (Double) get(2);
+    }
+
+    /**
+     * Setter for <code>bmi_history.date</code>.
+     */
+    public void setDate(LocalDate value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>bmi_history.date</code>.
+     */
+    public LocalDate getDate() {
+        return (LocalDate) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -85,12 +99,13 @@ public class BmiHistoryRecord extends UpdatableRecordImpl<BmiHistoryRecord> {
     /**
      * Create a detached, initialised BmiHistoryRecord
      */
-    public BmiHistoryRecord(Integer id, Double bmi, LocalDateTime datetime) {
+    public BmiHistoryRecord(Integer id, Double heightMeter, Double weightKg, LocalDate date) {
         super(BmiHistory.BMI_HISTORY);
 
         setId(id);
-        setBmi(bmi);
-        setDatetime(datetime);
+        setHeightMeter(heightMeter);
+        setWeightKg(weightKg);
+        setDate(date);
         resetTouchedOnNotNull();
     }
 }

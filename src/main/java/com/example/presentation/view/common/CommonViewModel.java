@@ -1,5 +1,6 @@
 package com.example.presentation.view.common;
 
+import com.example.domain.model.BmiRecord;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
@@ -7,17 +8,32 @@ import com.example.domain.model.unit.UnitSystem;
 import java.util.Locale;
 
 import com.example.domain.exception.RepositoryException;
+import com.example.domain.service.BmiService;
 import com.example.domain.service.ConfigService;
 import com.example.presentation.view.alert.AlertDialog;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class CommonViewModel {
     private final ObjectProperty<UnitSystem> unitSystem = new SimpleObjectProperty<>();
     private final ObjectProperty<Languages> language = new SimpleObjectProperty<>();
 
-    public CommonViewModel(ConfigService configService) {
+    private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
+
+    public ObservableList<BmiRecord> getBmiList() {
+        return bmiList;
+    }
+
+    public CommonViewModel(BmiService bmiService, ConfigService configService) {
+        try {
+            bmiList.setAll(bmiService.loadBmiRecords());
+        } catch (RepositoryException e) {
+            AlertDialog.showError(e);
+        }
+
         try {
             unitSystem.set(configService.getUnitSystem());
         } catch (RepositoryException e) {

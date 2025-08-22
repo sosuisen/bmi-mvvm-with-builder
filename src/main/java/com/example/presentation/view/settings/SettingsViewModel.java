@@ -26,6 +26,7 @@ public class SettingsViewModel {
     }
 
     public void removeAllRecords() throws RepositoryException {
+        commonViewModel.getBmiList().clear();
         bmiService.removeAllRecords();
     }
 

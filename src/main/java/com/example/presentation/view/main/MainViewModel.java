@@ -18,7 +18,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.stage.Stage;
@@ -31,11 +30,9 @@ public class MainViewModel {
 
     private final CommonViewModel commonViewModel;
 
-    private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
-
     // SI unit value
-    private final DoubleProperty mHeight = new SimpleDoubleProperty();
-    private final DoubleProperty kgWeight = new SimpleDoubleProperty();
+    private final DoubleProperty heightMeter = new SimpleDoubleProperty();
+    private final DoubleProperty weightKg = new SimpleDoubleProperty();
 
     // User input value using some unit system
     private final DoubleProperty inputHeight = new SimpleDoubleProperty();
@@ -62,7 +59,7 @@ public class MainViewModel {
     }
 
     public ObservableList<BmiRecord> getBmiList() {
-        return bmiList;
+        return commonViewModel.getBmiList();
     }
 
     public ObjectProperty<UnitSystem> unitSystemProperty() {
@@ -74,25 +71,19 @@ public class MainViewModel {
         this.windowManager = windowManager;
         this.commonViewModel = commonViewModel;
 
-        try {
-            bmiList.setAll(service.loadBmiRecords());
-        } catch (RepositoryException e) {
-            AlertDialog.showError(e);
-        }
-
         bmi.bind(Bindings.createObjectBinding(
-                () -> service.calculateBmi(mHeight.get(), kgWeight.get()),
-                kgWeight, mHeight));
+                () -> service.calculateBmi(heightMeter.get(), weightKg.get()),
+                weightKg, heightMeter));
 
-        mHeight.bind(inputHeight
+        heightMeter.bind(inputHeight
                 .map(value -> commonViewModel.unitSystemProperty().get().convertHeightToSI(value.doubleValue())));
 
-        kgWeight.bind(inputWeight
+        weightKg.bind(inputWeight
                 .map(value -> commonViewModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
         commonViewModel.unitSystemProperty().subscribe(newValue -> {
-            inputHeight.set(newValue.convertHeightFromSI(mHeight.get()));
-            inputWeight.set(newValue.convertWeightFromSI(kgWeight.get()));
+            inputHeight.set(newValue.convertHeightFromSI(heightMeter.get()));
+            inputWeight.set(newValue.convertWeightFromSI(weightKg.get()));
         });
 
         obesity.bind(
@@ -102,10 +93,10 @@ public class MainViewModel {
     }
 
     protected void saveBmiRecord() {
-        bmi.get().ifPresent(bmi -> {
+        bmi.get().ifPresent(_ -> {
             try {
-                var newRecord = bmiService.saveBmi(bmi);
-                bmiList.addFirst(newRecord);
+                var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get());
+                commonViewModel.getBmiList().addFirst(newRecord);
             } catch (RepositoryException e) {
                 AlertDialog.showError(e);
             }
