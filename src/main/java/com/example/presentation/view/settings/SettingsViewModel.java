@@ -12,11 +12,11 @@ public class SettingsViewModel {
     private final CommonViewModel commonViewModel;
     private final BmiService bmiService;
 
-    public ObjectProperty<UnitSystem> unitSystemProperty() {
+    protected ObjectProperty<UnitSystem> unitSystemProperty() {
         return commonViewModel.unitSystemProperty();
     }
 
-    public ObjectProperty<Languages> languageProperty() {
+    protected ObjectProperty<Languages> languageProperty() {
         return commonViewModel.languageProperty();
     }
 
@@ -25,7 +25,7 @@ public class SettingsViewModel {
         this.commonViewModel = commonViewModel;
     }
 
-    public void removeAllRecords() throws RepositoryException {
+    protected void removeAllRecords() throws RepositoryException {
         commonViewModel.getBmiList().clear();
         bmiService.removeAllRecords();
     }

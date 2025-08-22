@@ -8,7 +8,6 @@ import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.BmiService;
 import com.example.presentation.view.WindowManager;
-import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.CommonViewModel;
 import com.example.presentation.view.settings.SettingsView;
 
@@ -42,28 +41,32 @@ public class MainViewModel {
     private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
     private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
 
-    public DoubleProperty heightProperty() {
+    protected DoubleProperty heightProperty() {
         return inputHeight;
     }
 
-    public DoubleProperty weightProperty() {
+    protected DoubleProperty weightProperty() {
         return inputWeight;
     }
 
-    public ObjectProperty<Optional<Double>> bmiProperty() {
+    protected ObjectProperty<Optional<Double>> bmiProperty() {
         return bmi;
     }
 
-    public ObjectProperty<Optional<String>> obesityProperty() {
+    protected ObjectProperty<Optional<String>> obesityProperty() {
         return obesity;
     }
 
-    public ObservableList<BmiRecord> getBmiList() {
+    protected ObservableList<BmiRecord> getBmiList() {
         return commonViewModel.getBmiList();
     }
 
-    public ObjectProperty<UnitSystem> unitSystemProperty() {
+    protected ObjectProperty<UnitSystem> unitSystemProperty() {
         return commonViewModel.unitSystemProperty();
+    }
+
+    protected ObjectProperty<Throwable> errorProperty() {
+        return commonViewModel.errorProperty();
     }
 
     public MainViewModel(BmiService service, WindowManager windowManager, CommonViewModel commonViewModel) {
@@ -98,7 +101,7 @@ public class MainViewModel {
                 var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get());
                 commonViewModel.getBmiList().addFirst(newRecord);
             } catch (RepositoryException e) {
-                AlertDialog.showError(e);
+                commonViewModel.errorProperty().set(e);
             }
         });
     }
@@ -112,6 +115,14 @@ public class MainViewModel {
                 .build();
 
         windowManager.showWindow(SettingsView.class, newStage);
+    }
+
+    protected double convertHeightFromSI(double height) {
+        return unitSystemProperty().get().convertHeightFromSI(height);
+    }
+
+    protected double convertWeightFromSI(double weight) {
+        return unitSystemProperty().get().convertWeightFromSI(weight);
     }
 
 }

@@ -4,10 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
+
 import com.example.domain.model.BmiRecord;
+import com.example.domain.model.ObesityCategory;
 import com.example.presentation.utils.Formatters;
 import com.example.presentation.utils.TableCellFactories;
 import com.example.presentation.view.View;
+import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
@@ -59,6 +62,13 @@ public class MainView implements View {
     public MainView(MainViewModel viewModel) throws NullPointerException {
         this.viewModel = Objects.requireNonNull(viewModel);
         scene = buildSceneGraph();
+
+        viewModel.errorProperty().subscribe(err -> {
+            if (err != null) {
+                AlertDialog.showError(err);
+                viewModel.errorProperty().set(null);
+            }
+        });
     }
 
     @Override
@@ -326,11 +336,17 @@ public class MainView implements View {
                                 TableColumnBuilder.<BmiRecord, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.height")))
                                         .cellValueFactory(new PropertyValueFactory<>("heightMeter"))
+                                        .cellFactory(TableCellFactories
+                                                .createCellFactory(item -> String.format("%.1f",
+                                                        viewModel.convertHeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecord, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.weight")))
                                         .cellValueFactory(new PropertyValueFactory<>("weightKg"))
+                                        .cellFactory(TableCellFactories
+                                                .createCellFactory(item -> String.format("%.1f",
+                                                        viewModel.convertWeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecord, Double>create()
@@ -340,10 +356,13 @@ public class MainView implements View {
                                                 .createCellFactory(item -> String.format("%.1f", item.doubleValue())))
                                         .style("-fx-alignment: center-right")
                                         .build(),
-                                TableColumnBuilder.<BmiRecord, String>create()
+                                TableColumnBuilder.<BmiRecord, ObesityCategory>create()
                                         .textPropertyApply(
                                                 prop -> prop.bind(I18n.textProperty("history.table.obesity")))
                                         .cellValueFactory(new PropertyValueFactory<>("obesity"))
+                                        .cellFactory(TableCellFactories
+                                                .createCellFactory(item -> I18n
+                                                        .text("main.obesity.category." + item.toResourceString())))
                                         .style("-fx-alignment: center")
                                         .prefWidth(100)
                                         .build())
