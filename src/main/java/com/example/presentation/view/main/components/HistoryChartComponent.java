@@ -41,7 +41,7 @@ public class HistoryChartComponent {
                                 .labelPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
                                 .build())
-                .observableData(
+                .addData(
                         XYChartSeriesBuilder.<String, Number>create()
                                 .data(chartData)
                                 .build())

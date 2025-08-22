@@ -27,7 +27,7 @@ public class HistoryTableComponent {
                         .build(),
                 TableViewBuilder.<BmiRecord>create()
                         .items(viewModel.getBmiList())
-                        .observableColumns(
+                        .addColumns(
                                 TableColumnBuilder.<BmiRecord, LocalDate>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
                                         .cellValueFactory(TableCellValueFactories

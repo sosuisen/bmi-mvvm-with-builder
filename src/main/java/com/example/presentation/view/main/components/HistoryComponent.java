@@ -12,7 +12,7 @@ public class HistoryComponent {
 
     public static TabPane getRoot(MainViewModel viewModel) {
         return TabPaneBuilder.create()
-                .observableTabs(
+                .addTabs(
                         TabBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
                                 .content(HistoryListComponent.getRoot(viewModel))

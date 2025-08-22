@@ -92,7 +92,7 @@ public class SettingsView implements View {
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
                                         ComboBoxBuilder.<Languages>create()
-                                                .observableItems(Languages.getLanguageList())
+                                                .addItems(Languages.getLanguageList())
                                                 .valuePropertyApply(prop -> prop
                                                         .bindBidirectional(viewModel.languageProperty()))
                                                 .converterPropertyApply(prop -> prop.bind(Bindings
@@ -106,7 +106,7 @@ public class SettingsView implements View {
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .build(),
                                         ComboBoxBuilder.<UnitSystem>create()
-                                                .observableItems(UnitSystem.getAll())
+                                                .addItems(UnitSystem.getAll())
                                                 .valuePropertyApply(prop -> prop
                                                         .bindBidirectional(viewModel.unitSystemProperty()))
                                                 .converterPropertyApply(prop -> prop.bind(Bindings
@@ -129,18 +129,18 @@ public class SettingsView implements View {
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .onAction(_ -> removeAllRecords())
                                                 .build())
-                                .observableColumnConstraints(
+                                .addColumnConstraints(
                                         ColumnConstraintsBuilder.create()
                                                 .minWidth(120)
                                                 .build(),
                                         ColumnConstraintsBuilder.create()
                                                 .hgrow(Priority.ALWAYS)
                                                 .build())
-                                .observableRowConstraints(rowConstraint, rowConstraint, rowConstraint)
+                                .addRowConstraints(rowConstraint, rowConstraint, rowConstraint)
                                 .build())
                 .width(WIDTH)
                 .height(HEIGHT)
-                .observableStylesheetsText(CSS)
+                .addStylesheetsText(CSS)
                 .build();
     }
 

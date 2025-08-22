@@ -14,10 +14,10 @@ import javafx.stage.Stage;
 public class MenuBarComponent {
     public static MenuBar getRoot(MainViewModel viewModel, MainView mainView) {
         return MenuBarBuilder.create()
-                .observableMenus(
+                .addMenus(
                         MenuBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
-                                .observableItems(
+                                .addItems(
                                         MenuItemBuilder.create()
                                                 .textPropertyApply(
                                                         prop -> prop.bind(I18n.textProperty("menu.settings")))

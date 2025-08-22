@@ -131,7 +131,7 @@ public class CalculatorComponent {
                                 .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
                         0, 4, 3, 1)
-                .observableColumnConstraints(
+                .addColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
                                 .prefWidth(70)
@@ -144,13 +144,13 @@ public class CalculatorComponent {
                                 .minWidth(40)
                                 .prefWidth(40)
                                 .build())
-                .observableRowConstraints(
+                .addRowConstraints(
                         rowConstraint,
                         rowConstraint,
                         rowConstraint,
                         rowConstraint,
                         rowConstraint)
-                .observableStylesheetsText(CSS)
+                .addStylesheetsText(CSS)
                 .build();
     }
 }
