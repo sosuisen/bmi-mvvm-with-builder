@@ -1,10 +1,12 @@
 package com.example.presentation.view.main;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 import com.example.domain.model.BmiRecord;
 import com.example.presentation.utils.Formatters;
+import com.example.presentation.utils.TableCellFactories;
 import com.example.presentation.view.View;
 import com.example.presentation.view.common.I18n;
 
@@ -17,9 +19,10 @@ import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuItemBuilder;
 import io.github.sosuisen.jfxbuilder.controls.NumberAxisBuilder;
-import io.github.sosuisen.jfxbuilder.controls.ScrollPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
+import io.github.sosuisen.jfxbuilder.controls.TableColumnBuilder;
+import io.github.sosuisen.jfxbuilder.controls.TableViewBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
 import io.github.sosuisen.jfxbuilder.controls.XYChartSeriesBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
@@ -41,6 +44,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -106,6 +110,7 @@ public class MainView implements View {
                                                 .withChildren(
                                                         calculatorPanel(),
                                                         historyPanel())
+                                                .vGrowInVBox(Priority.ALWAYS)
                                                 .build())
                                 .build())
                 .width(640)
@@ -138,6 +143,7 @@ public class MainView implements View {
         var rowConstraint = RowConstraintsBuilder.create()
                 .vgrow(Priority.SOMETIMES)
                 .minHeight(30)
+                .maxHeight(50)
                 .build();
 
         return GridPaneBuilder.create()
@@ -248,6 +254,11 @@ public class MainView implements View {
                                 .closable(false)
                                 .build(),
                         TabBuilder.create()
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.tab")))
+                                .content(historyTableTab())
+                                .closable(false)
+                                .build(),
+                        TabBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
                                 .content(historyChartTab())
                                 .closable(false)
@@ -258,20 +269,15 @@ public class MainView implements View {
     }
 
     private VBox historyListTab() {
-        return VBoxBuilder.create()
-                .observableChildren(
+        return VBoxBuilder
+                .withChildren(
                         LabelBuilder.create()
                                 .textPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.list.title")))
                                 .build(),
-                        ScrollPaneBuilder.create()
-                                .fitToHeight(true)
-                                .fitToWidth(true)
-                                .content(
-                                        ListViewBuilder.<BmiRecord>create()
-                                                .items(viewModel.getBmiList())
-                                                .cellFactory(this::recordsCellFactory)
-                                                .build())
+                        ListViewBuilder.<BmiRecord>create()
+                                .items(viewModel.getBmiList())
+                                .cellFactory(this::recordsCellFactory)
                                 .vGrowInVBox(Priority.ALWAYS)
                                 .build())
                 .padding(new Insets(3))
@@ -290,14 +296,61 @@ public class MainView implements View {
                     setText(null);
                 } else {
                     textProperty().bind(
-                            I18n.textProperty("main.obesity.category." + item.obesity().toResourceString())
+                            I18n.textProperty("main.obesity.category." + item.getObesity().toResourceString())
                                     .map(obesity -> String.format("[%s] %.1f (%s)",
-                                            item.date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                                            item.bmi(),
+                                            item.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                                            item.getBmi(),
                                             obesity)));
                 }
             }
         };
+    }
+
+    private VBox historyTableTab() {
+        return VBoxBuilder.withChildren(
+                LabelBuilder.create()
+                        .textPropertyApply(
+                                prop -> prop.bind(I18n.textProperty("history.table.title")))
+                        .build(),
+                TableViewBuilder.<BmiRecord>create()
+                        .items(viewModel.getBmiList())
+                        .observableColumns(
+                                TableColumnBuilder.<BmiRecord, LocalDate>create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
+                                        .cellValueFactory(new PropertyValueFactory<>("date"))
+                                        .cellFactory(TableCellFactories.createCellFactory(
+                                                item -> item.format(DateTimeFormatter.ofPattern("YYYY-MM-dd"))))
+                                        .style("-fx-alignment: center")
+                                        .prefWidth(100)
+                                        .build(),
+                                TableColumnBuilder.<BmiRecord, Double>create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.height")))
+                                        .cellValueFactory(new PropertyValueFactory<>("heightMeter"))
+                                        .style("-fx-alignment: center-right")
+                                        .build(),
+                                TableColumnBuilder.<BmiRecord, Double>create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.weight")))
+                                        .cellValueFactory(new PropertyValueFactory<>("weightKg"))
+                                        .style("-fx-alignment: center-right")
+                                        .build(),
+                                TableColumnBuilder.<BmiRecord, Double>create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.bmi")))
+                                        .cellValueFactory(new PropertyValueFactory<>("bmi"))
+                                        .cellFactory(TableCellFactories
+                                                .createCellFactory(item -> String.format("%.1f", item.doubleValue())))
+                                        .style("-fx-alignment: center-right")
+                                        .build(),
+                                TableColumnBuilder.<BmiRecord, String>create()
+                                        .textPropertyApply(
+                                                prop -> prop.bind(I18n.textProperty("history.table.obesity")))
+                                        .cellValueFactory(new PropertyValueFactory<>("obesity"))
+                                        .style("-fx-alignment: center")
+                                        .prefWidth(100)
+                                        .build())
+                        .vGrowInVBox(Priority.ALWAYS)
+                        .build())
+                .padding(new Insets(3))
+                .build();
     }
 
     private LineChart<String, Number> historyChartTab() {
@@ -335,8 +388,8 @@ public class MainView implements View {
     }
 
     private XYChart.Data<String, Number> bmiToChartData(BmiRecord bmiRecord) {
-        return new XYChart.Data<>(bmiRecord.date().format(DateTimeFormatter.ofPattern("M/d")),
-                bmiRecord.bmi());
+        return new XYChart.Data<>(bmiRecord.getDate().format(DateTimeFormatter.ofPattern("M/d")),
+                bmiRecord.getBmi());
     }
 
 }
