@@ -140,7 +140,7 @@ public class SettingsView implements View {
                                 .build())
                 .width(WIDTH)
                 .height(HEIGHT)
-                .addStylesheetText(CSS)
+                .observableStylesheetsText(CSS)
                 .build();
     }
 

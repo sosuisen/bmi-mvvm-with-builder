@@ -150,9 +150,7 @@ public class CalculatorComponent {
                         rowConstraint,
                         rowConstraint,
                         rowConstraint)
-                .apply(node -> node.getStylesheets().add("data:text/css;base64," +
-                        java.util.Base64.getEncoder().encodeToString(CSS.getBytes())))
-
+                .observableStylesheetsText(CSS)
                 .build();
     }
 }
