@@ -26,6 +26,9 @@ import javafx.scene.layout.Priority;
 import javafx.util.StringConverter;
 
 public class SettingsView implements View {
+    public static final double WIDTH = 240;
+    public static final double HEIGHT = 180;
+
     private final String TITLE = "Settings";
 
     private final SettingsViewModel viewModel;
@@ -46,7 +49,7 @@ public class SettingsView implements View {
         scene = buildSceneGraph();
     }
 
-    private static final String mainCSS = """
+    private static final String CSS = """
             #clear-button {
                 -fx-background-color: #900000;
                 -fx-text-fill: white;
@@ -135,9 +138,9 @@ public class SettingsView implements View {
                                                 .build())
                                 .observableRowConstraints(rowConstraint, rowConstraint, rowConstraint)
                                 .build())
-                .width(240)
-                .height(180)
-                .addStylesheetText(mainCSS)
+                .width(WIDTH)
+                .height(HEIGHT)
+                .addStylesheetText(CSS)
                 .build();
     }
 

@@ -107,8 +107,12 @@ public class MainViewModel {
     }
 
     public void openSettingsWindow(Stage currentStage) {
-        var newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
-
+        Point2D newPosition;
+        if (currentStage.getX() > SettingsView.WIDTH) {
+            newPosition = new Point2D(currentStage.getX() - SettingsView.WIDTH, currentStage.getY());
+        } else {
+            newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
+        }
         var newStage = StageBuilder.create()
                 .x(newPosition.getX())
                 .y(newPosition.getY())

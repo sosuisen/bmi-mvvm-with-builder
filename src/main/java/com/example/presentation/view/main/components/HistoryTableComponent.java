@@ -66,7 +66,6 @@ public class HistoryTableComponent {
                                 TableColumnBuilder.<BmiRecord, ObesityCategory>create()
                                         .textPropertyApply(
                                                 prop -> prop.bind(I18n.textProperty("history.table.obesity")))
-                                        // .cellValueFactory(new PropertyValueFactory<>("obesity"))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.obesity()))
                                         .cellFactory(TableCellFactories

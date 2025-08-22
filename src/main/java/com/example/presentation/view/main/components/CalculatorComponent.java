@@ -18,7 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.util.converter.NumberStringConverter;
 
 public class CalculatorComponent {
-    private static final String mainCSS = """
+    private static final String CSS = """
             .button {
                 -fx-background-color: #006000;
                 -fx-text-fill: white;
@@ -151,7 +151,7 @@ public class CalculatorComponent {
                         rowConstraint,
                         rowConstraint)
                 .apply(node -> node.getStylesheets().add("data:text/css;base64," +
-                        java.util.Base64.getEncoder().encodeToString(mainCSS.getBytes())))
+                        java.util.Base64.getEncoder().encodeToString(CSS.getBytes())))
 
                 .build();
     }
