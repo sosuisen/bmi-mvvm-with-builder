@@ -15,9 +15,13 @@ import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuItemBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ScrollPaneBuilder;
+import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
+import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
+import io.github.sosuisen.jfxbuilder.graphics.BorderPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
+import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.RowConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
@@ -30,6 +34,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -88,14 +93,13 @@ public class MainView implements View {
     private Scene buildSceneGraph() {
         return SceneBuilder
                 .withRoot(
-                        VBoxBuilder
-                                .withChildren(
-                                        menuBar(),
-                                        calculatorPanel(),
-                                        historyPanel())
+                        BorderPaneBuilder.create()
+                                .top(menuBar())
+                                .center(calculatorPanel())
+                                .right(historyPanel())
                                 .padding(new Insets(3))
                                 .build())
-                .width(240)
+                .width(450)
                 .height(450)
                 .addStylesheetText(mainCSS)
                 .build();
@@ -222,17 +226,45 @@ public class MainView implements View {
                 .build();
     }
 
-    private ScrollPane historyPanel() {
-        return ScrollPaneBuilder.create()
-                .fitToHeight(true)
-                .fitToWidth(true)
-                .content(
-                        ListViewBuilder.<BmiRecord>create()
-                                .items(viewModel.getBmiList())
-                                .cellFactory(this::recordsCellFactory)
+    private TabPane historyPanel() {
+        return TabPaneBuilder.create()
+                .observableTabs(
+                        TabBuilder.create()
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
+                                .content(historyTabWithList())
+                                .closable(false)
+                                .build(),
+                        TabBuilder.create()
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
+                                .content(historyTabWithChart())
+                                .closable(false)
                                 .build())
-                .apply(node -> VBox.setVgrow(node, Priority.ALWAYS))
                 .build();
+    }
+
+    private VBox historyTabWithList() {
+        return VBoxBuilder.create()
+                .observableChildren(
+                        LabelBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.list.title")))
+                                .build(),
+                        ScrollPaneBuilder.create()
+                                .fitToHeight(true)
+                                .fitToWidth(true)
+                                .content(
+                                        ListViewBuilder.<BmiRecord>create()
+                                                .items(viewModel.getBmiList())
+                                                .cellFactory(this::recordsCellFactory)
+                                                .build())
+                                .apply(node -> VBox.setVgrow(node, Priority.ALWAYS))
+                                .build())
+                .build();
+
+    }
+
+    private VBox historyTabWithChart() {
+        return VBoxBuilder.create().build();
     }
 
     private ListCell<BmiRecord> recordsCellFactory(ListView<BmiRecord> listView) {
