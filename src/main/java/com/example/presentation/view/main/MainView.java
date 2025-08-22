@@ -1,6 +1,7 @@
 package com.example.presentation.view.main;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import com.example.domain.model.BmiRecord;
@@ -9,15 +10,19 @@ import com.example.presentation.view.View;
 import com.example.presentation.view.common.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
+import io.github.sosuisen.jfxbuilder.controls.CategoryAxisBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
+import io.github.sosuisen.jfxbuilder.controls.LineChartBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuItemBuilder;
+import io.github.sosuisen.jfxbuilder.controls.NumberAxisBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ScrollPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
+import io.github.sosuisen.jfxbuilder.controls.XYChartSeriesBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.BorderPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.GridPaneBuilder;
@@ -27,14 +32,18 @@ import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -93,14 +102,17 @@ public class MainView implements View {
     private Scene buildSceneGraph() {
         return SceneBuilder
                 .withRoot(
-                        BorderPaneBuilder.create()
-                                .top(menuBar())
-                                .center(calculatorPanel())
-                                .right(historyPanel())
-                                .padding(new Insets(3))
+                        VBoxBuilder
+                                .withChildren(
+                                        menuBar(),
+                                        HBoxBuilder
+                                                .withChildren(
+                                                        calculatorPanel(),
+                                                        historyPanel())
+                                                .build())
                                 .build())
-                .width(450)
-                .height(450)
+                .width(640)
+                .height(480)
                 .addStylesheetText(mainCSS)
                 .build();
     }
@@ -209,13 +221,15 @@ public class MainView implements View {
                 .observableColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
-                                .build(),
-                        ColumnConstraintsBuilder.create()
-                                .hgrow(Priority.ALWAYS)
+                                .prefWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
                                 .minWidth(50)
-                                .maxWidth(50)
+                                .prefWidth(50)
+                                .build(),
+                        ColumnConstraintsBuilder.create()
+                                .minWidth(50)
+                                .prefWidth(50)
                                 .build())
                 .observableRowConstraints(
                         rowConstraint,
@@ -231,18 +245,20 @@ public class MainView implements View {
                 .observableTabs(
                         TabBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
-                                .content(historyTabWithList())
+                                .content(historyListTab())
                                 .closable(false)
                                 .build(),
                         TabBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
-                                .content(historyTabWithChart())
+                                .content(historyChartTab())
                                 .closable(false)
                                 .build())
+                .maxWidth(Double.MAX_VALUE)
+                .hGrowInHBox(Priority.ALWAYS)
                 .build();
     }
 
-    private VBox historyTabWithList() {
+    private VBox historyListTab() {
         return VBoxBuilder.create()
                 .observableChildren(
                         LabelBuilder.create()
@@ -257,14 +273,40 @@ public class MainView implements View {
                                                 .items(viewModel.getBmiList())
                                                 .cellFactory(this::recordsCellFactory)
                                                 .build())
-                                .apply(node -> VBox.setVgrow(node, Priority.ALWAYS))
+                                .vGrowInVBox(Priority.ALWAYS)
                                 .build())
+                .padding(new Insets(3))
                 .build();
 
     }
 
-    private VBox historyTabWithChart() {
-        return VBoxBuilder.create().build();
+    private BorderPane historyChartTab() {
+        var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
+        viewModel.getBmiList().forEach(bmiRecord -> chartData.add(
+                new XYChart.Data<>(bmiRecord.datetime().format(DateTimeFormatter.ofPattern("M/d")),
+                        bmiRecord.bmi())));
+
+        return BorderPaneBuilder
+                .withCenter(
+                        LineChartBuilder
+                                .<String, Number>create(
+                                        CategoryAxisBuilder.create()
+                                                .labelPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
+                                                .build(),
+                                        NumberAxisBuilder.create()
+                                                .labelPropertyApply(
+                                                        prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
+                                                .build())
+                                .observableData(
+                                        XYChartSeriesBuilder.<String, Number>create()
+                                                .observableData(chartData)
+                                                .build())
+                                .title(I18n.text("history.chart.title"))
+                                .build())
+                .prefWidth(300)
+                .minWidth(200)
+                .build();
     }
 
     private ListCell<BmiRecord> recordsCellFactory(ListView<BmiRecord> listView) {
