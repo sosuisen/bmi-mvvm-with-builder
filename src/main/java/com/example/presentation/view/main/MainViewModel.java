@@ -41,31 +41,31 @@ public class MainViewModel {
     private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
     private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
 
-    protected DoubleProperty heightProperty() {
+    public DoubleProperty heightProperty() {
         return inputHeight;
     }
 
-    protected DoubleProperty weightProperty() {
+    public DoubleProperty weightProperty() {
         return inputWeight;
     }
 
-    protected ObjectProperty<Optional<Double>> bmiProperty() {
+    public ObjectProperty<Optional<Double>> bmiProperty() {
         return bmi;
     }
 
-    protected ObjectProperty<Optional<String>> obesityProperty() {
+    public ObjectProperty<Optional<String>> obesityProperty() {
         return obesity;
     }
 
-    protected ObservableList<BmiRecord> getBmiList() {
+    public ObservableList<BmiRecord> getBmiList() {
         return commonViewModel.getBmiList();
     }
 
-    protected ObjectProperty<UnitSystem> unitSystemProperty() {
+    public ObjectProperty<UnitSystem> unitSystemProperty() {
         return commonViewModel.unitSystemProperty();
     }
 
-    protected ObjectProperty<Throwable> errorProperty() {
+    public ObjectProperty<Throwable> errorProperty() {
         return commonViewModel.errorProperty();
     }
 
@@ -95,7 +95,7 @@ public class MainViewModel {
 
     }
 
-    protected void saveBmiRecord() {
+    public void saveBmiRecord() {
         bmi.get().ifPresent(_ -> {
             try {
                 var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get());
@@ -106,7 +106,7 @@ public class MainViewModel {
         });
     }
 
-    protected void openSettingsWindow(Stage currentStage) {
+    public void openSettingsWindow(Stage currentStage) {
         var newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
 
         var newStage = StageBuilder.create()
@@ -117,11 +117,11 @@ public class MainViewModel {
         windowManager.showWindow(SettingsView.class, newStage);
     }
 
-    protected double convertHeightFromSI(double height) {
+    public double convertHeightFromSI(double height) {
         return unitSystemProperty().get().convertHeightFromSI(height);
     }
 
-    protected double convertWeightFromSI(double weight) {
+    public double convertWeightFromSI(double weight) {
         return unitSystemProperty().get().convertWeightFromSI(weight);
     }
 
