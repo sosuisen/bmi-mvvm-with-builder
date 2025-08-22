@@ -8,7 +8,6 @@ import io.github.sosuisen.jfxbuilder.controls.MenuBarBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuBuilder;
 import io.github.sosuisen.jfxbuilder.controls.MenuItemBuilder;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 

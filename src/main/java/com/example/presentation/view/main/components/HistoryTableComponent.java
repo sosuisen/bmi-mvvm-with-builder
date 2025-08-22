@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import com.example.domain.model.BmiRecord;
 import com.example.domain.model.ObesityCategory;
 import com.example.presentation.utils.TableCellFactories;
+import com.example.presentation.utils.TableCellValueFactories;
 import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainViewModel;
 
@@ -14,7 +15,6 @@ import io.github.sosuisen.jfxbuilder.controls.TableColumnBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TableViewBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.geometry.Insets;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -30,7 +30,8 @@ public class HistoryTableComponent {
                         .observableColumns(
                                 TableColumnBuilder.<BmiRecord, LocalDate>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
-                                        .cellValueFactory(new PropertyValueFactory<>("date"))
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.date()))
                                         .cellFactory(TableCellFactories.createCellFactory(
                                                 item -> item.format(DateTimeFormatter.ofPattern("YYYY-MM-dd"))))
                                         .style("-fx-alignment: center")
@@ -38,7 +39,8 @@ public class HistoryTableComponent {
                                         .build(),
                                 TableColumnBuilder.<BmiRecord, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.height")))
-                                        .cellValueFactory(new PropertyValueFactory<>("heightMeter"))
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.heightMeter()))
                                         .cellFactory(TableCellFactories
                                                 .createCellFactory(item -> String.format("%.1f",
                                                         viewModel.convertHeightFromSI(item.doubleValue()))))
@@ -46,7 +48,8 @@ public class HistoryTableComponent {
                                         .build(),
                                 TableColumnBuilder.<BmiRecord, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.weight")))
-                                        .cellValueFactory(new PropertyValueFactory<>("weightKg"))
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.weightKg()))
                                         .cellFactory(TableCellFactories
                                                 .createCellFactory(item -> String.format("%.1f",
                                                         viewModel.convertWeightFromSI(item.doubleValue()))))
@@ -54,7 +57,8 @@ public class HistoryTableComponent {
                                         .build(),
                                 TableColumnBuilder.<BmiRecord, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.bmi")))
-                                        .cellValueFactory(new PropertyValueFactory<>("bmi"))
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.bmi()))
                                         .cellFactory(TableCellFactories
                                                 .createCellFactory(item -> String.format("%.1f", item.doubleValue())))
                                         .style("-fx-alignment: center-right")
@@ -62,7 +66,9 @@ public class HistoryTableComponent {
                                 TableColumnBuilder.<BmiRecord, ObesityCategory>create()
                                         .textPropertyApply(
                                                 prop -> prop.bind(I18n.textProperty("history.table.obesity")))
-                                        .cellValueFactory(new PropertyValueFactory<>("obesity"))
+                                        // .cellValueFactory(new PropertyValueFactory<>("obesity"))
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.obesity()))
                                         .cellFactory(TableCellFactories
                                                 .createCellFactory(item -> I18n
                                                         .text("main.obesity.category." + item.toResourceString())))
@@ -74,4 +80,5 @@ public class HistoryTableComponent {
                 .padding(new Insets(3))
                 .build();
     }
+
 }

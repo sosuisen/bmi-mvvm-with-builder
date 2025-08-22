@@ -53,8 +53,8 @@ public class HistoryChartComponent {
     }
 
     private static XYChart.Data<String, Number> bmiToChartData(BmiRecord bmiRecord) {
-        return new XYChart.Data<>(bmiRecord.getDate().format(DateTimeFormatter.ofPattern("M/d")),
-                bmiRecord.getBmi());
+        return new XYChart.Data<>(bmiRecord.date().format(DateTimeFormatter.ofPattern("M/d")),
+                bmiRecord.bmi());
     }
 
 }

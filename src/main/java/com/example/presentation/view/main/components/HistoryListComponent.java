@@ -45,10 +45,10 @@ public class HistoryListComponent {
                     setText(null);
                 } else {
                     textProperty().bind(
-                            I18n.textProperty("main.obesity.category." + item.getObesity().toResourceString())
+                            I18n.textProperty("main.obesity.category." + item.obesity().toResourceString())
                                     .map(obesity -> String.format("[%s] %.1f (%s)",
-                                            item.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                                            item.getBmi(),
+                                            item.date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                                            item.bmi(),
                                             obesity)));
                 }
             }
