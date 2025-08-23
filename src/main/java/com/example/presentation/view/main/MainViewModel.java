@@ -84,6 +84,17 @@ public class MainViewModel {
         weightKg.bind(inputWeight
                 .map(value -> commonViewModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
+        var latestRecord = commonViewModel.getBmiList().size() > 0
+                ? commonViewModel.getBmiList().get(0)
+                : null;
+
+        inputHeight.set(latestRecord != null
+                ? commonViewModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())
+                : 0.0);
+        inputWeight.set(latestRecord != null
+                ? commonViewModel.unitSystemProperty().get().convertWeightFromSI(latestRecord.weightKg())
+                : 0.0);
+
         commonViewModel.unitSystemProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(heightMeter.get()));
             inputWeight.set(newValue.convertWeightFromSI(weightKg.get()));
