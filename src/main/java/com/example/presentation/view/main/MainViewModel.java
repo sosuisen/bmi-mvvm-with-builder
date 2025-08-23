@@ -129,4 +129,14 @@ public class MainViewModel {
         return unitSystemProperty().get().convertWeightFromSI(weight);
     }
 
+    public void removeRecord(int id) {
+        try {
+            bmiService.removeRecord(id);
+        } catch (RepositoryException e) {
+            commonViewModel.errorProperty().set(e);
+            return;
+        }
+        commonViewModel.getBmiList().removeIf(record -> record.id() == id);
+    }
+
 }

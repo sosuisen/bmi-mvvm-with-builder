@@ -32,7 +32,7 @@ public class HistoryTableComponent {
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.date()))
-                                        .cellFactory(TableCellFactories.createCellFactory(
+                                        .cellFactory(TableCellFactories.createTextCellFactory(
                                                 item -> item.format(DateTimeFormatter.ofPattern("YYYY-MM-dd"))))
                                         .style("-fx-alignment: center")
                                         .prefWidth(100)
@@ -42,7 +42,7 @@ public class HistoryTableComponent {
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.heightMeter()))
                                         .cellFactory(TableCellFactories
-                                                .createCellFactory(item -> String.format("%.1f",
+                                                .createTextCellFactory(item -> String.format("%.1f",
                                                         viewModel.convertHeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
@@ -51,7 +51,7 @@ public class HistoryTableComponent {
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.weightKg()))
                                         .cellFactory(TableCellFactories
-                                                .createCellFactory(item -> String.format("%.1f",
+                                                .createTextCellFactory(item -> String.format("%.1f",
                                                         viewModel.convertWeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
@@ -60,7 +60,8 @@ public class HistoryTableComponent {
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.bmi()))
                                         .cellFactory(TableCellFactories
-                                                .createCellFactory(item -> String.format("%.1f", item.doubleValue())))
+                                                .createTextCellFactory(
+                                                        item -> String.format("%.1f", item.doubleValue())))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, ObesityCategory>create()
@@ -69,9 +70,20 @@ public class HistoryTableComponent {
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.obesity()))
                                         .cellFactory(TableCellFactories
-                                                .createCellFactory(item -> I18n
+                                                .createTextCellFactory(item -> I18n
                                                         .text("main.obesity.category." + item.toResourceString())))
                                         .style("-fx-alignment: center")
+                                        .prefWidth(100)
+                                        .build(),
+                                TableColumnBuilder.<BmiRecordWithDiff, Integer>create()
+                                        .cellValueFactory(TableCellValueFactories
+                                                .createReadOnlyCellValueFactory(record -> record.id()))
+                                        .cellFactory(TableCellFactories
+                                                .createButtonCellFactory(
+                                                        item -> viewModel.removeRecord(item),
+                                                        "history.table.delete",
+                                                        new String[] { "button-danger", "button-small" }))
+                                        .style("-fx-alignment: center;")
                                         .prefWidth(100)
                                         .build())
                         .vGrowInVBox(Priority.ALWAYS)

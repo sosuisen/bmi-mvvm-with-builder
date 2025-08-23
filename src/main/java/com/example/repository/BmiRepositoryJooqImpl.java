@@ -29,6 +29,19 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
     }
 
     @Override
+    public void removeRecord(int id) throws RepositoryException {
+        try (Connection conn = DriverManager.getConnection(DB_PATH)) {
+            var context = DSL.using(conn, SQLDialect.SQLITE);
+            context.deleteFrom(BMI_HISTORY)
+                    .where(BMI_HISTORY.ID.eq(id))
+                    .execute();
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to remove all records.");
+        }
+
+    }
+
+    @Override
     public void removeAllRecords() throws RepositoryException {
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);

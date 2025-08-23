@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.example.presentation.view.View;
 import com.example.presentation.view.alert.AlertDialog;
+import com.example.presentation.view.common.GlobalCSS;
 import com.example.presentation.view.main.components.CalculatorComponent;
 import com.example.presentation.view.main.components.HistoryComponent;
 import com.example.presentation.view.main.components.MenuBarComponent;
@@ -56,6 +57,7 @@ public class MainView implements View {
                                 .build())
                 .width(640)
                 .height(480)
+                .addStylesheetsText(GlobalCSS.CSS)
                 .build();
     }
 }

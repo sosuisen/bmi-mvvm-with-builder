@@ -5,6 +5,7 @@ import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.presentation.view.View;
 import com.example.presentation.view.alert.AlertDialog;
+import com.example.presentation.view.common.GlobalCSS;
 import com.example.presentation.view.common.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
@@ -50,22 +51,6 @@ public class SettingsView implements View {
     }
 
     private static final String CSS = """
-            #clear-button {
-                -fx-background-color: #900000;
-                -fx-text-fill: white;
-            }
-
-            #clear-button:hover {
-                -fx-background-color: #c05050;
-                -fx-text-fill: white;
-                -fx-cursor: hand;
-            }
-
-            .label {
-                -fx-font-weight: bold;
-                -fx-alignment: center;
-            }
-
             .grid-pane {
                 -fx-background-color: #f0f0f0;
                 -fx-border-width: 1;
@@ -126,6 +111,7 @@ public class SettingsView implements View {
                                                 .style("""
                                                         -fx-corner-radius: 12px;
                                                         """)
+                                                .addStyleClass("button-danger")
                                                 .hAlignmentInGridPane(HPos.CENTER)
                                                 .onAction(_ -> removeAllRecords())
                                                 .build())
@@ -141,6 +127,7 @@ public class SettingsView implements View {
                 .width(WIDTH)
                 .height(HEIGHT)
                 .addStylesheetsText(CSS)
+                .addStylesheetsText(GlobalCSS.CSS)
                 .build();
     }
 

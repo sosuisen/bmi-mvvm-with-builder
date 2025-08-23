@@ -20,6 +20,11 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
+    public void removeRecord(int id) throws RepositoryException {
+        repository.removeRecord(id);
+    }
+
+    @Override
     public Optional<Double> calculateBmi(double heightMeter, double weightKg) {
         try {
             return Optional.of(BmiRecord.calcBmi(heightMeter, weightKg));

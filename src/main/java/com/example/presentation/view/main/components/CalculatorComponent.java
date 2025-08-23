@@ -19,22 +19,6 @@ import javafx.util.converter.NumberStringConverter;
 
 public class CalculatorComponent {
     private static final String CSS = """
-            .button {
-                -fx-background-color: #006000;
-                -fx-text-fill: white;
-            }
-
-            .button:hover {
-                -fx-background-color: #009000;
-                -fx-text-fill: white;
-                -fx-cursor: hand;
-            }
-
-            .label {
-                -fx-font-weight: bold;
-                -fx-alignment: center;
-            }
-
             .grid-pane {
                 -fx-background-color: #f0f0f0;
                 -fx-border-width: 1;
@@ -60,6 +44,7 @@ public class CalculatorComponent {
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.height")))
                                 .hAlignmentInGridPane(HPos.CENTER)
+                                .addStyleClass("label-bold")
                                 .build(),
                         TextFieldBuilder.create()
                                 .marginInGridPane(new Insets(3))
@@ -75,6 +60,7 @@ public class CalculatorComponent {
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.weight")))
                                 .hAlignmentInGridPane(HPos.CENTER)
+                                .addStyleClass("label-bold")
                                 .build(),
                         TextFieldBuilder.create()
                                 .marginInGridPane(new Insets(3))
@@ -90,6 +76,7 @@ public class CalculatorComponent {
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.bmi")))
                                 .hAlignmentInGridPane(HPos.CENTER)
+                                .addStyleClass("label-bold")
                                 .build(),
                         LabelBuilder.create()
                                 .marginInGridPane(new Insets(3))
@@ -99,12 +86,12 @@ public class CalculatorComponent {
                                                 .map(opt -> opt
                                                         .map(bmi -> String.format("%.1f", bmi))
                                                         .orElse("-"))))
-                                .columnSpanInGridPane(2)
                                 .build())
                 .addRow(3,
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.obesity")))
                                 .hAlignmentInGridPane(HPos.CENTER)
+                                .addStyleClass("label-bold")
                                 .build(),
                         LabelBuilder.create()
                                 .marginInGridPane(new Insets(3))
@@ -117,7 +104,6 @@ public class CalculatorComponent {
                                                 .getValue(),
                                                 viewModel.obesityProperty(),
                                                 I18n.INSTANCE.resourcesProperty())))
-                                .columnSpanInGridPane(2)
                                 .build())
                 .add(
                         ButtonBuilder.create()
@@ -125,6 +111,7 @@ public class CalculatorComponent {
                                 .style("""
                                         -fx-corner-radius: 12px;
                                         """)
+                                .addStyleClass("button-safe")
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .disablePropertyApply(prop -> prop.bind(viewModel.bmiProperty()
                                         .map(opt -> !opt.isPresent() || opt.isEmpty())))
@@ -137,12 +124,12 @@ public class CalculatorComponent {
                                 .prefWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(60)
-                                .prefWidth(60)
+                                .minWidth(80)
+                                .prefWidth(80)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(40)
-                                .prefWidth(40)
+                                .minWidth(20)
+                                .prefWidth(20)
                                 .build())
                 .addRowConstraints(
                         rowConstraint,

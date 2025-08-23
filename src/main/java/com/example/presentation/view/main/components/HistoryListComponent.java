@@ -1,6 +1,5 @@
 package com.example.presentation.view.main.components;
 
-import com.example.domain.model.Bmi;
 import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.common.ObesityColor;
@@ -10,7 +9,6 @@ import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -70,10 +68,11 @@ public class HistoryListComponent {
                         -fx-font-weight: bold;
                         -fx-alignment: center;
                         -fx-text-fill: white;
-                        """);
+                        """)
+                .toString();
         return LabelBuilder.create()
                 .text(String.format("%.1f", bmiRecord.bmi()))
-                .style(labelStyle.toString())
+                .style(labelStyle)
                 .prefHeight(labelRadius * 2)
                 .prefWidth(labelRadius * 2)
                 .marginInHBox(new Insets(7, 20, 7, 10))
@@ -82,13 +81,22 @@ public class HistoryListComponent {
     }
 
     private static VBox createDetailBox(BmiRecordWithDiff bmiRecord) {
+        var headlineStyle = new StringBuilder()
+                .append("""
+                        -fx-font-weight: bold;
+                        -fx-font-size: 16;
+                        """)
+                .append("-fx-text-fill: %s;"
+                        .formatted(ObesityColor.getDarkColor(bmiRecord.obesity())))
+                .toString();
+
         return VBoxBuilder.withChildren(
                 LabelBuilder.create()
                         .textPropertyApply(
                                 prop -> prop.bind(I18n
                                         .textProperty(
                                                 "main.obesity.category." + bmiRecord.obesity().toResourceString())))
-                        .style("-fx-font-weight: bold; -fx-font-size: 16;")
+                        .style(headlineStyle)
                         .build(),
                 LabelBuilder.create()
                         .textPropertyApply(
