@@ -66,6 +66,10 @@ public class CommonViewModel {
             try {
                 configService.setLanguage(newValue);
                 I18n.getInstance().setResources(Locale.of(newValue.toLanguageString()));
+                // Reload to call a cellfactory to display converted values
+                // based on the new language.
+                loadBmiRecords();
+
             } catch (RepositoryException e) {
                 error.set(e);
             }
