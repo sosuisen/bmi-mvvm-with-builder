@@ -46,10 +46,11 @@ public class HistoryListComponent {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    var row = HBoxBuilder.withChildren(
-                            createBmiLabel(item),
-                            createDetailBox(item),
-                            createDateLabel(item))
+                    var row = HBoxBuilder
+                            .withChildren(
+                                    createBmiLabel(item),
+                                    createDetailBox(item),
+                                    createDateLabel(item))
                             .build();
 
                     setGraphic(row);
