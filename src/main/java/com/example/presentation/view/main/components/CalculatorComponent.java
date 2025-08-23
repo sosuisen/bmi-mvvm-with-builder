@@ -1,7 +1,7 @@
 package com.example.presentation.view.main.components;
 
 import com.example.presentation.utils.Formatters;
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;

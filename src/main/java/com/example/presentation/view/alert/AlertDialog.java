@@ -3,7 +3,7 @@ package com.example.presentation.view.alert;
 import java.util.Objects;
 
 import com.example.domain.exception.RepositoryException;
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.utils.I18n;
 
 import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import javafx.application.Platform;

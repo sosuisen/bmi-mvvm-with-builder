@@ -3,10 +3,10 @@ package com.example.presentation.view.settings;
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.View;
 import com.example.presentation.view.alert.AlertDialog;
-import com.example.presentation.view.common.GlobalCSS;
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.view.styles.GlobalCSS;
 
 import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;

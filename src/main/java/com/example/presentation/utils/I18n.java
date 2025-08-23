@@ -1,4 +1,4 @@
-package com.example.presentation.view.common;
+package com.example.presentation.utils;
 
 import java.util.HashMap;
 import java.util.Locale;

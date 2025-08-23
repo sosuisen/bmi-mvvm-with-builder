@@ -1,9 +1,10 @@
 package com.example.presentation.view.main.components;
 
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.presentation.view.common.I18n;
-import com.example.presentation.view.common.ObesityColor;
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.main.MainViewModel;
+import com.example.presentation.view.styles.ObesityColor;
+
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;

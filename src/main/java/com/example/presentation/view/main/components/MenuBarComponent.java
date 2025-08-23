@@ -1,6 +1,6 @@
 package com.example.presentation.view.main.components;
 
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 

@@ -4,10 +4,10 @@ import java.util.Objects;
 
 import com.example.presentation.view.View;
 import com.example.presentation.view.alert.AlertDialog;
-import com.example.presentation.view.common.GlobalCSS;
 import com.example.presentation.view.main.components.CalculatorComponent;
 import com.example.presentation.view.main.components.HistoryComponent;
 import com.example.presentation.view.main.components.MenuBarComponent;
+import com.example.presentation.view.styles.GlobalCSS;
 
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.SceneBuilder;

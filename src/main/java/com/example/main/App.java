@@ -2,10 +2,10 @@ package com.example.main;
 
 import java.util.Locale;
 
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.WindowManagerImpl;
 import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.common.CommonViewModel;
-import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 import com.example.presentation.view.settings.SettingsView;

@@ -7,7 +7,7 @@ import com.example.domain.repository.ConfigRepository;
 
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.utils.I18n;
 
 public class ConfigServiceImpl implements ConfigService {
     private static final String UNIT_SYSTEM_KEY = "unit.system";

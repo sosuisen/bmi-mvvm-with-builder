@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.presentation.view.common.I18n;
+import com.example.presentation.utils.I18n;
 import com.example.presentation.view.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.CategoryAxisBuilder;

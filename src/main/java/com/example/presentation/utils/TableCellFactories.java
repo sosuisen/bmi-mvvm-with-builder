@@ -3,8 +3,6 @@ package com.example.presentation.utils;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.example.presentation.view.common.I18n;
-
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

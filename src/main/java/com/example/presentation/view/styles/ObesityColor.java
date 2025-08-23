@@ -1,4 +1,4 @@
-package com.example.presentation.view.common;
+package com.example.presentation.view.styles;
 
 import com.example.domain.model.ObesityCategory;
 
