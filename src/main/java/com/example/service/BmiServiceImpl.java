@@ -1,12 +1,15 @@
 package com.example.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.example.domain.model.BmiRecord;
+import com.example.domain.repository.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
+import com.example.domain.service.BmiRecordWithDiff;
 import com.example.domain.service.BmiService;
 
 public class BmiServiceImpl implements BmiService {
@@ -31,12 +34,20 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
-    public List<BmiRecord> loadBmiRecords() throws RepositoryException {
-        return repository.loadBmiRecords();
+    public List<BmiRecordWithDiff> loadBmiRecords() throws RepositoryException {
+        var recordsWithDiff = new ArrayList<BmiRecordWithDiff>();
+        BmiRecord prevRecord = null;
+        for (var record : repository.loadBmiRecords(BmiRecordOrder.DATE_ASC)) {
+            recordsWithDiff.addFirst(new BmiRecordWithDiff(record, prevRecord));
+            prevRecord = record;
+        }
+        return recordsWithDiff;
     }
 
     @Override
-    public BmiRecord saveBmi(double heightMeter, double weightKg) throws RepositoryException {
-        return repository.saveBmiRecord(heightMeter, weightKg, LocalDate.now());
+    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException {
+        var record = repository.saveBmiRecord(heightMeter, weightKg, LocalDate.now());
+        var prevRecord = repository.findWithOffset(BmiRecordOrder.DATE_DESC, 1);
+        return new BmiRecordWithDiff(record, prevRecord);
     }
 }

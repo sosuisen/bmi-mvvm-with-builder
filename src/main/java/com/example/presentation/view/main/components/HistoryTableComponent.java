@@ -3,8 +3,8 @@ package com.example.presentation.view.main.components;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.example.domain.model.BmiRecord;
 import com.example.domain.model.ObesityCategory;
+import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.utils.TableCellFactories;
 import com.example.presentation.utils.TableCellValueFactories;
 import com.example.presentation.view.common.I18n;
@@ -25,10 +25,10 @@ public class HistoryTableComponent {
                         .textPropertyApply(
                                 prop -> prop.bind(I18n.textProperty("history.table.title")))
                         .build(),
-                TableViewBuilder.<BmiRecord>create()
+                TableViewBuilder.<BmiRecordWithDiff>create()
                         .items(viewModel.getBmiList())
                         .addColumns(
-                                TableColumnBuilder.<BmiRecord, LocalDate>create()
+                                TableColumnBuilder.<BmiRecordWithDiff, LocalDate>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.date()))
@@ -37,7 +37,7 @@ public class HistoryTableComponent {
                                         .style("-fx-alignment: center")
                                         .prefWidth(100)
                                         .build(),
-                                TableColumnBuilder.<BmiRecord, Double>create()
+                                TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.height")))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.heightMeter()))
@@ -46,7 +46,7 @@ public class HistoryTableComponent {
                                                         viewModel.convertHeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
-                                TableColumnBuilder.<BmiRecord, Double>create()
+                                TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.weight")))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.weightKg()))
@@ -55,7 +55,7 @@ public class HistoryTableComponent {
                                                         viewModel.convertWeightFromSI(item.doubleValue()))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
-                                TableColumnBuilder.<BmiRecord, Double>create()
+                                TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.bmi")))
                                         .cellValueFactory(TableCellValueFactories
                                                 .createReadOnlyCellValueFactory(record -> record.bmi()))
@@ -63,7 +63,7 @@ public class HistoryTableComponent {
                                                 .createCellFactory(item -> String.format("%.1f", item.doubleValue())))
                                         .style("-fx-alignment: center-right")
                                         .build(),
-                                TableColumnBuilder.<BmiRecord, ObesityCategory>create()
+                                TableColumnBuilder.<BmiRecordWithDiff, ObesityCategory>create()
                                         .textPropertyApply(
                                                 prop -> prop.bind(I18n.textProperty("history.table.obesity")))
                                         .cellValueFactory(TableCellValueFactories

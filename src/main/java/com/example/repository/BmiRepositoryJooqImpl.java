@@ -13,6 +13,7 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import com.example.domain.model.BmiRecord;
+import com.example.domain.repository.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
 
@@ -62,11 +63,38 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
 
     @Override
     public List<BmiRecord> loadBmiRecords() throws RepositoryException {
+        return loadBmiRecords(BmiRecordOrder.DATE_DESC);
+    }
+
+    @Override
+    public List<BmiRecord> loadBmiRecords(BmiRecordOrder order) throws RepositoryException {
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
             return context.selectFrom(BMI_HISTORY)
-                    .orderBy(BMI_HISTORY.DATE.desc())
+                    .orderBy(
+                            switch (order) {
+                                case DATE_ASC -> BMI_HISTORY.DATE.asc();
+                                case DATE_DESC -> BMI_HISTORY.DATE.desc();
+                            })
                     .fetchInto(BmiRecord.class);
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to load records.");
+        }
+    }
+
+    @Override
+    public BmiRecord findWithOffset(BmiRecordOrder order, int offset) throws RepositoryException {
+        try (Connection conn = DriverManager.getConnection(DB_PATH)) {
+            var context = DSL.using(conn, SQLDialect.SQLITE);
+            return context.selectFrom(BMI_HISTORY)
+                    .orderBy(
+                            switch (order) {
+                                case DATE_ASC -> BMI_HISTORY.DATE.asc();
+                                case DATE_DESC -> BMI_HISTORY.DATE.desc();
+                            })
+                    .limit(1)
+                    .offset(offset)
+                    .fetchOne(mapper);
         } catch (Exception e) {
             throw new RepositoryException("Failed to load records.");
         }

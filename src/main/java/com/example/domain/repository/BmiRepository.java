@@ -12,5 +12,15 @@ public interface BmiRepository {
     BmiRecord saveBmiRecord(double height_meter, double weight_kg, LocalDate localDate)
             throws RepositoryException;
 
+    /**
+     * Load bmi records by default order(DATE_DESC).
+     */
     List<BmiRecord> loadBmiRecords() throws RepositoryException;
+
+    List<BmiRecord> loadBmiRecords(BmiRecordOrder order) throws RepositoryException;
+
+    /**
+     * Get the record at the specified offset from the beginning.
+     */
+    BmiRecord findWithOffset(BmiRecordOrder order, int offset) throws RepositoryException;
 }

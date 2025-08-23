@@ -3,7 +3,7 @@ package com.example.presentation.view.main.components;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import com.example.domain.model.BmiRecord;
+import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.view.common.I18n;
 import com.example.presentation.view.main.MainViewModel;
 
@@ -20,7 +20,7 @@ public class HistoryChartComponent {
     public static LineChart<String, Number> getRoot(MainViewModel viewModel) {
         var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
         chartData.addAll(viewModel.getBmiList().stream().map(HistoryChartComponent::bmiToChartData).toList());
-        viewModel.getBmiList().addListener((ListChangeListener<BmiRecord>) change -> {
+        viewModel.getBmiList().addListener((ListChangeListener<BmiRecordWithDiff>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) {
                     chartData.addAll(
@@ -52,7 +52,7 @@ public class HistoryChartComponent {
                 .build();
     }
 
-    private static XYChart.Data<String, Number> bmiToChartData(BmiRecord bmiRecord) {
+    private static XYChart.Data<String, Number> bmiToChartData(BmiRecordWithDiff bmiRecord) {
         return new XYChart.Data<>(bmiRecord.date().format(DateTimeFormatter.ofPattern("M/d")),
                 bmiRecord.bmi());
     }

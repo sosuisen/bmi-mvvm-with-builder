@@ -1,6 +1,5 @@
 package com.example.presentation.view.common;
 
-import com.example.domain.model.BmiRecord;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
@@ -8,6 +7,7 @@ import com.example.domain.model.unit.UnitSystem;
 import java.util.Locale;
 
 import com.example.domain.exception.RepositoryException;
+import com.example.domain.service.BmiRecordWithDiff;
 import com.example.domain.service.BmiService;
 import com.example.domain.service.ConfigService;
 
@@ -22,7 +22,7 @@ public class CommonViewModel {
     private final ObjectProperty<UnitSystem> unitSystem = new SimpleObjectProperty<>();
     private final ObjectProperty<Languages> language = new SimpleObjectProperty<>();
 
-    private final ObservableList<BmiRecord> bmiList = FXCollections.observableArrayList();
+    private final ObservableList<BmiRecordWithDiff> bmiList = FXCollections.observableArrayList();
 
     private final ObjectProperty<Throwable> error = new SimpleObjectProperty<>();
 
@@ -30,7 +30,7 @@ public class CommonViewModel {
         return error;
     }
 
-    public ObservableList<BmiRecord> getBmiList() {
+    public ObservableList<BmiRecordWithDiff> getBmiList() {
         return bmiList;
     }
 

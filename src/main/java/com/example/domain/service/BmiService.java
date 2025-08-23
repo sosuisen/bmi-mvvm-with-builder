@@ -3,7 +3,6 @@ package com.example.domain.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.domain.model.BmiRecord;
 import com.example.domain.exception.RepositoryException;
 
 public interface BmiService {
@@ -11,8 +10,8 @@ public interface BmiService {
 
     public void removeAllRecords() throws RepositoryException;
 
-    public List<BmiRecord> loadBmiRecords() throws RepositoryException;
+    public List<BmiRecordWithDiff> loadBmiRecords() throws RepositoryException;
 
-    public BmiRecord saveBmi(double heightMeter, double weightKg) throws RepositoryException;
+    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException;
 
 }

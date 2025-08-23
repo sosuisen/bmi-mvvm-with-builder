@@ -2,10 +2,10 @@ package com.example.presentation.view.main;
 
 import java.util.Optional;
 
-import com.example.domain.model.BmiRecord;
 import com.example.domain.model.ObesityCategory;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.exception.RepositoryException;
+import com.example.domain.service.BmiRecordWithDiff;
 import com.example.domain.service.BmiService;
 import com.example.presentation.view.WindowManager;
 import com.example.presentation.view.common.CommonViewModel;
@@ -57,7 +57,7 @@ public class MainViewModel {
         return obesity;
     }
 
-    public ObservableList<BmiRecord> getBmiList() {
+    public ObservableList<BmiRecordWithDiff> getBmiList() {
         return commonViewModel.getBmiList();
     }
 
