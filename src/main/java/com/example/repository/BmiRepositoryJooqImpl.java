@@ -12,7 +12,7 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import com.example.domain.model.BmiRecord;
-import com.example.domain.repository.BmiRecordOrder;
+import com.example.domain.model.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
 

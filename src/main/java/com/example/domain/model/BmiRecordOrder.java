@@ -1,4 +1,4 @@
-package com.example.domain.repository;
+package com.example.domain.model;
 
 public enum BmiRecordOrder {
     DATE_ASC, DATE_DESC

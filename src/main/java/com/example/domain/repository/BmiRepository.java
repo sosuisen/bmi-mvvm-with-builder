@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.domain.model.BmiRecord;
+import com.example.domain.model.BmiRecordOrder;
 import com.example.domain.exception.RepositoryException;
 
 public interface BmiRepository {
