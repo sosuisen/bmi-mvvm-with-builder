@@ -54,6 +54,7 @@ public class HistoryChartComponent {
                                 .build())
                 .title(I18n.text("history.chart.title"))
                 .legendVisible(false)
+                .animated(false)
                 .prefWidth(300)
                 .minWidth(200)
                 .build();
