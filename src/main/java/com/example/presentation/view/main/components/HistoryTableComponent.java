@@ -8,7 +8,9 @@ import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.utils.I18n;
 import com.example.presentation.utils.TableCellFactories;
 import com.example.presentation.utils.TableCellValueFactories;
+import com.example.presentation.utils.TableRowFactories;
 import com.example.presentation.view.main.MainViewModel;
+import com.example.presentation.view.styles.ObesityColor;
 
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TableColumnBuilder;
@@ -86,6 +88,8 @@ public class HistoryTableComponent {
                                         .style("-fx-alignment: center;")
                                         .prefWidth(50)
                                         .build())
+                        .rowFactory(TableRowFactories.<BmiRecordWithDiff>createColoredRowFactory(
+                                record -> ObesityColor.getLightColor(record.obesity())))
                         .vGrowInVBox(Priority.ALWAYS)
                         .build())
                 .padding(new Insets(3))
