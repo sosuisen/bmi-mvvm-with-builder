@@ -143,6 +143,10 @@ public class MainViewModel {
         var newStage = StageBuilder.create()
                 .x(newPosition.getX())
                 .y(newPosition.getY())
+                .apply(stage -> {
+                    // stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(currentStage);
+                })
                 .build();
 
         windowManager.showWindow(SettingsView.class, newStage);
