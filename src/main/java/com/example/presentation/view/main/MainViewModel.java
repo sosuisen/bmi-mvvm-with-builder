@@ -1,5 +1,7 @@
 package com.example.presentation.view.main;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Optional;
 
 import com.example.domain.model.ObesityCategory;
@@ -17,6 +19,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.stage.Stage;
@@ -41,6 +44,9 @@ public class MainViewModel {
     private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
     private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
 
+    // Date
+    private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(LocalDate.now());
+
     public DoubleProperty heightProperty() {
         return inputHeight;
     }
@@ -55,6 +61,10 @@ public class MainViewModel {
 
     public ObjectProperty<Optional<String>> obesityProperty() {
         return obesity;
+    }
+
+    public ObjectProperty<LocalDate> dateProperty() {
+        return date;
     }
 
     public ObservableList<BmiRecordWithDiff> getBmiList() {
@@ -109,8 +119,10 @@ public class MainViewModel {
     public void saveBmiRecord() {
         bmi.get().ifPresent(_ -> {
             try {
-                var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get());
-                commonViewModel.getBmiList().addFirst(newRecord);
+                var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get(), date.get());
+                commonViewModel.getBmiList().add(newRecord);
+                FXCollections.sort(commonViewModel.getBmiList(),
+                        Comparator.comparing(BmiRecordWithDiff::date).reversed());
             } catch (RepositoryException e) {
                 commonViewModel.errorProperty().set(e);
             }

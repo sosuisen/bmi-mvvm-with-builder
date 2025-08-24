@@ -20,17 +20,17 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
-    public void removeRecord(int id) throws RepositoryException {
-        repository.removeRecord(id);
-    }
-
-    @Override
     public Optional<Double> calculateBmi(double heightMeter, double weightKg) {
         try {
             return Optional.of(BmiRecord.calcBmi(heightMeter, weightKg));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void removeRecord(int id) throws RepositoryException {
+        repository.removeRecord(id);
     }
 
     @Override
@@ -51,7 +51,13 @@ public class BmiServiceImpl implements BmiService {
 
     @Override
     public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException {
-        var record = repository.saveBmiRecord(heightMeter, weightKg, LocalDate.now());
+        return saveBmi(heightMeter, weightKg, LocalDate.now());
+    }
+
+    @Override
+    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg, LocalDate localDate)
+            throws RepositoryException {
+        var record = repository.saveBmiRecord(heightMeter, weightKg, localDate);
         var prevRecord = repository.findWithOffset(BmiRecordOrder.DATE_DESC, 1);
         return new BmiRecordWithDiff(record, prevRecord);
     }

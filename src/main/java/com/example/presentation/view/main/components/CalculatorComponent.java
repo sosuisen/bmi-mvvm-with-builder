@@ -5,6 +5,7 @@ import com.example.presentation.utils.I18n;
 import com.example.presentation.view.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
+import io.github.sosuisen.jfxbuilder.controls.DatePickerBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TextFieldBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.ColumnConstraintsBuilder;
@@ -118,6 +119,14 @@ public class CalculatorComponent {
                                 .onAction(_ -> viewModel.saveBmiRecord())
                                 .build(),
                         0, 4, 3, 1)
+                .add(
+                        DatePickerBuilder.create()
+                                .valuePropertyApply(prop -> prop.bindBidirectional(viewModel.dateProperty()))
+                                .hAlignmentInGridPane(HPos.CENTER)
+                                .marginInGridPane(new Insets(3))
+                                .maxWidth(Double.MAX_VALUE)
+                                .build(),
+                        0, 5, 3, 1)
                 .addColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
@@ -132,6 +141,7 @@ public class CalculatorComponent {
                                 .prefWidth(20)
                                 .build())
                 .addRowConstraints(
+                        rowConstraint,
                         rowConstraint,
                         rowConstraint,
                         rowConstraint,

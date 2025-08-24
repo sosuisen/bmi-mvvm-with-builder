@@ -1,5 +1,6 @@
 package com.example.domain.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +16,7 @@ public interface BmiService {
     public List<BmiRecordWithDiff> loadBmiRecords() throws RepositoryException;
 
     public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException;
+
+    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg, LocalDate date) throws RepositoryException;
 
 }
