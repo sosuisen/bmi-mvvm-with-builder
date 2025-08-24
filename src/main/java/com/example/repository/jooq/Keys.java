@@ -25,4 +25,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<BmiHistoryRecord> BMI_HISTORY__BMI_PK = Internal.createUniqueKey(BmiHistory.BMI_HISTORY, DSL.name("bmi_pk"), new TableField[] { BmiHistory.BMI_HISTORY.ID }, true);
+    public static final UniqueKey<BmiHistoryRecord> BMI_HISTORY__UK_BMI_HISTORY_1_21448760 = Internal.createUniqueKey(BmiHistory.BMI_HISTORY, DSL.name("uk_bmi_history_1_21448760"), new TableField[] { BmiHistory.BMI_HISTORY.DATE }, true);
 }

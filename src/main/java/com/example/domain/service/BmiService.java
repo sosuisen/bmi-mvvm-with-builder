@@ -13,10 +13,7 @@ public interface BmiService {
 
     public void removeAllRecords() throws RepositoryException;
 
-    public List<BmiRecordWithDiff> loadBmiRecords() throws RepositoryException;
+    public List<BmiRecordWithDiff> loadRecords() throws RepositoryException;
 
-    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException;
-
-    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg, LocalDate date) throws RepositoryException;
-
+    public void upsertRecord(double heightMeter, double weightKg, LocalDate date) throws RepositoryException;
 }

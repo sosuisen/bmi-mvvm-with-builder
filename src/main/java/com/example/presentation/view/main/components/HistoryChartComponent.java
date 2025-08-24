@@ -1,7 +1,9 @@
 package com.example.presentation.view.main.components;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.utils.I18n;
@@ -20,17 +22,22 @@ public class HistoryChartComponent {
     public static LineChart<String, Number> getRoot(MainViewModel viewModel) {
         var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
         chartData.addAll(viewModel.getBmiList().stream().map(HistoryChartComponent::bmiToChartData).toList());
+        FXCollections.sort(chartData, Comparator.comparing(data -> data.getXValue()));
+
         viewModel.getBmiList().addListener((ListChangeListener<BmiRecordWithDiff>) change -> {
             while (change.next()) {
+                if (change.wasRemoved()) {
+                    for (var record : change.getRemoved()) {
+                        chartData.removeIf(data -> data.getXValue().equals(dateToXValue(record.date())));
+                    }
+                }
                 if (change.wasAdded()) {
                     chartData.addAll(
                             change.getAddedSubList().stream().map(HistoryChartComponent::bmiToChartData).toList());
-                } else if (change.wasRemoved()) {
-                    chartData.subList(change.getFrom(), change.getTo() + 1).clear();
+                    FXCollections.sort(chartData, Comparator.comparing(data -> data.getXValue()));
                 }
             }
         });
-
         return LineChartBuilder
                 .<String, Number>create(
                         CategoryAxisBuilder.create()
@@ -50,11 +57,15 @@ public class HistoryChartComponent {
                 .prefWidth(300)
                 .minWidth(200)
                 .build();
+
+    }
+
+    private static String dateToXValue(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("M/d"));
     }
 
     private static XYChart.Data<String, Number> bmiToChartData(BmiRecordWithDiff bmiRecord) {
-        return new XYChart.Data<>(bmiRecord.date().format(DateTimeFormatter.ofPattern("M/d")),
-                bmiRecord.bmi());
+        return new XYChart.Data<>(dateToXValue(bmiRecord.date()), bmiRecord.bmi());
     }
 
 }

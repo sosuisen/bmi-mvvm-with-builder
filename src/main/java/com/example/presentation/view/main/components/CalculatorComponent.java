@@ -106,8 +106,27 @@ public class CalculatorComponent {
                                                 viewModel.obesityProperty(),
                                                 I18n.INSTANCE.resourcesProperty())))
                                 .build())
-                .add(
+                // row 4
+                // Cannot use addRow when the first column has column span.
+                .addChildren(
+                        DatePickerBuilder.create()
+                                .rowIndexInGridPane(4)
+                                .columnIndexInGridPane(0)
+                                .columnSpanInGridPane(2)
+                                .valuePropertyApply(prop -> prop.bindBidirectional(viewModel.dateProperty()))
+                                .hAlignmentInGridPane(HPos.CENTER)
+                                .marginInGridPane(new Insets(3))
+                                .build(),
                         ButtonBuilder.create()
+                                .rowIndexInGridPane(4)
+                                .columnIndexInGridPane(2)
+                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.today")))
+                                .onAction((_ -> viewModel.setToday()))
+                                .hAlignmentInGridPane(HPos.CENTER)
+                                .build())
+                .addRow(5,
+                        ButtonBuilder.create()
+                                .columnSpanInGridPane(3)
                                 .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.record")))
                                 .style("""
                                         -fx-corner-radius: 12px;
@@ -117,28 +136,20 @@ public class CalculatorComponent {
                                 .disablePropertyApply(prop -> prop.bind(viewModel.bmiProperty()
                                         .map(opt -> !opt.isPresent() || opt.isEmpty())))
                                 .onAction(_ -> viewModel.saveBmiRecord())
-                                .build(),
-                        0, 4, 3, 1)
-                .add(
-                        DatePickerBuilder.create()
-                                .valuePropertyApply(prop -> prop.bindBidirectional(viewModel.dateProperty()))
-                                .hAlignmentInGridPane(HPos.CENTER)
-                                .marginInGridPane(new Insets(3))
-                                .maxWidth(Double.MAX_VALUE)
-                                .build(),
-                        0, 5, 3, 1)
+
+                                .build())
                 .addColumnConstraints(
                         ColumnConstraintsBuilder.create()
                                 .minWidth(70)
                                 .prefWidth(70)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(80)
-                                .prefWidth(80)
+                                .minWidth(90)
+                                .prefWidth(90)
                                 .build(),
                         ColumnConstraintsBuilder.create()
-                                .minWidth(20)
-                                .prefWidth(20)
+                                .minWidth(50)
+                                .prefWidth(50)
                                 .build())
                 .addRowConstraints(
                         rowConstraint,

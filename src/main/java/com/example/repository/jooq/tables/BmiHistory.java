@@ -9,7 +9,9 @@ import com.example.repository.jooq.Keys;
 import com.example.repository.jooq.tables.records.BmiHistoryRecord;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -107,6 +109,11 @@ public class BmiHistory extends TableImpl<BmiHistoryRecord> {
     @Override
     public UniqueKey<BmiHistoryRecord> getPrimaryKey() {
         return Keys.BMI_HISTORY__BMI_PK;
+    }
+
+    @Override
+    public List<UniqueKey<BmiHistoryRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.BMI_HISTORY__UK_BMI_HISTORY_1_21448760);
     }
 
     @Override

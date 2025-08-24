@@ -1,25 +1,21 @@
 package com.example.presentation.view.main;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.Optional;
 
 import com.example.domain.model.ObesityCategory;
 import com.example.domain.model.unit.UnitSystem;
-import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.domain.service.BmiService;
 import com.example.presentation.view.WindowManager;
-import com.example.presentation.view.common.CommonViewModel;
+import com.example.presentation.view.application.BmiCommonAppModel;
+import com.example.presentation.view.application.ConfigAppModel;
 import com.example.presentation.view.settings.SettingsView;
 
 import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.stage.Stage;
@@ -27,10 +23,10 @@ import javafx.stage.Stage;
 public class MainViewModel {
     private static final Point2D OFFSET_POSITION_OF_NEW_WINDOW = new Point2D(30, 30);
 
-    private final BmiService bmiService;
     private final WindowManager windowManager;
 
-    private final CommonViewModel commonViewModel;
+    private final BmiCommonAppModel bmiCommonAppModel;
+    private final ConfigAppModel configAppModel;
 
     // SI unit value
     private final DoubleProperty heightMeter = new SimpleDoubleProperty();
@@ -68,44 +64,43 @@ public class MainViewModel {
     }
 
     public ObservableList<BmiRecordWithDiff> getBmiList() {
-        return commonViewModel.getBmiList();
+        return bmiCommonAppModel.getBmiList();
     }
 
     public ObjectProperty<UnitSystem> unitSystemProperty() {
-        return commonViewModel.unitSystemProperty();
+        return configAppModel.unitSystemProperty();
     }
 
     public ObjectProperty<Throwable> errorProperty() {
-        return commonViewModel.errorProperty();
+        return bmiCommonAppModel.errorProperty();
     }
 
-    public MainViewModel(BmiService service, WindowManager windowManager, CommonViewModel commonViewModel) {
-        this.bmiService = service;
+    public MainViewModel(WindowManager windowManager,
+            BmiCommonAppModel commonViewModel, ConfigAppModel configAppModel) {
         this.windowManager = windowManager;
-        this.commonViewModel = commonViewModel;
+        this.configAppModel = configAppModel;
+        this.bmiCommonAppModel = commonViewModel;
 
-        bmi.bind(Bindings.createObjectBinding(
-                () -> service.calculateBmi(heightMeter.get(), weightKg.get()),
-                weightKg, heightMeter));
+        bmi.bind(bmiCommonAppModel.getBmiBinding(heightMeter, weightKg));
 
         heightMeter.bind(inputHeight
-                .map(value -> commonViewModel.unitSystemProperty().get().convertHeightToSI(value.doubleValue())));
+                .map(value -> configAppModel.unitSystemProperty().get().convertHeightToSI(value.doubleValue())));
 
         weightKg.bind(inputWeight
-                .map(value -> commonViewModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
+                .map(value -> configAppModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
         var latestRecord = commonViewModel.getBmiList().size() > 0
                 ? commonViewModel.getBmiList().get(0)
                 : null;
 
         inputHeight.set(latestRecord != null
-                ? commonViewModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())
+                ? configAppModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())
                 : 0.0);
         inputWeight.set(latestRecord != null
-                ? commonViewModel.unitSystemProperty().get().convertWeightFromSI(latestRecord.weightKg())
+                ? configAppModel.unitSystemProperty().get().convertWeightFromSI(latestRecord.weightKg())
                 : 0.0);
 
-        commonViewModel.unitSystemProperty().subscribe(newValue -> {
+        configAppModel.unitSystemProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(heightMeter.get()));
             inputWeight.set(newValue.convertWeightFromSI(weightKg.get()));
         });
@@ -118,15 +113,24 @@ public class MainViewModel {
 
     public void saveBmiRecord() {
         bmi.get().ifPresent(_ -> {
-            try {
-                var newRecord = bmiService.saveBmi(heightMeter.get(), weightKg.get(), date.get());
-                commonViewModel.getBmiList().add(newRecord);
-                FXCollections.sort(commonViewModel.getBmiList(),
-                        Comparator.comparing(BmiRecordWithDiff::date).reversed());
-            } catch (RepositoryException e) {
-                commonViewModel.errorProperty().set(e);
-            }
+            bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get());
         });
+    }
+
+    public double convertHeightFromSI(double height) {
+        return unitSystemProperty().get().convertHeightFromSI(height);
+    }
+
+    public double convertWeightFromSI(double weight) {
+        return unitSystemProperty().get().convertWeightFromSI(weight);
+    }
+
+    public void removeRecord(int id) {
+        bmiCommonAppModel.removeRecord(id);
+    }
+
+    public void setToday() {
+        date.set(LocalDate.now());
     }
 
     public void openSettingsWindow(Stage currentStage) {
@@ -142,24 +146,6 @@ public class MainViewModel {
                 .build();
 
         windowManager.showWindow(SettingsView.class, newStage);
-    }
-
-    public double convertHeightFromSI(double height) {
-        return unitSystemProperty().get().convertHeightFromSI(height);
-    }
-
-    public double convertWeightFromSI(double weight) {
-        return unitSystemProperty().get().convertWeightFromSI(weight);
-    }
-
-    public void removeRecord(int id) {
-        try {
-            bmiService.removeRecord(id);
-        } catch (RepositoryException e) {
-            commonViewModel.errorProperty().set(e);
-            return;
-        }
-        commonViewModel.getBmiList().removeIf(record -> record.id() == id);
     }
 
 }

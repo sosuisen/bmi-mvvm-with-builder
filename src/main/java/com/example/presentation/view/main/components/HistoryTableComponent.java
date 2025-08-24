@@ -84,7 +84,7 @@ public class HistoryTableComponent {
                                                         "history.table.delete",
                                                         new String[] { "button-danger", "button-small" }))
                                         .style("-fx-alignment: center;")
-                                        .prefWidth(100)
+                                        .prefWidth(50)
                                         .build())
                         .vGrowInVBox(Priority.ALWAYS)
                         .build())

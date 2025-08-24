@@ -55,7 +55,7 @@ public class MainView implements View {
                                                 .vGrowInVBox(Priority.ALWAYS)
                                                 .build())
                                 .build())
-                .width(640)
+                .width(660)
                 .height(480)
                 .addStylesheetsText(GlobalCSS.CSS)
                 .build();

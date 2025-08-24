@@ -8,7 +8,6 @@ import java.util.Objects;
 
 import static com.example.repository.jooq.Tables.*;
 
-import org.jooq.RecordMapper;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
@@ -17,16 +16,8 @@ import com.example.domain.repository.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
 
-import com.example.repository.jooq.tables.records.BmiHistoryRecord;
-
 public class BmiRepositoryJooqImpl implements BmiRepository {
     private final String DB_PATH = "jdbc:sqlite:./bmi.db";
-
-    private final RecordMapper<BmiHistoryRecord, BmiRecord> mapper;
-
-    public BmiRepositoryJooqImpl() {
-        mapper = new BmiRecordMapper();
-    }
 
     @Override
     public void removeRecord(int id) throws RepositoryException {
@@ -36,7 +27,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
                     .where(BMI_HISTORY.ID.eq(id))
                     .execute();
         } catch (Exception e) {
-            throw new RepositoryException("Failed to remove all records.");
+            throw new RepositoryException("Failed to remove a record.");
         }
 
     }
@@ -53,7 +44,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
     }
 
     @Override
-    public BmiRecord saveBmiRecord(double heightMeter, double weightKg, LocalDate localDate)
+    public void upsertBmiRecord(double heightMeter, double weightKg, LocalDate localDate)
             throws RepositoryException, NullPointerException, IllegalArgumentException {
         if (heightMeter <= 0 || weightKg <= 0) {
             throw new IllegalArgumentException();
@@ -62,13 +53,14 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
 
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
-            return context.insertInto(BMI_HISTORY)
+            context.insertInto(BMI_HISTORY)
                     .set(BMI_HISTORY.HEIGHT_METER, heightMeter)
                     .set(BMI_HISTORY.WEIGHT_KG, weightKg)
                     .set(BMI_HISTORY.DATE, localDate)
-                    .returning()
-                    .fetchOne(mapper);
-
+                    .onDuplicateKeyUpdate()
+                    .set(BMI_HISTORY.HEIGHT_METER, heightMeter)
+                    .set(BMI_HISTORY.WEIGHT_KG, weightKg)
+                    .execute();
         } catch (Exception e) {
             throw new RepositoryException("Failed to save records.");
         }
@@ -93,40 +85,5 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
         } catch (Exception e) {
             throw new RepositoryException("Failed to load records.");
         }
-    }
-
-    @Override
-    public BmiRecord findWithOffset(BmiRecordOrder order, int offset) throws RepositoryException {
-        try (Connection conn = DriverManager.getConnection(DB_PATH)) {
-            var context = DSL.using(conn, SQLDialect.SQLITE);
-            return context.selectFrom(BMI_HISTORY)
-                    .orderBy(
-                            switch (order) {
-                                case DATE_ASC -> BMI_HISTORY.DATE.asc();
-                                case DATE_DESC -> BMI_HISTORY.DATE.desc();
-                            })
-                    .limit(1)
-                    .offset(offset)
-                    .fetchOne(mapper);
-        } catch (Exception e) {
-            throw new RepositoryException("Failed to load records.");
-        }
-    }
-
-}
-
-class BmiRecordMapper implements RecordMapper<BmiHistoryRecord, BmiRecord> {
-
-    @Override
-    public BmiRecord map(BmiHistoryRecord record) {
-        if (record == null) {
-            return null;
-        }
-
-        return new BmiRecord(
-                record.get(BMI_HISTORY.ID),
-                record.get(BMI_HISTORY.HEIGHT_METER),
-                record.get(BMI_HISTORY.WEIGHT_KG),
-                record.get(BMI_HISTORY.DATE));
     }
 }

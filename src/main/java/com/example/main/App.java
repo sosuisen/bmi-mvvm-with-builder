@@ -5,7 +5,8 @@ import java.util.Locale;
 import com.example.presentation.utils.I18n;
 import com.example.presentation.view.WindowManagerImpl;
 import com.example.presentation.view.alert.AlertDialog;
-import com.example.presentation.view.common.CommonViewModel;
+import com.example.presentation.view.application.BmiCommonAppModel;
+import com.example.presentation.view.application.ConfigAppModel;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 import com.example.presentation.view.settings.SettingsView;
@@ -41,11 +42,13 @@ public class App extends Application {
 
         var windowManager = new WindowManagerImpl();
 
-        var commonViewModel = new CommonViewModel(bmiService, configService);
+        var bmiCommonAppModel = new BmiCommonAppModel(bmiService);
 
-        windowManager.registerView(new SettingsView(new SettingsViewModel(bmiService, commonViewModel)));
+        var configAppModel = new ConfigAppModel(configService, bmiCommonAppModel);
 
-        windowManager.registerView(new MainView(new MainViewModel(bmiService, windowManager, commonViewModel)));
+        windowManager.registerView(new SettingsView(new SettingsViewModel(bmiCommonAppModel, configAppModel)));
+
+        windowManager.registerView(new MainView(new MainViewModel(windowManager, bmiCommonAppModel, configAppModel)));
 
         windowManager.showWindow(MainView.class, stage);
     }

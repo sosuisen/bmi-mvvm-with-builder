@@ -39,7 +39,7 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
-    public List<BmiRecordWithDiff> loadBmiRecords() throws RepositoryException {
+    public List<BmiRecordWithDiff> loadRecords() throws RepositoryException {
         var recordsWithDiff = new ArrayList<BmiRecordWithDiff>();
         BmiRecord prevRecord = null;
         for (var record : repository.loadBmiRecords(BmiRecordOrder.DATE_ASC)) {
@@ -50,15 +50,8 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
-    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg) throws RepositoryException {
-        return saveBmi(heightMeter, weightKg, LocalDate.now());
-    }
-
-    @Override
-    public BmiRecordWithDiff saveBmi(double heightMeter, double weightKg, LocalDate localDate)
+    public void upsertRecord(double heightMeter, double weightKg, LocalDate date)
             throws RepositoryException {
-        var record = repository.saveBmiRecord(heightMeter, weightKg, localDate);
-        var prevRecord = repository.findWithOffset(BmiRecordOrder.DATE_DESC, 1);
-        return new BmiRecordWithDiff(record, prevRecord);
+        repository.upsertBmiRecord(heightMeter, weightKg, date);
     }
 }
