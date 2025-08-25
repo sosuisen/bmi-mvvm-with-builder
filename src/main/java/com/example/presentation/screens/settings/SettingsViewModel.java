@@ -1,4 +1,4 @@
-package com.example.presentation.view.settings;
+package com.example.presentation.screens.settings;
 
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;

@@ -6,7 +6,8 @@ import com.example.domain.model.unit.ImperialUnits;
 import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.repository.ConfigRepository;
-import com.example.presentation.utils.I18n;
+import com.example.presentation.helpers.I18n;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

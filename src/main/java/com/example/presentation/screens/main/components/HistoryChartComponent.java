@@ -1,4 +1,4 @@
-package com.example.presentation.view.main.components;
+package com.example.presentation.screens.main.components;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.presentation.utils.I18n;
-import com.example.presentation.view.main.MainViewModel;
+import com.example.presentation.helpers.I18n;
+import com.example.presentation.screens.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.CategoryAxisBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LineChartBuilder;

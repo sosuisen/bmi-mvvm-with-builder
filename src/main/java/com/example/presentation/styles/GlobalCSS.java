@@ -1,4 +1,4 @@
-package com.example.presentation.view.styles;
+package com.example.presentation.styles;
 
 public class GlobalCSS {
     public static final String CSS = """

@@ -1,4 +1,4 @@
-package com.example.presentation.view;
+package com.example.presentation.screens;
 
 import javafx.scene.Scene;
 

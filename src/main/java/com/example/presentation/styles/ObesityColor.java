@@ -1,4 +1,4 @@
-package com.example.presentation.view.styles;
+package com.example.presentation.styles;
 
 import com.example.domain.model.ObesityCategory;
 
@@ -9,7 +9,7 @@ public class ObesityColor {
     public static String getLightColor(ObesityCategory category) {
         return switch (category) {
             case NONE -> "#90a0a0";
-            case LOW -> "#e0f0ff";
+            case LOW -> "#c0e0ff";
             case NORMAL -> "#d0f0e0";
             case HIGH -> "#ffd0d0";
         };

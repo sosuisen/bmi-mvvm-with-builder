@@ -1,16 +1,16 @@
-package com.example.presentation.view.main.components;
+package com.example.presentation.screens.main.components;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.example.domain.model.ObesityCategory;
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.presentation.utils.I18n;
-import com.example.presentation.utils.TableCellFactories;
-import com.example.presentation.utils.TableCellValueFactories;
-import com.example.presentation.utils.TableRowFactories;
-import com.example.presentation.view.main.MainViewModel;
-import com.example.presentation.view.styles.ObesityColor;
+import com.example.presentation.helpers.I18n;
+import com.example.presentation.helpers.TableCellFactories;
+import com.example.presentation.helpers.TableCellValueFactories;
+import com.example.presentation.helpers.TableRowFactories;
+import com.example.presentation.screens.main.MainViewModel;
+import com.example.presentation.styles.ObesityColor;
 
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TableColumnBuilder;

@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
-import com.example.presentation.utils.I18n;
+import com.example.presentation.helpers.I18n;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

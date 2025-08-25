@@ -1,6 +1,7 @@
-package com.example.presentation.view.about;
+package com.example.presentation.screens.about;
 
-import com.example.presentation.view.View;
+import com.example.presentation.screens.View;
+
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;
 import io.github.sosuisen.jfxbuilder.controls.HyperlinkBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;

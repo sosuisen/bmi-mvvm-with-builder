@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.example.presentation.view.View;
-import com.example.presentation.view.alert.AlertDialog;
+import com.example.presentation.screens.View;
+import com.example.presentation.screens.alert.AlertDialog;
 
 import javafx.stage.Stage;
 

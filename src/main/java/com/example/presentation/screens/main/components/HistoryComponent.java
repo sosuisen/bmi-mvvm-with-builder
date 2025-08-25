@@ -1,8 +1,8 @@
-package com.example.presentation.view.main.components;
+package com.example.presentation.screens.main.components;
 
 import com.example.presentation.appmodel.BmiCommonAppModel;
-import com.example.presentation.utils.I18n;
-import com.example.presentation.view.main.MainViewModel;
+import com.example.presentation.helpers.I18n;
+import com.example.presentation.screens.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
 import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;

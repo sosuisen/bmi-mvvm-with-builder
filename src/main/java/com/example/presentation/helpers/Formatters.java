@@ -1,4 +1,4 @@
-package com.example.presentation.utils;
+package com.example.presentation.helpers;
 
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.DefaultStringConverter;

@@ -1,12 +1,12 @@
-package com.example.presentation.view.settings;
+package com.example.presentation.screens.settings;
 
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
-import com.example.presentation.utils.I18n;
-import com.example.presentation.view.View;
-import com.example.presentation.view.alert.AlertDialog;
-import com.example.presentation.view.styles.GlobalCSS;
+import com.example.presentation.helpers.I18n;
+import com.example.presentation.screens.View;
+import com.example.presentation.screens.alert.AlertDialog;
+import com.example.presentation.styles.GlobalCSS;
 
 import io.github.sosuisen.jfxbuilder.controls.AlertBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ButtonBuilder;

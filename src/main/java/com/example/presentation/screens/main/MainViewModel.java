@@ -1,4 +1,4 @@
-package com.example.presentation.view.main;
+package com.example.presentation.screens.main;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -9,8 +9,8 @@ import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.WindowManager;
 import com.example.presentation.appmodel.BmiCommonAppModel;
 import com.example.presentation.appmodel.ConfigAppModel;
-import com.example.presentation.view.about.AboutView;
-import com.example.presentation.view.settings.SettingsView;
+import com.example.presentation.screens.about.AboutView;
+import com.example.presentation.screens.settings.SettingsView;
 
 import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import javafx.beans.property.DoubleProperty;
