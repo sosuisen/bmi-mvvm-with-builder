@@ -101,7 +101,7 @@ class BmiServiceImplTest {
     @Test
     void loadRecords_withEmptyList_returnsEmptyList() throws RepositoryException {
         // Given
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_ASC), anyInt())).thenReturn(new ArrayList<>());
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(new ArrayList<>());
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -114,7 +114,7 @@ class BmiServiceImplTest {
     void loadRecords_withSingleRecord_returnsListWithOneElemen_withCorrectDateAndDiff() throws RepositoryException {
         // Given
         BmiRecord record = new BmiRecord(1, 1.75, 70, LocalDate.now());
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_ASC), anyInt())).thenReturn(List.of(record));
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(List.of(record));
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -132,8 +132,8 @@ class BmiServiceImplTest {
         BmiRecord record1 = new BmiRecord(1, 1.70, 65, LocalDate.of(2023, 1, 10));
         BmiRecord record2 = new BmiRecord(2, 1.70, 68, LocalDate.of(2023, 1, 15));
         BmiRecord record3 = new BmiRecord(3, 1.70, 67, LocalDate.of(2023, 1, 20));
-        List<BmiRecord> recordsFromRepo = List.of(record1, record2, record3);
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_ASC), anyInt())).thenReturn(recordsFromRepo);
+        List<BmiRecord> recordsFromRepo = List.of(record3, record2, record1);
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(recordsFromRepo);
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -141,7 +141,7 @@ class BmiServiceImplTest {
         // Then
         assertEquals(3, result.size());
 
-        // Check order (should be reversed: record3, record2, record1)
+        // Check order
         assertEquals(record3.id(), result.get(0).id());
         assertEquals(record2.id(), result.get(1).id());
         assertEquals(record1.id(), result.get(2).id());
@@ -157,14 +157,14 @@ class BmiServiceImplTest {
         // Given
         int expectedLimit = 25;
         ArgumentCaptor<Integer> limitCaptor = ArgumentCaptor.forClass(Integer.class);
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_ASC), limitCaptor.capture()))
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), limitCaptor.capture()))
                 .thenReturn(new ArrayList<>());
 
         // When
         bmiService.loadRecords(expectedLimit);
 
         // Then
-        verify(bmiRepository, times(1)).loadBmiRecords(eq(BmiRecordOrder.DATE_ASC), anyInt());
+        verify(bmiRepository, times(1)).loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt());
         assertEquals(expectedLimit, limitCaptor.getValue());
     }
 
