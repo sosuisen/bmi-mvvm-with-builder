@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.domain.model.Bmi;
 import com.example.domain.model.BmiRecord;
 import com.example.domain.model.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
@@ -22,7 +23,7 @@ public class BmiServiceImpl implements BmiService {
     @Override
     public Optional<Double> calculateBmi(double heightMeter, double weightKg) {
         try {
-            return Optional.of(BmiRecord.calcBmi(heightMeter, weightKg));
+            return Optional.of(Bmi.calcBmi(heightMeter, weightKg));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

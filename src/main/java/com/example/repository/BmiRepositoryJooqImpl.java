@@ -67,12 +67,25 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
     }
 
     @Override
-    public List<BmiRecord> loadBmiRecords() throws RepositoryException {
-        return loadBmiRecords(BmiRecordOrder.DATE_DESC);
+    public List<BmiRecord> loadBmiRecords(BmiRecordOrder order) throws RepositoryException {
+        return loadBmiRecordsInternal(order, null);
     }
 
     @Override
-    public List<BmiRecord> loadBmiRecords(BmiRecordOrder order) throws RepositoryException {
+    public List<BmiRecord> loadBmiRecords(BmiRecordOrder order, int limit) throws RepositoryException {
+        return loadBmiRecordsInternal(order, limit);
+    }
+
+    /**
+     * Loads BMI records from the database.
+     * 
+     * @param order The order in which to sort the records (ascending or descending
+     *              by date).
+     * @param limit The maximum number of records to retrieve, or null for no limit.
+     * @return A list of BmiRecord objects.
+     * @throws RepositoryException If there is an error loading the records.
+     */
+    private List<BmiRecord> loadBmiRecordsInternal(BmiRecordOrder order, Integer limit) throws RepositoryException {
         try (Connection conn = DriverManager.getConnection(DB_PATH)) {
             var context = DSL.using(conn, SQLDialect.SQLITE);
             return context.selectFrom(BMI_HISTORY)
@@ -81,6 +94,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
                                 case DATE_ASC -> BMI_HISTORY.DATE.asc();
                                 case DATE_DESC -> BMI_HISTORY.DATE.desc();
                             })
+                    .limit(limit)
                     .fetchInto(BmiRecord.class);
         } catch (Exception e) {
             throw new RepositoryException("Failed to load records.");

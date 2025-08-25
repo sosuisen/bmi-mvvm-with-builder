@@ -4,6 +4,12 @@ public enum ObesityCategory {
 
     NONE, LOW, NORMAL, HIGH;
 
+    /**
+     * Converts the enum constant name to a lowercase string, suitable for resource
+     * keys.
+     *
+     * @return The lowercase string representation of the enum constant.
+     */
     public String toResourceString() {
         return toString().toLowerCase();
     }

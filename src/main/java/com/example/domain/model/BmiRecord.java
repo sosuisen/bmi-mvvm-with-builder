@@ -2,22 +2,25 @@ package com.example.domain.model;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a single BMI record, including height, weight, date, and
+ * calculated BMI and obesity category.
+ *
+ * @param id          The unique identifier of the BMI record.
+ * @param heightMeter The height in meters.
+ * @param weightKg    The weight in kilograms.
+ * @param date        The date of the BMI record. This field is used as a unique
+ *                    key for upsert operations and for ordering records.
+ */
 public record BmiRecord(
         int id,
         double heightMeter,
         double weightKg,
         LocalDate date) implements Bmi {
 
-    public static double calcBmi(double heightMeter, double weightKg) {
-        if (heightMeter <= 0 || weightKg <= 0)
-            throw new IllegalArgumentException();
-
-        return weightKg / (heightMeter * heightMeter);
-    }
-
     @Override
     public double bmi() {
-        return calcBmi(heightMeter, weightKg);
+        return Bmi.calcBmi(heightMeter(), weightKg());
     }
 
     @Override
