@@ -2,12 +2,12 @@ package com.example.main;
 
 import java.util.Locale;
 
+import com.example.presentation.WindowManagerImpl;
+import com.example.presentation.appmodel.BmiCommonAppModel;
+import com.example.presentation.appmodel.ConfigAppModel;
 import com.example.presentation.utils.I18n;
-import com.example.presentation.view.WindowManagerImpl;
 import com.example.presentation.view.about.AboutView;
 import com.example.presentation.view.alert.AlertDialog;
-import com.example.presentation.view.application.BmiCommonAppModel;
-import com.example.presentation.view.application.ConfigAppModel;
 import com.example.presentation.view.main.MainView;
 import com.example.presentation.view.main.MainViewModel;
 import com.example.presentation.view.settings.SettingsView;
@@ -31,6 +31,9 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
+        /*
+         * Services will be called from application models
+         */
         var configService = new ConfigServiceImpl(new ConfigRepositoryPropertyImpl());
 
         try {
@@ -41,12 +44,20 @@ public class App extends Application {
 
         var bmiService = new BmiServiceImpl(new BmiRepositoryJooqImpl());
 
+        /*
+         * WindowsManager manages views.
+         */
         var windowManager = new WindowManagerImpl();
 
+        /*
+         * Application models are shared among multiple views.
+         */
         var bmiCommonAppModel = new BmiCommonAppModel(bmiService);
-
         var configAppModel = new ConfigAppModel(configService, bmiCommonAppModel);
 
+        /*
+         * Register each view along with its own view model to the WindowManager.
+         */
         windowManager.registerView(new SettingsView(new SettingsViewModel(bmiCommonAppModel, configAppModel)));
 
         windowManager.registerView(new MainView(new MainViewModel(windowManager, bmiCommonAppModel, configAppModel)));

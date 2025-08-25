@@ -37,7 +37,8 @@ public class AlertDialog {
                     .height(240)
                     .width(480)
                     .apply(alert -> {
-                        alert.getDialogPane().setExpandableContent(new Label(I18n.text(resourceName)));
+                        alert.getDialogPane()
+                                .setExpandableContent(new Label(I18n.text(resourceName) + ": " + e.getMessage()));
                         alert.getDialogPane().setExpanded(true);
                     })
                     .build()
