@@ -9,7 +9,7 @@ public class ObesityColor {
     public static String getLightColor(ObesityCategory category) {
         return switch (category) {
             case NONE -> "#90a0a0";
-            case LOW -> "#ffd0b0";
+            case LOW -> "#ffe0c0";
             case NORMAL -> "#d0f0e0";
             case HIGH -> "#ffd0d0";
         };
@@ -18,7 +18,7 @@ public class ObesityColor {
     public static String getDarkColor(ObesityCategory category) {
         return switch (category) {
             case NONE -> "#507070";
-            case LOW -> "#d05000";
+            case LOW -> "#d07000";
             case NORMAL -> "#009030";
             case HIGH -> "#900000";
         };
