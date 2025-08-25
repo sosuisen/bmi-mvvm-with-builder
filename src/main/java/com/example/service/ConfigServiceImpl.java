@@ -67,12 +67,11 @@ public class ConfigServiceImpl implements ConfigService {
             langStr = I18n.getInstance().getCurrentLocale().getLanguage();
         }
 
-        var language = Languages.getLanguage(langStr);
-        if (language == null) {
+        try {
+            return Languages.getLanguage(langStr);
+        } catch (IllegalArgumentException e) {
             return Languages.getDefaultLanguages();
         }
-
-        return language;
     }
 
     @Override
