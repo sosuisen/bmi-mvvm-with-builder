@@ -16,7 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Priority;
 
 public class MainView implements View {
-    private final String TITLE = "BMI Calc";
+    private final String TITLE = "BMI Calculator";
     private final Scene scene;
     private final MainViewModel viewModel;
 
