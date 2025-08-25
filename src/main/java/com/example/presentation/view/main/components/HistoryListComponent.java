@@ -33,8 +33,8 @@ public class HistoryListComponent {
                                 .textPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.list.title")))
                                 .build(),
-                        ListViewBuilder.<BmiRecordWithDiff>create()
-                                .items(viewModel.getBmiList())
+                        ListViewBuilder
+                                .withItems(viewModel.getBmiList())
                                 .cellFactory(HistoryListComponent::recordsCellFactory)
                                 .vGrowInVBox(Priority.ALWAYS)
                                 .build())
@@ -70,7 +70,8 @@ public class HistoryListComponent {
     private static Label createBmiLabel(BmiRecordWithDiff bmiRecord) {
         final double labelRadius = 18;
 
-        return LabelBuilder.create().text(String.format("%.1f", bmiRecord.bmi()))
+        return LabelBuilder.create()
+                .text(String.format("%.1f", bmiRecord.bmi()))
                 .stylePropertyApply(prop -> prop.bind(getAnimatedBmiLabelStyleBinding(bmiRecord, labelRadius)))
                 .prefHeight(labelRadius * 2)
                 .prefWidth(labelRadius * 2)

@@ -13,23 +13,21 @@ import javafx.stage.Stage;
 
 public class MenuBarComponent {
     public static MenuBar getRoot(MainViewModel viewModel, MainView mainView) {
-        return MenuBarBuilder.create()
-                .addMenus(
-                        MenuBuilder.create()
-                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
-                                .addItems(
-                                        MenuItemBuilder.create()
-                                                .textPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("menu.settings")))
-                                                .onAction(_ -> viewModel
-                                                        .openSettingsWindow((Stage) mainView.getScene().getWindow()))
-                                                .build(),
-                                        MenuItemBuilder.create()
-                                                .textPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("menu.close")))
-                                                .onAction(_ -> Platform.exit())
-                                                .build())
+        return MenuBarBuilder.withMenus(
+                MenuBuilder.withItems(
+                        MenuItemBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("menu.settings")))
+                                .onAction(_ -> viewModel
+                                        .openSettingsWindow((Stage) mainView.getScene().getWindow()))
+                                .build(),
+                        MenuItemBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("menu.close")))
+                                .onAction(_ -> Platform.exit())
                                 .build())
+                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
+                        .build())
                 .build();
     }
 

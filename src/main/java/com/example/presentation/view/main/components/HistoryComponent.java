@@ -10,7 +10,6 @@ import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
@@ -27,29 +26,31 @@ public class HistoryComponent {
                                 .alignment(Pos.CENTER)
                                 .marginInHBox(new Insets(3))
                                 .build(),
-                        ComboBoxBuilder.<Number>create()
-                                .addItems(FXCollections.observableArrayList(BmiCommonAppModel.HISTORY_LIMIT))
+                        ComboBoxBuilder.withItems(
+                                BmiCommonAppModel.HISTORY_LIMIT)
                                 .valuePropertyApply(prop -> prop
-                                        .bindBidirectional(viewModel.historyLimitProperty()))
+                                        .bindBidirectional(viewModel.historyLimitProperty().asObject()))
                                 .build())
                         .build(),
-                TabPaneBuilder.create()
-                        .addTabs(
-                                TabBuilder.create()
-                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
-                                        .content(HistoryListComponent.getRoot(viewModel))
-                                        .closable(false)
-                                        .build(),
-                                TabBuilder.create()
-                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.tab")))
-                                        .content(HistoryTableComponent.getRoot(viewModel))
-                                        .closable(false)
-                                        .build(),
-                                TabBuilder.create()
-                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
-                                        .content(HistoryChartComponent.getRoot(viewModel))
-                                        .closable(false)
-                                        .build())
+                TabPaneBuilder.withTabs(
+                        TabBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.list.tab")))
+                                .content(HistoryListComponent.getRoot(viewModel))
+                                .closable(false)
+                                .build(),
+                        TabBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.table.tab")))
+                                .content(HistoryTableComponent.getRoot(viewModel))
+                                .closable(false)
+                                .build(),
+                        TabBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.chart.tab")))
+                                .content(HistoryChartComponent.getRoot(viewModel))
+                                .closable(false)
+                                .build())
                         .maxWidth(Double.MAX_VALUE)
                         .hGrowInHBox(Priority.ALWAYS)
                         .build())

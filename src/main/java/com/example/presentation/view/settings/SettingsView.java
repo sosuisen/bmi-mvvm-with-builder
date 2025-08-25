@@ -66,64 +66,63 @@ public class SettingsView implements View {
                 .maxHeight(50)
                 .build();
 
-        return SceneBuilder
-                .withRoot(
-                        GridPaneBuilder.create()
-                                .padding(new Insets(3))
-                                .addRow(0,
-                                        LabelBuilder.create()
-                                                .textPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("settings.language")))
-                                                .hAlignmentInGridPane(HPos.CENTER)
-                                                .build(),
-                                        ComboBoxBuilder.<Languages>create()
-                                                .addItems(Languages.getLanguageList())
-                                                .valuePropertyApply(prop -> prop
-                                                        .bindBidirectional(viewModel.languageProperty()))
-                                                .converterPropertyApply(prop -> prop.bind(Bindings
-                                                        .createObjectBinding(() -> new LanguagesSystemConverter(),
-                                                                I18n.INSTANCE.resourcesProperty())))
-                                                .build())
-                                .addRow(1,
-                                        LabelBuilder.create()
-                                                .textPropertyApply(
-                                                        prop -> prop.bind(I18n.textProperty("settings.unitsystem")))
-                                                .hAlignmentInGridPane(HPos.CENTER)
-                                                .build(),
-                                        ComboBoxBuilder.<UnitSystem>create()
-                                                .addItems(UnitSystem.getAll())
-                                                .valuePropertyApply(prop -> prop
-                                                        .bindBidirectional(viewModel.unitSystemProperty()))
-                                                .converterPropertyApply(prop -> prop.bind(Bindings
-                                                        .createObjectBinding(() -> new UnitSystemStringConverter(),
-                                                                I18n.INSTANCE.resourcesProperty())))
-                                                .build())
-                                .addRow(2,
-                                        LabelBuilder.create()
-                                                .textPropertyApply(prop -> prop
-                                                        .bind(I18n.textProperty("settings.clearrecords.label")))
-                                                .hAlignmentInGridPane(HPos.CENTER)
-                                                .build(),
-                                        ButtonBuilder.create()
-                                                .id("clear-button")
-                                                .textPropertyApply(prop -> prop
-                                                        .bind(I18n.textProperty("settings.clearrecords.button")))
-                                                .style("""
-                                                        -fx-corner-radius: 12px;
-                                                        """)
-                                                .addStyleClass("button-danger")
-                                                .hAlignmentInGridPane(HPos.CENTER)
-                                                .onAction(_ -> removeAllRecords())
-                                                .build())
-                                .addColumnConstraints(
-                                        ColumnConstraintsBuilder.create()
-                                                .minWidth(120)
-                                                .build(),
-                                        ColumnConstraintsBuilder.create()
-                                                .hgrow(Priority.ALWAYS)
-                                                .build())
-                                .addRowConstraints(rowConstraint, rowConstraint, rowConstraint)
-                                .build())
+        return SceneBuilder.withRoot(
+                GridPaneBuilder.create()
+                        .padding(new Insets(3))
+                        .addRow(0,
+                                LabelBuilder.create()
+                                        .textPropertyApply(
+                                                prop -> prop.bind(I18n.textProperty("settings.language")))
+                                        .hAlignmentInGridPane(HPos.CENTER)
+                                        .build(),
+                                ComboBoxBuilder.withItems(
+                                        Languages.getLanguageList())
+                                        .valuePropertyApply(prop -> prop
+                                                .bindBidirectional(viewModel.languageProperty()))
+                                        .converterPropertyApply(prop -> prop.bind(Bindings
+                                                .createObjectBinding(() -> new LanguagesSystemConverter(),
+                                                        I18n.INSTANCE.resourcesProperty())))
+                                        .build())
+                        .addRow(1,
+                                LabelBuilder.create()
+                                        .textPropertyApply(
+                                                prop -> prop.bind(I18n.textProperty("settings.unitsystem")))
+                                        .hAlignmentInGridPane(HPos.CENTER)
+                                        .build(),
+                                ComboBoxBuilder.withItems(
+                                        UnitSystem.getAll())
+                                        .valuePropertyApply(prop -> prop
+                                                .bindBidirectional(viewModel.unitSystemProperty()))
+                                        .converterPropertyApply(prop -> prop.bind(Bindings
+                                                .createObjectBinding(() -> new UnitSystemStringConverter(),
+                                                        I18n.INSTANCE.resourcesProperty())))
+                                        .build())
+                        .addRow(2,
+                                LabelBuilder.create()
+                                        .textPropertyApply(prop -> prop
+                                                .bind(I18n.textProperty("settings.clearrecords.label")))
+                                        .hAlignmentInGridPane(HPos.CENTER)
+                                        .build(),
+                                ButtonBuilder.create()
+                                        .id("clear-button")
+                                        .textPropertyApply(prop -> prop
+                                                .bind(I18n.textProperty("settings.clearrecords.button")))
+                                        .style("""
+                                                -fx-corner-radius: 12px;
+                                                """)
+                                        .addStyleClass("button-danger")
+                                        .hAlignmentInGridPane(HPos.CENTER)
+                                        .onAction(_ -> removeAllRecords())
+                                        .build())
+                        .addColumnConstraints(
+                                ColumnConstraintsBuilder.create()
+                                        .minWidth(120)
+                                        .build(),
+                                ColumnConstraintsBuilder.create()
+                                        .hgrow(Priority.ALWAYS)
+                                        .build())
+                        .addRowConstraints(rowConstraint, rowConstraint, rowConstraint)
+                        .build())
                 .width(WIDTH)
                 .height(HEIGHT)
                 .addStylesheetsText(CSS)

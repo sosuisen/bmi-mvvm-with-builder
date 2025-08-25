@@ -40,7 +40,7 @@ public class HistoryChartComponent {
         });
 
         return LineChartBuilder
-                .<String, Number>create(
+                .create(
                         CategoryAxisBuilder.create()
                                 .labelPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
@@ -49,10 +49,7 @@ public class HistoryChartComponent {
                                 .labelPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
                                 .build())
-                .addData(
-                        XYChartSeriesBuilder.<String, Number>create()
-                                .data(chartData)
-                                .build())
+                .addData(XYChartSeriesBuilder.withData(chartData).build())
                 .title(I18n.text("history.chart.title"))
                 .legendVisible(false)
                 .animated(false)
