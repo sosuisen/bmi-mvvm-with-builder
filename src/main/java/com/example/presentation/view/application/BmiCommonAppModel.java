@@ -22,7 +22,6 @@ import javafx.collections.ObservableList;
  */
 public class BmiCommonAppModel {
     public static final Integer[] HISTORY_LIMIT = { 20, 50, 100 };
-    // public static final Integer[] HISTORY_LIMIT = { 1, 2, 3 };
 
     private final BmiService bmiService;
 

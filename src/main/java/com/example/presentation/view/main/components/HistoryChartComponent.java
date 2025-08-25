@@ -38,6 +38,7 @@ public class HistoryChartComponent {
                 }
             }
         });
+
         return LineChartBuilder
                 .<String, Number>create(
                         CategoryAxisBuilder.create()
@@ -62,7 +63,7 @@ public class HistoryChartComponent {
     }
 
     private static String dateToXValue(LocalDate date) {
-        return date.format(DateTimeFormatter.ofPattern("M/d"));
+        return date.format(DateTimeFormatter.ofPattern("MM/dd"));
     }
 
     private static XYChart.Data<String, Number> bmiToChartData(BmiRecordWithDiff bmiRecord) {
