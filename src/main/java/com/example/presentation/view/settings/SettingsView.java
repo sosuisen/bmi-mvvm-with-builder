@@ -23,7 +23,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class SettingsView implements View {
@@ -127,6 +129,11 @@ public class SettingsView implements View {
                 .height(HEIGHT)
                 .addStylesheetsText(CSS)
                 .addStylesheetsText(GlobalCSS.CSS)
+                .onKeyPressed(e -> {
+                    if (e.getCode() == KeyCode.ESCAPE) {
+                        ((Stage) scene.getWindow()).close();
+                    }
+                })
                 .build();
     }
 
