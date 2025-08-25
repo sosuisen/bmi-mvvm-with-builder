@@ -1,35 +1,58 @@
 package com.example.presentation.view.main.components;
 
 import com.example.presentation.utils.I18n;
+import com.example.presentation.view.application.BmiCommonAppModel;
 import com.example.presentation.view.main.MainViewModel;
 
+import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;
+import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabBuilder;
 import io.github.sosuisen.jfxbuilder.controls.TabPaneBuilder;
-import javafx.scene.control.TabPane;
+import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
+import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class HistoryComponent {
 
-    public static TabPane getRoot(MainViewModel viewModel) {
-        return TabPaneBuilder.create()
-                .addTabs(
-                        TabBuilder.create()
-                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
-                                .content(HistoryListComponent.getRoot(viewModel))
-                                .closable(false)
+    public static VBox getRoot(MainViewModel viewModel) {
+        return VBoxBuilder.withChildren(
+                HBoxBuilder.withChildren(
+                        LabelBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("history.limit")))
+                                .alignment(Pos.CENTER)
+                                .marginInHBox(new Insets(3))
                                 .build(),
-                        TabBuilder.create()
-                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.tab")))
-                                .content(HistoryTableComponent.getRoot(viewModel))
-                                .closable(false)
-                                .build(),
-                        TabBuilder.create()
-                                .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
-                                .content(HistoryChartComponent.getRoot(viewModel))
-                                .closable(false)
+                        ComboBoxBuilder.<Number>create()
+                                .addItems(FXCollections.observableArrayList(BmiCommonAppModel.HISTORY_LIMIT))
+                                .valuePropertyApply(prop -> prop
+                                        .bindBidirectional(viewModel.historyLimitProperty()))
                                 .build())
-                .maxWidth(Double.MAX_VALUE)
-                .hGrowInHBox(Priority.ALWAYS)
+                        .build(),
+                TabPaneBuilder.create()
+                        .addTabs(
+                                TabBuilder.create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.tab")))
+                                        .content(HistoryListComponent.getRoot(viewModel))
+                                        .closable(false)
+                                        .build(),
+                                TabBuilder.create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.tab")))
+                                        .content(HistoryTableComponent.getRoot(viewModel))
+                                        .closable(false)
+                                        .build(),
+                                TabBuilder.create()
+                                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.tab")))
+                                        .content(HistoryChartComponent.getRoot(viewModel))
+                                        .closable(false)
+                                        .build())
+                        .maxWidth(Double.MAX_VALUE)
+                        .hGrowInHBox(Priority.ALWAYS)
+                        .build())
                 .build();
     }
 

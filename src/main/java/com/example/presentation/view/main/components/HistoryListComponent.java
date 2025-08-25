@@ -43,7 +43,7 @@ public class HistoryListComponent {
                 textProperty().unbind();
 
                 if (empty || item == null) {
-                    setText(null);
+                    setGraphic(null);
                 } else {
                     var row = HBoxBuilder
                             .withChildren(

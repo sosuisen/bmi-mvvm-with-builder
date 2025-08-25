@@ -40,10 +40,10 @@ public class BmiServiceImpl implements BmiService {
     }
 
     @Override
-    public List<BmiRecordWithDiff> loadRecords() throws RepositoryException {
+    public List<BmiRecordWithDiff> loadRecords(int limit) throws RepositoryException {
         var recordsWithDiff = new ArrayList<BmiRecordWithDiff>();
         BmiRecord prevRecord = null;
-        for (var record : repository.loadBmiRecords(BmiRecordOrder.DATE_ASC)) {
+        for (var record : repository.loadBmiRecords(BmiRecordOrder.DATE_DESC, limit).reversed()) {
             recordsWithDiff.addFirst(new BmiRecordWithDiff(record, prevRecord));
             prevRecord = record;
         }

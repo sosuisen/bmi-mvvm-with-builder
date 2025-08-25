@@ -13,6 +13,7 @@ import com.example.presentation.view.settings.SettingsView;
 
 import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -71,6 +72,10 @@ public class MainViewModel {
         return configAppModel.unitSystemProperty();
     }
 
+    public IntegerProperty historyLimitProperty() {
+        return bmiCommonAppModel.historyLimitProperty();
+    }
+
     public ObjectProperty<Throwable> errorProperty() {
         return bmiCommonAppModel.errorProperty();
     }
@@ -89,9 +94,7 @@ public class MainViewModel {
         weightKg.bind(inputWeight
                 .map(value -> configAppModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
-        var latestRecord = commonViewModel.getBmiList().size() > 0
-                ? commonViewModel.getBmiList().get(0)
-                : null;
+        var latestRecord = commonViewModel.getLatestRecrd();
 
         inputHeight.set(latestRecord != null
                 ? configAppModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())

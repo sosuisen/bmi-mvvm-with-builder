@@ -34,14 +34,16 @@ public interface BmiService {
     public void removeAllRecords() throws RepositoryException;
 
     /**
-     * Loads all BMI records from the repository, including differences from the
-     * previous record.
+     * Loads a limited number of BMI records from the repository, including
+     * differences from the previous record.
+     * 
      * The records are loaded in a descending order.
      *
+     * @param limit The maximum number of records to retrieve.
      * @return A list of {@link BmiRecordWithDiff} objects.
      * @throws RepositoryException If an error occurs during the loading process.
      */
-    public List<BmiRecordWithDiff> loadRecords() throws RepositoryException;
+    public List<BmiRecordWithDiff> loadRecords(int limit) throws RepositoryException;
 
     /**
      * Inserts or updates a BMI record in the repository.

@@ -13,7 +13,9 @@ public class TableRowFactories {
             @Override
             protected void updateItem(S item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item != null) {
+                if (item == null) {
+                    setStyle(null);
+                } else {
                     var style = "-fx-background-color: %s;"
                             .formatted(webColorConverter.apply(item));
                     setStyle(style);
