@@ -27,6 +27,15 @@ public class MenuBarComponent {
                                 .onAction(_ -> Platform.exit())
                                 .build())
                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
+                        .build(),
+                MenuBuilder.withItems(
+                        MenuItemBuilder.create()
+                                .textPropertyApply(
+                                        prop -> prop.bind(I18n.textProperty("menu.about")))
+                                .onAction(_ -> viewModel
+                                        .openAboutWindow((Stage) mainView.getScene().getWindow()))
+                                .build())
+                        .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.help")))
                         .build())
                 .build();
     }

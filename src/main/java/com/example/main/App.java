@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import com.example.presentation.utils.I18n;
 import com.example.presentation.view.WindowManagerImpl;
+import com.example.presentation.view.about.AboutView;
 import com.example.presentation.view.alert.AlertDialog;
 import com.example.presentation.view.application.BmiCommonAppModel;
 import com.example.presentation.view.application.ConfigAppModel;
@@ -49,6 +50,8 @@ public class App extends Application {
         windowManager.registerView(new SettingsView(new SettingsViewModel(bmiCommonAppModel, configAppModel)));
 
         windowManager.registerView(new MainView(new MainViewModel(windowManager, bmiCommonAppModel, configAppModel)));
+
+        windowManager.registerView(new AboutView(getHostServices()));
 
         windowManager.showWindow(MainView.class, stage);
     }

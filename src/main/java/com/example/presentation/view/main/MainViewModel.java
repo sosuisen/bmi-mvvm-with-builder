@@ -7,6 +7,7 @@ import com.example.domain.model.ObesityCategory;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.service.BmiRecordWithDiff;
 import com.example.presentation.view.WindowManager;
+import com.example.presentation.view.about.AboutView;
 import com.example.presentation.view.application.BmiCommonAppModel;
 import com.example.presentation.view.application.ConfigAppModel;
 import com.example.presentation.view.settings.SettingsView;
@@ -19,6 +20,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainViewModel {
@@ -143,16 +145,33 @@ public class MainViewModel {
         } else {
             newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
         }
+
+        // Open modeless dialog
         var newStage = StageBuilder.create()
                 .x(newPosition.getX())
                 .y(newPosition.getY())
                 .apply(stage -> {
-                    // stage.initModality(Modality.APPLICATION_MODAL);
                     stage.initOwner(currentStage);
                 })
                 .build();
 
         windowManager.showWindow(SettingsView.class, newStage);
+    }
+
+    public void openAboutWindow(Stage currentStage) {
+        var newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
+
+        // Open modal dialog
+        var newStage = StageBuilder.create()
+                .x(newPosition.getX())
+                .y(newPosition.getY())
+                .apply(stage -> {
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(currentStage);
+                })
+                .build();
+
+        windowManager.showWindow(AboutView.class, newStage);
     }
 
 }
