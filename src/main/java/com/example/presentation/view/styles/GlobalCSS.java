@@ -13,6 +13,7 @@ public class GlobalCSS {
 
             .button-safe:hover {
                 -fx-background-color: #009000;
+                transition: -fx-background-color 0.3s;
                 -fx-cursor: hand;
             }
 
@@ -24,6 +25,7 @@ public class GlobalCSS {
 
             .button-danger:hover {
                 -fx-background-color: #c05050;
+                transition: -fx-background-color 0.3s;
                 -fx-cursor: hand;
             }
 
