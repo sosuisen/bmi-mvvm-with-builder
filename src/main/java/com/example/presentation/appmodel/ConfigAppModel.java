@@ -1,4 +1,4 @@
-package com.example.presentation.view.application;
+package com.example.presentation.appmodel;
 
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.SIUnitsWithCentimeters;

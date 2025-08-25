@@ -1,4 +1,6 @@
-package com.example.presentation.view;
+package com.example.presentation;
+
+import com.example.presentation.view.View;
 
 import javafx.stage.Stage;
 

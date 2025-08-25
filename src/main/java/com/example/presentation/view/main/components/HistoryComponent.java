@@ -1,7 +1,7 @@
 package com.example.presentation.view.main.components;
 
+import com.example.presentation.appmodel.BmiCommonAppModel;
 import com.example.presentation.utils.I18n;
-import com.example.presentation.view.application.BmiCommonAppModel;
 import com.example.presentation.view.main.MainViewModel;
 
 import io.github.sosuisen.jfxbuilder.controls.ComboBoxBuilder;

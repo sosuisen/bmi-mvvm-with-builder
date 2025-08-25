@@ -6,10 +6,10 @@ import java.util.Optional;
 import com.example.domain.model.ObesityCategory;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.service.BmiRecordWithDiff;
-import com.example.presentation.view.WindowManager;
+import com.example.presentation.WindowManager;
+import com.example.presentation.appmodel.BmiCommonAppModel;
+import com.example.presentation.appmodel.ConfigAppModel;
 import com.example.presentation.view.about.AboutView;
-import com.example.presentation.view.application.BmiCommonAppModel;
-import com.example.presentation.view.application.ConfigAppModel;
 import com.example.presentation.view.settings.SettingsView;
 
 import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;

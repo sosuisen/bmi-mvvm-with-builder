@@ -3,8 +3,8 @@ package com.example.presentation.view.settings;
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
-import com.example.presentation.view.application.BmiCommonAppModel;
-import com.example.presentation.view.application.ConfigAppModel;
+import com.example.presentation.appmodel.BmiCommonAppModel;
+import com.example.presentation.appmodel.ConfigAppModel;
 
 import javafx.beans.property.ObjectProperty;
 

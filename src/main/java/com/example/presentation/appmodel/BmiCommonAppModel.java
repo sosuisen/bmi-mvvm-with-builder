@@ -1,4 +1,4 @@
-package com.example.presentation.view.application;
+package com.example.presentation.appmodel;
 
 import java.time.LocalDate;
 import java.util.Optional;
