@@ -60,7 +60,8 @@ src/main/resources/com/example/
 
 ## Architecture
 
-This application follows the **MVVM (Model-View-ViewModel)** pattern:
+This application follows the **MVVM (Model-View-ViewModel)** pattern,
+using simple dependency injection without frameworks.
 
 <img src="diagram/diagram.png" width=320>
 
