@@ -50,6 +50,7 @@ diagram/ # Overview of package dependencies
 src/main/java/com/example/
 ├── domain/          # Domain models and interfaces
 ├── presentation/    # UI views, view models, components
+|                    # You can find useful examples about JavaFX Builder API here.
 ├── repository/      # Data access implementations
 ├── service/         # Business logic implementations
 └── main/           # Application entry point
