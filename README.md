@@ -53,10 +53,10 @@ src/main/java/com/example/
 |                    # You can find useful examples about JavaFX Builder API here.
 ├── repository/      # Data access implementations
 ├── service/         # Business logic implementations
-└── main/           # Application entry point
+└── main/            # Application entry point
 
 src/main/resources/com/example/
-└── i18n/           # Internationalization resources
+└── i18n/            # Internationalization resources
 
 ```
 ## Architecture
