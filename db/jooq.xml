@@ -2,7 +2,7 @@
 <configuration>
     <jdbc>
         <driver>org.sqlite.JDBC</driver>
-        <url>jdbc:sqlite:./bmi.db</url>
+        <url>jdbc:sqlite:./db/bmi.db</url>
     </jdbc>
 
     <generator>

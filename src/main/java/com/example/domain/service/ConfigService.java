@@ -1,8 +1,8 @@
 package com.example.domain.service;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
-import com.example.domain.exception.RepositoryException;
 
 /**
  * Service interface for managing application configuration, such as unit system

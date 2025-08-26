@@ -1,0 +1,55 @@
+@startuml
+'Overview of package dependencies
+
+package domain.model {
+
+}
+
+package domain.repository #line.dotted {
+    
+}
+
+package domain.service #line.dotted {
+
+}
+
+package service {
+
+}
+
+package repository {
+
+}
+
+package presentation.appmodel {
+
+}
+
+package presentation.screens {
+
+}
+
+package presentation.screens.main {
+    MainViewModel -[dashed]-> appmodel
+    MainViewModel -[dashed]-> presentation.screens.WindowManager
+    MainView -[dashed]-> MainViewModel
+}
+
+package presentation.screens.settings {
+    SettingsViewModel -[dashed]-> appmodel
+    SettingsView -[dashed]-> SettingsViewModel
+}
+
+presentation.appmodel --[dashed]-> domain.service
+
+domain.service -[dashed]-> domain.model
+
+domain.repository -[dashed]-> domain.model
+
+service --|> domain.service
+
+service --|> domain.repository
+
+repository --|> domain.repository
+
+@enduml

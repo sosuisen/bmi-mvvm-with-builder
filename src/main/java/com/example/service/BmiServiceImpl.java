@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Bmi;
 import com.example.domain.model.BmiRecord;
 import com.example.domain.model.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
-import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.BmiRecordWithDiff;
 import com.example.domain.service.BmiService;
 

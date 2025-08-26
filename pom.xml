@@ -175,7 +175,7 @@
         </executions>
         <configuration>
           <configurationFiles>
-            <configurationFile>jooq.xml</configurationFile>
+            <configurationFile>db/jooq.xml</configurationFile>
           </configurationFiles>
         </configuration>
       </plugin>

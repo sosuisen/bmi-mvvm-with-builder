@@ -14,10 +14,10 @@ import static com.example.repository.jooq.Tables.*;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.BmiRecord;
 import com.example.domain.model.BmiRecordOrder;
 import com.example.domain.repository.BmiRepository;
-import com.example.domain.exception.RepositoryException;
 
 public class BmiRepositoryJooqImpl implements BmiRepository {
     private final String JDBC_URL_PREFIX = "jdbc:sqlite:";

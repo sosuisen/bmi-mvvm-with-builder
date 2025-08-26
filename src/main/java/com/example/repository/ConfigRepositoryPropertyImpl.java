@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import com.example.domain.repository.ConfigRepository;
 import com.example.domain.exception.RepositoryException;
+import com.example.domain.repository.ConfigRepository;
 
 public class ConfigRepositoryPropertyImpl implements ConfigRepository {
     private static final String CONFIG_FILE = "config.properties";

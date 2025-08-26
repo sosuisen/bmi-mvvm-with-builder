@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.domain.exception.RepositoryException;
 import com.example.domain.model.Languages;
 import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
@@ -7,7 +8,6 @@ import com.example.domain.repository.ConfigRepository;
 
 import java.util.Locale;
 
-import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
 
 public class ConfigServiceImpl implements ConfigService {
