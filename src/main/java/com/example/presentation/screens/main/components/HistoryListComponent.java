@@ -10,6 +10,7 @@ import io.github.sosuisen.jfxbuilder.controls.LabelBuilder;
 import io.github.sosuisen.jfxbuilder.controls.ListViewBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.HBoxBuilder;
 import io.github.sosuisen.jfxbuilder.graphics.VBoxBuilder;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -49,8 +50,6 @@ public class HistoryListComponent {
             protected void updateItem(BmiRecordWithDiff item, boolean empty) {
                 super.updateItem(item, empty);
 
-                textProperty().unbind();
-
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
@@ -72,64 +71,13 @@ public class HistoryListComponent {
 
         return LabelBuilder.create()
                 .text(String.format("%.1f", bmiRecord.bmi()))
-                .stylePropertyApply(prop -> prop.bind(getAnimatedBmiLabelStyleBinding(bmiRecord, labelRadius)))
+                .stylePropertyApply(
+                        prop -> prop.bind(
+                                new AnimatedBmiLabelStyle(bmiRecord.obesity(), labelRadius).getAnimatedStringBinding()))
                 .prefHeight(labelRadius * 2)
                 .prefWidth(labelRadius * 2)
                 .marginInHBox(new Insets(7, 20, 7, 10))
                 .build();
-    }
-
-    private static StringBinding getAnimatedBmiLabelStyleBinding(BmiRecordWithDiff bmiRecord, double radius) {
-        int cornerRadiusTransFrom = 18;
-        // When the corner radius decreases, the appearance looks fat.
-        int cornerRadiusTransTo = switch (bmiRecord.obesity()) {
-            case ObesityCategory.HIGH -> 10;
-            case ObesityCategory.NORMAL -> 18;
-            case ObesityCategory.LOW -> 18;
-            case ObesityCategory.NONE -> 18;
-        };
-        DoubleProperty cornerRadiusProperty = new SimpleDoubleProperty(cornerRadiusTransFrom);
-
-        int insetTransFrom = 0;
-        // When the corner radius increases, the appearance looks thin.
-        int insetTransTo = switch (bmiRecord.obesity()) {
-            case ObesityCategory.HIGH -> 0;
-            case ObesityCategory.NORMAL -> 0;
-            case ObesityCategory.LOW -> 2;
-            case ObesityCategory.NONE -> 0;
-        };
-        DoubleProperty insetProperty = new SimpleDoubleProperty(insetTransFrom);
-
-        var styleBinding = Bindings.createStringBinding(() -> new StringBuilder()
-                .append("-fx-background-color: %s;"
-                        .formatted(ObesityColor.getDarkColor(bmiRecord.obesity())))
-                .append("-fx-background-radius: %s;".formatted(cornerRadiusProperty.get()))
-                .append("-fx-background-insets: %s;".formatted(insetProperty.get()))
-                .append("""
-                        -fx-font-weight: bold;
-                        -fx-alignment: center;
-                        -fx-text-fill: white;
-                        """)
-                .toString(), cornerRadiusProperty, insetProperty);
-
-        Timeline animation = new Timeline(
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
-                        new KeyValue(insetProperty, insetTransFrom)),
-                new KeyFrame(Duration.seconds(0.6),
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransTo),
-                        new KeyValue(insetProperty, insetTransTo)),
-                new KeyFrame(Duration.seconds(1.8),
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
-                        new KeyValue(insetProperty, insetTransFrom)));
-        animation.setCycleCount(Timeline.INDEFINITE);
-
-        if (bmiRecord.obesity().equals(ObesityCategory.HIGH) || bmiRecord.obesity().equals(ObesityCategory.LOW)) {
-            animation.play();
-        }
-
-        return styleBinding;
-
     }
 
     private static VBox createDetailBox(BmiRecordWithDiff bmiRecord) {
@@ -177,4 +125,80 @@ public class HistoryListComponent {
 
     }
 
+}
+
+class AnimatedBmiLabelStyle {
+    private final double cornerRadiusTransFrom;
+    private final double cornerRadiusTransTo;
+
+    private final double insetTransFrom;
+    private final double insetTransTo;
+
+    private final DoubleProperty cornerRadiusProperty;
+    private final DoubleProperty insetProperty;
+
+    private final StringBinding styleBinding;
+
+    private final Animation animation;
+
+    private final ObesityCategory obesity;
+
+    public AnimatedBmiLabelStyle(ObesityCategory obesity, double labelRadius) {
+        this.obesity = obesity;
+
+        cornerRadiusTransFrom = labelRadius;
+
+        // When the corner radius decreases, the appearance looks fat.
+        cornerRadiusTransTo = switch (obesity) {
+            case ObesityCategory.HIGH -> 10;
+            case ObesityCategory.NORMAL -> 18;
+            case ObesityCategory.LOW -> 18;
+            case ObesityCategory.NONE -> 18;
+        };
+
+        insetTransFrom = 0;
+
+        // When the corner radius increases, the appearance looks thin.
+        insetTransTo = switch (obesity) {
+            case ObesityCategory.HIGH -> 0;
+            case ObesityCategory.NORMAL -> 0;
+            case ObesityCategory.LOW -> 2;
+            case ObesityCategory.NONE -> 0;
+        };
+
+        cornerRadiusProperty = new SimpleDoubleProperty(cornerRadiusTransFrom);
+        insetProperty = new SimpleDoubleProperty(insetTransFrom);
+
+        styleBinding = Bindings.createStringBinding(() -> new StringBuilder()
+                .append("-fx-background-color: %s;"
+                        .formatted(ObesityColor.getDarkColor(obesity)))
+                .append("-fx-background-radius: %s;".formatted(cornerRadiusProperty.get()))
+                .append("-fx-background-insets: %s;".formatted(insetProperty.get()))
+                .append("""
+                        -fx-font-weight: bold;
+                        -fx-alignment: center;
+                        -fx-text-fill: white;
+                        """)
+                .toString(), cornerRadiusProperty, insetProperty);
+
+        animation = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
+                        new KeyValue(insetProperty, insetTransFrom)),
+                new KeyFrame(Duration.seconds(0.6),
+                        new KeyValue(cornerRadiusProperty, cornerRadiusTransTo),
+                        new KeyValue(insetProperty, insetTransTo)),
+                new KeyFrame(Duration.seconds(1.8),
+                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
+                        new KeyValue(insetProperty, insetTransFrom)));
+        animation.setCycleCount(Timeline.INDEFINITE);
+
+    }
+
+    public StringBinding getAnimatedStringBinding() {
+        if (obesity.equals(ObesityCategory.HIGH) || obesity.equals(ObesityCategory.LOW)) {
+            animation.play();
+        }
+        return styleBinding;
+    }
 }
