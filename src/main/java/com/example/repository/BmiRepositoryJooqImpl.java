@@ -1,5 +1,8 @@
 package com.example.repository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -23,6 +26,13 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
 
     public BmiRepositoryJooqImpl() throws RepositoryException {
         DB_PATH = JDBC_URL_PREFIX + AppDirectory.getAppDirPath() + "/" + DB_NAME;
+
+        try {
+            Files.createDirectories(Path.of(AppDirectory.getAppDirPath()));
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to create app directory.");
+        }
+
         createTableIfNotExists();
     }
 

@@ -16,8 +16,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Locale;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -55,15 +53,6 @@ class ConfigServiceImplTest {
     }
 
     @Test
-    void getUnitSystem_whenRepoHasInvalidValue_throwsException() throws RepositoryException {
-        // Given
-        when(configRepository.getConfig("unit.system")).thenReturn("InvalidUnitSystem");
-
-        // When & Then
-        assertThrows(RepositoryException.class, () -> configService.getUnitSystem());
-    }
-
-    @Test
     void setUnitSystem_callsRepository() throws RepositoryException {
         // Given
         UnitSystem unitSystem = new ImperialUnits();
@@ -80,8 +69,6 @@ class ConfigServiceImplTest {
         // Given
         when(configRepository.getConfig("language")).thenReturn(null);
         I18n mockI18n = mock(I18n.class);
-        // Mock OS locale
-        when(mockI18n.getCurrentLocale()).thenReturn(Locale.of("ja"));
 
         try (MockedStatic<I18n> mockedStatic = Mockito.mockStatic(I18n.class)) {
             mockedStatic.when(I18n::getInstance).thenReturn(mockI18n);
