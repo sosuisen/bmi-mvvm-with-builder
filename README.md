@@ -13,6 +13,13 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 - **Data Visualization**: View history in various formats (list, table, chart).
 - **Database Storage**: SQLite database with JOOQ for data persistence.
 
+## Screens
+
+<img src="./images/mainscreen.png" width=240>
+<img src="./images/tab_details.png" width=160>
+<img src="./images/tab_chart.png" width=160>
+
+
 ## Tech Stack
 
 - **Java 23** - Latest features and performance improvements.
