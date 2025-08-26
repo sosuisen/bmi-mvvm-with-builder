@@ -13,9 +13,8 @@ public interface ConfigService {
      * Retrieves the configured unit system.
      *
      * @return The configured {@link UnitSystem}.
-     * @throws RepositoryException If an error occurs during retrieval.
      */
-    UnitSystem getUnitSystem() throws RepositoryException;
+    UnitSystem getUnitSystem();
 
     /**
      * Sets the unit system in the configuration.
@@ -29,9 +28,8 @@ public interface ConfigService {
      * Retrieves the configured language.
      *
      * @return The configured {@link Languages}.
-     * @throws RepositoryException If an error occurs during retrieval.
      */
-    Languages getLanguage() throws RepositoryException;
+    Languages getLanguage();
 
     /**
      * Sets the language in the configuration.

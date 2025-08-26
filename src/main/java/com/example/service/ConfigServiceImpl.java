@@ -5,9 +5,10 @@ import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
 import com.example.domain.repository.ConfigRepository;
 
+import java.util.Locale;
+
 import com.example.domain.exception.RepositoryException;
 import com.example.domain.service.ConfigService;
-import com.example.presentation.helpers.I18n;
 
 public class ConfigServiceImpl implements ConfigService {
     private static final String UNIT_SYSTEM_KEY = "unit.system";
@@ -28,8 +29,14 @@ public class ConfigServiceImpl implements ConfigService {
      * @throws RepositoryException
      */
     @Override
-    public UnitSystem getUnitSystem() throws RepositoryException {
-        String unitType = configRepository.getConfig(UNIT_SYSTEM_KEY);
+    public UnitSystem getUnitSystem() {
+        String unitType;
+        try {
+            unitType = configRepository.getConfig(UNIT_SYSTEM_KEY);
+        } catch (RepositoryException e) {
+            unitType = null;
+        }
+
         if (unitType == null) {
             return new SIUnitsWithCentimeters();
         }
@@ -43,7 +50,7 @@ public class ConfigServiceImpl implements ConfigService {
                 }
             }
         }
-        throw new RepositoryException("No such unit system: " + unitType);
+        return new SIUnitsWithCentimeters();
     }
 
     @Override
@@ -60,11 +67,16 @@ public class ConfigServiceImpl implements ConfigService {
      * @throws RepositoryException
      */
     @Override
-    public Languages getLanguage() throws RepositoryException {
-        String langStr = configRepository.getConfig(LANGUAGE_KEY);
+    public Languages getLanguage() {
+        String langStr;
+        try {
+            langStr = configRepository.getConfig(LANGUAGE_KEY);
+        } catch (RepositoryException e) {
+            langStr = null;
+        }
 
         if (langStr == null) {
-            langStr = I18n.getInstance().getCurrentLocale().getLanguage();
+            langStr = Locale.getDefault().getLanguage();
         }
 
         try {

@@ -1,7 +1,6 @@
 package com.example.presentation.appmodel;
 
 import com.example.domain.model.Languages;
-import com.example.domain.model.unit.SIUnitsWithCentimeters;
 import com.example.domain.model.unit.UnitSystem;
 
 import java.util.Locale;
@@ -18,19 +17,10 @@ public class ConfigAppModel {
     private final ObjectProperty<Languages> language = new SimpleObjectProperty<>();
 
     public ConfigAppModel(ConfigService configService, BmiCommonAppModel bmiListAppModel) {
-        try {
-            unitSystem.set(configService.getUnitSystem());
-        } catch (RepositoryException e) {
-            unitSystem.set(new SIUnitsWithCentimeters());
-            bmiListAppModel.errorProperty().set(e);
-        }
 
-        try {
-            language.set(configService.getLanguage());
-        } catch (RepositoryException e) {
-            language.set(Languages.getDefaultLanguages());
-            bmiListAppModel.errorProperty().set(e);
-        }
+        unitSystem.set(configService.getUnitSystem());
+
+        language.set(configService.getLanguage());
 
         unitSystem.addListener((_, _, newValue) -> {
             try {

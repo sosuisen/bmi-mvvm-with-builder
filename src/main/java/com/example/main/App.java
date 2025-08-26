@@ -2,6 +2,8 @@ package com.example.main;
 
 import java.util.Locale;
 
+import com.example.domain.exception.RepositoryException;
+import com.example.domain.service.BmiService;
 import com.example.presentation.WindowManagerImpl;
 import com.example.presentation.appmodel.BmiCommonAppModel;
 import com.example.presentation.appmodel.ConfigAppModel;
@@ -40,9 +42,16 @@ public class App extends Application {
             I18n.getInstance().setResources(Locale.of(configService.getLanguage().toLanguageString()));
         } catch (Exception e) {
             AlertDialog.showErrorAndExit("Cannot load language", e);
+            return;
         }
 
-        var bmiService = new BmiServiceImpl(new BmiRepositoryJooqImpl());
+        BmiService bmiService;
+        try {
+            bmiService = new BmiServiceImpl(new BmiRepositoryJooqImpl());
+        } catch (RepositoryException e) {
+            AlertDialog.showErrorAndExit("Cannot load BMI records", e);
+            return;
+        }
 
         /*
          * WindowsManager manages views.
