@@ -49,7 +49,7 @@ public class HistoryChartComponent {
                                 .labelPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
                                 .build())
-                .addData(XYChartSeriesBuilder.withData(chartData).build())
+                .addData(XYChartSeriesBuilder.<String, Number>create().data(chartData).build())
                 .title(I18n.text("history.chart.title"))
                 .legendVisible(false)
                 .animated(false)

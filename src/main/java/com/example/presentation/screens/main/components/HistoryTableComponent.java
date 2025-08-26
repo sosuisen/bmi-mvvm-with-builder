@@ -27,8 +27,8 @@ public class HistoryTableComponent {
                         .textPropertyApply(
                                 prop -> prop.bind(I18n.textProperty("history.table.title")))
                         .build(),
-                TableViewBuilder.withItems(
-                        viewModel.getBmiList())
+                TableViewBuilder.<BmiRecordWithDiff>create()
+                        .items(viewModel.getBmiList())
                         .addColumns(
                                 TableColumnBuilder.<BmiRecordWithDiff, LocalDate>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
