@@ -17,7 +17,31 @@ import com.example.domain.repository.BmiRepository;
 import com.example.domain.exception.RepositoryException;
 
 public class BmiRepositoryJooqImpl implements BmiRepository {
-    private final String DB_PATH = "jdbc:sqlite:./bmi.db";
+    private final String JDBC_URL_PREFIX = "jdbc:sqlite:";
+    private final String DB_NAME = "bmi.db";
+    private final String DB_PATH;
+
+    public BmiRepositoryJooqImpl() throws RepositoryException {
+        DB_PATH = JDBC_URL_PREFIX + AppDirectory.getAppDirPath() + "/" + DB_NAME;
+        createTableIfNotExists();
+    }
+
+    private void createTableIfNotExists() throws RepositoryException {
+        try (Connection conn = DriverManager.getConnection(DB_PATH)) {
+            var context = DSL.using(conn, SQLDialect.SQLITE);
+            context.execute("""
+                    CREATE TABLE IF NOT EXISTS bmi_history (
+                        id INTEGER NOT NULL,
+                        height_meter REAL NOT NULL,
+                        weight_kg REAL NOT NULL,
+                        date TEXT NOT NULL UNIQUE,
+                        CONSTRAINT bmi_pk PRIMARY KEY (id)
+                    )
+                    """);
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to create a table.");
+        }
+    }
 
     @Override
     public void removeRecord(int id) throws RepositoryException {

@@ -11,14 +11,13 @@ import com.example.domain.repository.ConfigRepository;
 import com.example.domain.exception.RepositoryException;
 
 public class ConfigRepositoryPropertyImpl implements ConfigRepository {
-    private static final String CONFIG_DIR = ".bmi-app";
     private static final String CONFIG_FILE = "config.properties";
     private final Properties properties;
     private final Path configPath;
 
     public ConfigRepositoryPropertyImpl() {
         this.properties = new Properties();
-        this.configPath = Paths.get(System.getProperty("user.home"), CONFIG_DIR, CONFIG_FILE);
+        this.configPath = Paths.get(AppDirectory.getAppDirPath(), CONFIG_FILE);
     }
 
     @Override
