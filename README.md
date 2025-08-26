@@ -15,10 +15,7 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 
 ## Screens
 
-<img src="./images/mainscreen.png" width=240>
-<img src="./images/tab_details.png" width=160>
-<img src="./images/tab_chart.png" width=160>
-
+<img src="./images/screens.png" width="640">
 
 ## Tech Stack
 
