@@ -33,8 +33,8 @@ public class HistoryListComponent {
                                 .textPropertyApply(
                                         prop -> prop.bind(I18n.textProperty("history.list.title")))
                                 .build(),
-                        ListViewBuilder
-                                .withItems(viewModel.getBmiList())
+                        ListViewBuilder.<BmiRecordWithDiff>create()
+                                .items(viewModel.getBmiList())
                                 .cellFactory(HistoryListComponent::recordsCellFactory)
                                 .vGrowInVBox(Priority.ALWAYS)
                                 .build())
