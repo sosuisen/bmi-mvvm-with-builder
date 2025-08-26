@@ -8,7 +8,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.plugin.version>0.0.8</javafx.plugin.version>
-    <!-- Note: JavaFX 23 requires JDK 21 or Later -->
     <javafx.version>24.0.2</javafx.version>
     <javafx.builder.version>24.0.0-SNAPSHOT</javafx.builder.version>
     <maven.compiler.release>23</maven.compiler.release>
