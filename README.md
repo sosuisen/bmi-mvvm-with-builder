@@ -1,6 +1,6 @@
 # BMI Calculator
 
-A sample application demonstrating the JavaFX Builder API. 
+A sample application demonstrating the [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api-generator).
 
 This BMI (Body Mass Index) calculator showcases modern JavaFX development with MVVM architecture, fluent UI construction, and internationalization support.
 
