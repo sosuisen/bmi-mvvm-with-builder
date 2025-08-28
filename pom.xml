@@ -26,11 +26,6 @@
       <version>${javafx.builder.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.github.sosuisen</groupId>
-      <artifactId>javafx-builder-graphics</artifactId>
-      <version>${javafx.builder.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq</artifactId>
       <version>3.20.1</version>
