@@ -30,9 +30,11 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 
 ## Quick Start
 
-### Prerequesites
+⚠️ Important: 
 
-Generate and install [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api-generator) in your local Maven repository.
+Currently, this project depends on the SNAPSHOT version of the [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api-generator).
+
+This SNAPSHOT will soon be discontinued and replaced by an official release. Please plan to update accordingly.
 
 ### Run the Application
 
