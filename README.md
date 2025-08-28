@@ -23,18 +23,16 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 - **JavaFX 24.0.2** - Modern desktop UI framework with data bindings.
 - **JavaFX Builder API** - Fluent API for UI construction.
   - The JavaFX Builder API is built with [JavaFX Builder API Generator](https://github.com/sosuisen/javafx-builder-api-generator).
-  - Note that this artifact has not yet been registered with Maven Central.
+  - Note that this artifact has not yet been registered with Maven Central. You can try out the API with the -SNAPSHOT version.
 - **MVVM Architecture** - Clean separation of concerns.
 - **SQLite + JOOQ** - Lightweight database with type-safe queries.
 - **Maven** - Dependency management and build automation.
 
 ## Quick Start
 
-⚠️ Important: 
+⚠️ **Important**: Currently, this project depends on the SNAPSHOT version of the [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api-generator).
 
-Currently, this project depends on the SNAPSHOT version of the [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api-generator).
-
-This SNAPSHOT will soon be discontinued and replaced by an official release. Please plan to update accordingly.
+This SNAPSHOT will soon be discontinued and replaced by a release version. Please plan to update accordingly.
 
 ### Run the Application
 
