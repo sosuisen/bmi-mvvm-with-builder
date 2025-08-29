@@ -12,8 +12,7 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 - **Multiple Languages**: Support for English and Japanese.
 - **Data Visualization**: View history in various formats (list, table, chart).
 - **Animation**: Animations for enhanced user experience.
-- **Database Storage**: SQLite database with JOOQ for data persistence.
-
+- **Offline Storage**: Your health data is stored in a local database on your device.
 
 ## Screens
 
@@ -21,14 +20,14 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 
 ## Tech Stack
 
-- **Java 23** - Latest features and performance improvements.
-- **JavaFX 24.0.2** - Modern desktop UI framework with data bindings and animations.
-- **JavaFX Builder API** - Fluent API for UI construction.
+- **Java 23**: Multiplatform (Windows, macOS, Linux)
+- **JavaFX 24**: Modern desktop UI framework with data bindings and animations.
+- **JavaFX Builder API**: Fluent API for UI construction.
   - The JavaFX Builder API is built with [JavaFX Builder API Generator](https://github.com/sosuisen/javafx-builder-api-generator).
-  - Note that this artifact has not yet been registered with Maven Central. You can try out the API with the -SNAPSHOT version.
-- **MVVM Architecture** - Clean separation of concerns.
-- **SQLite + JOOQ** - Lightweight database with type-safe queries.
-- **Maven** - Dependency management and build automation.
+  - Please note that this API has not yet been registered with Maven Central. You can try it out using the -SNAPSHOT version.
+- **MVVM Architecture**: Clean separation of concerns.
+- **SQLite + JOOQ**: Lightweight database with type-safe queries.
+- **Maven**: Dependency management and build automation.
 
 ## Quick Start
 
@@ -37,6 +36,12 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 This SNAPSHOT will soon be discontinued and replaced by a release version. Please plan to update accordingly.
 
 ### Run the Application
+
+- Install Java 23
+- Install Maven 3
+- You need to execute `mvn generate-sources` only once at the beginning.
+
+The command to execute the application is as follows:
 
 ```bash
 mvn javafx:run
@@ -116,6 +121,7 @@ Creates an APP_IMAGE, RPM, or DEB package
 ```bash
 mvn test
 ```
+
 
 ### Code Generation
 JOOQ code generation runs automatically during the `generate-sources` phase:
