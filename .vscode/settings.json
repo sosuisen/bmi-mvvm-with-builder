@@ -1,5 +1,7 @@
 {
-    // for JavaFX CSS Support
-    "css.lint.vendorPrefix": "ignore",
-    "java.configuration.updateBuildConfiguration": "automatic",
+  // for JavaFX CSS Support
+  "css.lint.vendorPrefix": "ignore",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.format.settings.url": "style.xml",
+  "java.dependency.packagePresentation": "flat"
 }
