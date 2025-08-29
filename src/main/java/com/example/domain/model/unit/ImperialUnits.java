@@ -5,26 +5,32 @@ public final class ImperialUnits implements UnitSystem {
     public static final double M_TO_FT_FACTOR = 3.2808;
     public static final double KG_TO_LB_FACTOR = 2.2046;
 
+    @Override
     public double convertHeightToSI(double value) {
         return value / M_TO_FT_FACTOR;
     }
 
+    @Override
     public double convertWeightToSI(double value) {
         return value / KG_TO_LB_FACTOR;
     }
 
+    @Override
     public double convertHeightFromSI(double value) {
         return value * M_TO_FT_FACTOR;
     }
 
+    @Override
     public double convertWeightFromSI(double value) {
         return value * KG_TO_LB_FACTOR;
     }
 
+    @Override
     public String getHeightUnit() {
         return "ft";
     }
 
+    @Override
     public String getWeightUnit() {
         return "lb";
     }
