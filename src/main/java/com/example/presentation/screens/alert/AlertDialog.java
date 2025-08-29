@@ -30,21 +30,19 @@ public class AlertDialog {
             default -> "error.unexpected";
         };
 
-        Platform.runLater(() -> {
-            AlertBuilder.create(Alert.AlertType.ERROR)
-                    .title(I18n.text("error"))
-                    .headerText(I18n.text("error"))
-                    .height(240)
-                    .width(480)
-                    .apply(alert -> {
-                        alert.getDialogPane()
-                                .setExpandableContent(new Label(I18n.text(resourceName) + ": " + e.getMessage()));
-                        alert.getDialogPane().setExpanded(true);
-                    })
-                    .build()
-                    .showAndWait();
-
-        });
+        Platform.runLater(() ->
+                AlertBuilder.create(Alert.AlertType.ERROR)
+                .title(I18n.text("error"))
+                .headerText(I18n.text("error"))
+                .height(240)
+                .width(480)
+                .apply(alert -> {
+                    alert.getDialogPane()
+                            .setExpandableContent(new Label(I18n.text(resourceName) + ": " + e.getMessage()));
+                    alert.getDialogPane().setExpanded(true);
+                })
+                .build()
+                .showAndWait());
 
     }
 

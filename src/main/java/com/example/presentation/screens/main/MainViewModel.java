@@ -96,7 +96,7 @@ public class MainViewModel {
         weightKg.bind(inputWeight
                 .map(value -> configAppModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
 
-        var latestRecord = commonViewModel.getLatestRecrd();
+        var latestRecord = commonViewModel.getLatestRecord();
 
         inputHeight.set(latestRecord != null
                 ? configAppModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())
@@ -117,9 +117,7 @@ public class MainViewModel {
     }
 
     public void saveBmiRecord() {
-        bmi.get().ifPresent(_ -> {
-            bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get());
-        });
+        bmi.get().ifPresent(_ -> bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get()));
     }
 
     public double convertHeightFromSI(double height) {
@@ -150,9 +148,7 @@ public class MainViewModel {
         var newStage = StageBuilder.create()
                 .x(newPosition.getX())
                 .y(newPosition.getY())
-                .apply(stage -> {
-                    stage.initOwner(currentStage);
-                })
+                .apply(stage -> stage.initOwner(currentStage))
                 .build();
 
         windowManager.showWindow(SettingsView.class, newStage);

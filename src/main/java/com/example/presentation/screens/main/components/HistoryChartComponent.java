@@ -22,7 +22,7 @@ public class HistoryChartComponent {
     public static LineChart<String, Number> getRoot(MainViewModel viewModel) {
         var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
         chartData.addAll(viewModel.getBmiList().stream().map(HistoryChartComponent::bmiToChartData).toList());
-        FXCollections.sort(chartData, Comparator.comparing(data -> data.getXValue()));
+        FXCollections.sort(chartData, Comparator.comparing(XYChart.Data::getXValue));
 
         viewModel.getBmiList().addListener((ListChangeListener<BmiRecordWithDiff>) change -> {
             while (change.next()) {
@@ -34,7 +34,7 @@ public class HistoryChartComponent {
                 if (change.wasAdded()) {
                     chartData.addAll(
                             change.getAddedSubList().stream().map(HistoryChartComponent::bmiToChartData).toList());
-                    FXCollections.sort(chartData, Comparator.comparing(data -> data.getXValue()));
+                    FXCollections.sort(chartData, Comparator.comparing(XYChart.Data::getXValue));
                 }
             }
         });

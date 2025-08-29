@@ -22,10 +22,6 @@ public class TableCellValueFactories {
      */
     public static <S, T> Callback<CellDataFeatures<S, T>, ObservableValue<T>> createReadOnlyCellValueFactory(
             Function<S, T> converter) {
-        return new Callback<CellDataFeatures<S, T>, ObservableValue<T>>() {
-            public ObservableValue<T> call(CellDataFeatures<S, T> dataFeatures) {
-                return new ReadOnlyObjectWrapper<T>(converter.apply(dataFeatures.getValue()));
-            }
-        };
+        return dataFeatures -> new ReadOnlyObjectWrapper<>(converter.apply(dataFeatures.getValue()));
     }
 }

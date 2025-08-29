@@ -27,7 +27,6 @@ public enum I18n {
     /**
      * Sets the resource bundle with the given base name and locale.
      *
-     * @param baseName the base name of the resource bundle
      * @param locale   the locale
      * @throws NullPointerException     if baseName or locale is null
      * @throws IllegalArgumentException if baseName is empty
@@ -46,10 +45,6 @@ public enum I18n {
         return resources;
     }
 
-    public Locale getCurrentLocale() {
-        return INSTANCE.resources.get().getLocale();
-    }
-
     public static StringProperty textProperty(String key) throws NullPointerException {
         Objects.requireNonNull(key, "key must not be null");
         return INSTANCE.getStringProperty(key);
@@ -63,9 +58,7 @@ public enum I18n {
     private StringProperty getStringProperty(String key) {
         return stringProperties.computeIfAbsent(key, _ -> {
             var prop = new SimpleStringProperty();
-            resources.subscribe(_ -> {
-                prop.set(getString(key));
-            });
+            resources.subscribe(_ -> prop.set(getString(key)));
             return prop;
         });
     }
@@ -73,7 +66,7 @@ public enum I18n {
     private String getString(String key) throws NullPointerException {
         Objects.requireNonNull(key, "key must not be null");
         try {
-            return resources != null ? resources.get().getString(key) : key;
+            return resources.get().getString(key);
         } catch (Exception e) {
             System.err.println("I18n: Missing resource key : " + key);
             return key;

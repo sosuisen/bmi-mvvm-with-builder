@@ -1,5 +1,6 @@
 package com.example.presentation.screens.main.components;
 
+import com.example.domain.model.unit.UnitSystem;
 import com.example.presentation.helpers.Formatters;
 import com.example.presentation.helpers.I18n;
 import com.example.presentation.screens.main.MainViewModel;
@@ -17,6 +18,8 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.util.converter.NumberStringConverter;
+
+import java.util.Optional;
 
 public class CalculatorComponent {
     private static final String CSS = """
@@ -55,7 +58,7 @@ public class CalculatorComponent {
                                 .build(),
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(viewModel.unitSystemProperty()
-                                        .map(unitSystem -> unitSystem.getHeightUnit())))
+                                        .map(UnitSystem::getHeightUnit)))
                                 .build())
                 .addRow(1,
                         LabelBuilder.create()
@@ -71,7 +74,7 @@ public class CalculatorComponent {
                                 .build(),
                         LabelBuilder.create()
                                 .textPropertyApply(prop -> prop.bind(viewModel.unitSystemProperty()
-                                        .map(unitSystem -> unitSystem.getWeightUnit())))
+                                        .map(UnitSystem::getWeightUnit)))
                                 .build())
                 .addRow(2,
                         LabelBuilder.create()
@@ -134,7 +137,7 @@ public class CalculatorComponent {
                                 .addStyleClass("button-safe")
                                 .hAlignmentInGridPane(HPos.CENTER)
                                 .disablePropertyApply(prop -> prop.bind(viewModel.bmiProperty()
-                                        .map(opt -> !opt.isPresent() || opt.isEmpty())))
+                                        .map(Optional::isEmpty)))
                                 .onAction(_ -> viewModel.saveBmiRecord())
 
                                 .build())

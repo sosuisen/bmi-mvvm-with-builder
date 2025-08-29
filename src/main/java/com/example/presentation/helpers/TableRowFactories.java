@@ -9,7 +9,7 @@ import javafx.util.Callback;
 public class TableRowFactories {
     public static <S> Callback<TableView<S>, TableRow<S>> createColoredRowFactory(
             Function<S, String> webColorConverter) {
-        return _ -> new TableRow<S>() {
+        return _ -> new TableRow<>() {
             @Override
             protected void updateItem(S item, boolean empty) {
                 super.updateItem(item, empty);

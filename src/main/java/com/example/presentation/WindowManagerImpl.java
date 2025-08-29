@@ -10,7 +10,7 @@ import com.example.presentation.screens.alert.AlertDialog;
 import javafx.stage.Stage;
 
 public class WindowManagerImpl implements WindowManager {
-    private Map<Class<? extends View>, View> views = new HashMap<>();
+    private final Map<Class<? extends View>, View> views = new HashMap<>();
 
     @Override
     public void registerView(View view) throws NullPointerException {

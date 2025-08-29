@@ -81,14 +81,12 @@ public class HistoryListComponent {
     }
 
     private static VBox createDetailBox(BmiRecordWithDiff bmiRecord) {
-        var headlineStyle = new StringBuilder()
-                .append("""
-                        -fx-font-weight: bold;
-                        -fx-font-size: 16;
-                        """)
-                .append("-fx-text-fill: %s;"
-                        .formatted(ObesityColor.getDarkColor(bmiRecord.obesity())))
-                .toString();
+        var headlineStyle = """
+                -fx-font-weight: bold;
+                -fx-font-size: 16;
+                """ +
+                "-fx-text-fill: %s;"
+                        .formatted(ObesityColor.getDarkColor(bmiRecord.obesity()));
 
         return VBoxBuilder.withChildren(
                 LabelBuilder.create()
@@ -128,12 +126,6 @@ public class HistoryListComponent {
 }
 
 class AnimatedBmiLabelStyle {
-    private final double cornerRadiusTransFrom;
-    private final double cornerRadiusTransTo;
-
-    private final double insetTransFrom;
-    private final double insetTransTo;
-
     private final DoubleProperty cornerRadiusProperty;
     private final DoubleProperty insetProperty;
 
@@ -146,50 +138,46 @@ class AnimatedBmiLabelStyle {
     public AnimatedBmiLabelStyle(ObesityCategory obesity, double labelRadius) {
         this.obesity = obesity;
 
-        cornerRadiusTransFrom = labelRadius;
-
         // When the corner radius decreases, the appearance looks fat.
-        cornerRadiusTransTo = switch (obesity) {
+        double cornerRadiusTransTo = switch (obesity) {
             case ObesityCategory.HIGH -> 10;
             case ObesityCategory.NORMAL -> 18;
             case ObesityCategory.LOW -> 18;
             case ObesityCategory.NONE -> 18;
         };
 
-        insetTransFrom = 0;
+        double insetTransFrom = 0;
 
         // When the corner radius increases, the appearance looks thin.
-        insetTransTo = switch (obesity) {
+        double insetTransTo = switch (obesity) {
             case ObesityCategory.HIGH -> 0;
             case ObesityCategory.NORMAL -> 0;
             case ObesityCategory.LOW -> 2;
             case ObesityCategory.NONE -> 0;
         };
 
-        cornerRadiusProperty = new SimpleDoubleProperty(cornerRadiusTransFrom);
+        cornerRadiusProperty = new SimpleDoubleProperty(labelRadius);
         insetProperty = new SimpleDoubleProperty(insetTransFrom);
 
-        styleBinding = Bindings.createStringBinding(() -> new StringBuilder()
-                .append("-fx-background-color: %s;"
-                        .formatted(ObesityColor.getDarkColor(obesity)))
-                .append("-fx-background-radius: %s;".formatted(cornerRadiusProperty.get()))
-                .append("-fx-background-insets: %s;".formatted(insetProperty.get()))
-                .append("""
-                        -fx-font-weight: bold;
-                        -fx-alignment: center;
-                        -fx-text-fill: white;
-                        """)
-                .toString(), cornerRadiusProperty, insetProperty);
+        styleBinding = Bindings.createStringBinding(() ->
+                "-fx-background-color: %s;".formatted(ObesityColor.getDarkColor(obesity)) +
+                "-fx-background-radius: %s;".formatted(cornerRadiusProperty.get()) +
+                "-fx-background-insets: %s;".formatted(insetProperty.get()) +
+                """
+                -fx-font-weight: bold;
+                -fx-alignment: center;
+                -fx-text-fill: white;
+                """, cornerRadiusProperty, insetProperty);
 
         animation = new Timeline(
                 new KeyFrame(Duration.ZERO,
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
+                        new KeyValue(cornerRadiusProperty, labelRadius),
                         new KeyValue(insetProperty, insetTransFrom)),
                 new KeyFrame(Duration.seconds(0.6),
                         new KeyValue(cornerRadiusProperty, cornerRadiusTransTo),
                         new KeyValue(insetProperty, insetTransTo)),
                 new KeyFrame(Duration.seconds(1.8),
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransFrom),
+                        new KeyValue(cornerRadiusProperty, labelRadius),
                         new KeyValue(insetProperty, insetTransFrom)));
         animation.setCycleCount(Timeline.INDEFINITE);
 

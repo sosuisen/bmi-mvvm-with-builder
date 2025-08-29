@@ -11,7 +11,7 @@ import javafx.util.Callback;
 public class TableCellFactories {
     public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> createTextCellFactory(
             Function<T, String> formatter) {
-        return _ -> new TableCell<S, T>() {
+        return _ -> new TableCell<>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
@@ -26,7 +26,7 @@ public class TableCellFactories {
 
     public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> createButtonCellFactory(
             Consumer<T> callback, String resourceKey, String[] styleClass) {
-        return _ -> new TableCell<S, T>() {
+        return _ -> new TableCell<>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);

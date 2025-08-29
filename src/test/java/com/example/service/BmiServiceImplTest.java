@@ -111,7 +111,7 @@ class BmiServiceImplTest {
     }
 
     @Test
-    void loadRecords_withSingleRecord_returnsListWithOneElemen_withCorrectDateAndDiff() throws RepositoryException {
+    void loadRecords_withSingleRecord_returnsListWithOneElement_withCorrectDateAndDiff() throws RepositoryException {
         // Given
         BmiRecord record = new BmiRecord(1, 1.75, 70, LocalDate.now());
         when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(List.of(record));
@@ -121,9 +121,9 @@ class BmiServiceImplTest {
 
         // Then
         assertEquals(1, result.size());
-        assertEquals(record.date(), result.get(0).date());
-        assertEquals(0, result.get(0).diff());
-        assertNull(result.get(0).prevRecord());
+        assertEquals(record.date(), result.getFirst().date());
+        assertEquals(0, result.getFirst().diff());
+        assertNull(result.getFirst().prevRecord());
     }
 
     @Test

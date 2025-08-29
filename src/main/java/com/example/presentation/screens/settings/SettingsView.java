@@ -82,7 +82,7 @@ public class SettingsView implements View {
                                         .valuePropertyApply(prop -> prop
                                                 .bindBidirectional(viewModel.languageProperty()))
                                         .converterPropertyApply(prop -> prop.bind(Bindings
-                                                .createObjectBinding(() -> new LanguagesSystemConverter(),
+                                                .createObjectBinding(LanguagesSystemConverter::new,
                                                         I18n.INSTANCE.resourcesProperty())))
                                         .build())
                         .addRow(1,
@@ -96,7 +96,7 @@ public class SettingsView implements View {
                                         .valuePropertyApply(prop -> prop
                                                 .bindBidirectional(viewModel.unitSystemProperty()))
                                         .converterPropertyApply(prop -> prop.bind(Bindings
-                                                .createObjectBinding(() -> new UnitSystemStringConverter(),
+                                                .createObjectBinding(UnitSystemStringConverter::new,
                                                         I18n.INSTANCE.resourcesProperty())))
                                         .build())
                         .addRow(2,
@@ -159,7 +159,7 @@ public class SettingsView implements View {
                 });
     }
 
-    class LanguagesSystemConverter extends StringConverter<Languages> {
+    static class LanguagesSystemConverter extends StringConverter<Languages> {
         @Override
         public String toString(Languages language) {
             return I18n.text(
@@ -173,7 +173,7 @@ public class SettingsView implements View {
         }
     }
 
-    class UnitSystemStringConverter extends StringConverter<UnitSystem> {
+    static class UnitSystemStringConverter extends StringConverter<UnitSystem> {
         @Override
         public String toString(UnitSystem unitSystem) {
             return I18n.text(

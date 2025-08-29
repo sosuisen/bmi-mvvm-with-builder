@@ -33,44 +33,44 @@ public class HistoryTableComponent {
                                 TableColumnBuilder.<BmiRecordWithDiff, LocalDate>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.date")))
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.date()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::date))
                                         .cellFactory(TableCellFactories.createTextCellFactory(
-                                                item -> item.format(DateTimeFormatter.ofPattern("YYYY-MM-dd"))))
+                                                item -> item.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                                         .style("-fx-alignment: center")
                                         .prefWidth(100)
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.height")))
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.heightMeter()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::heightMeter))
                                         .cellFactory(TableCellFactories
                                                 .createTextCellFactory(item -> String.format("%.1f",
-                                                        viewModel.convertHeightFromSI(item.doubleValue()))))
+                                                        viewModel.convertHeightFromSI(item))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.weight")))
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.weightKg()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::weightKg))
                                         .cellFactory(TableCellFactories
                                                 .createTextCellFactory(item -> String.format("%.1f",
-                                                        viewModel.convertWeightFromSI(item.doubleValue()))))
+                                                        viewModel.convertWeightFromSI(item))))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, Double>create()
                                         .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.table.bmi")))
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.bmi()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::bmi))
                                         .cellFactory(TableCellFactories
                                                 .createTextCellFactory(
-                                                        item -> String.format("%.1f", item.doubleValue())))
+                                                        item -> String.format("%.1f", item)))
                                         .style("-fx-alignment: center-right")
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, ObesityCategory>create()
                                         .textPropertyApply(
                                                 prop -> prop.bind(I18n.textProperty("history.table.obesity")))
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.obesity()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::obesity))
                                         .cellFactory(TableCellFactories
                                                 .createTextCellFactory(item -> I18n
                                                         .text("main.obesity.category." + item.toResourceString())))
@@ -79,16 +79,16 @@ public class HistoryTableComponent {
                                         .build(),
                                 TableColumnBuilder.<BmiRecordWithDiff, Integer>create()
                                         .cellValueFactory(TableCellValueFactories
-                                                .createReadOnlyCellValueFactory(record -> record.id()))
+                                                .createReadOnlyCellValueFactory(BmiRecordWithDiff::id))
                                         .cellFactory(TableCellFactories
                                                 .createButtonCellFactory(
-                                                        item -> viewModel.removeRecord(item),
+                                                        viewModel::removeRecord,
                                                         "history.table.delete",
                                                         new String[] { "button-danger", "button-small" }))
                                         .style("-fx-alignment: center;")
                                         .prefWidth(50)
                                         .build())
-                        .rowFactory(TableRowFactories.<BmiRecordWithDiff>createColoredRowFactory(
+                        .rowFactory(TableRowFactories.createColoredRowFactory(
                                 record -> ObesityColor.getLightColor(record.obesity())))
                         .vGrowInVBox(Priority.ALWAYS)
                         .build())

@@ -9,7 +9,7 @@ import java.util.List;
  * is used for resource keys or locales(e.g., "en", "ja").
  *
  * <p>
- * The resouce bundles corresponding to the Languages should exist.
+ * The resource bundles corresponding to the Languages should exist.
  * </p>
  */
 public enum Languages {
