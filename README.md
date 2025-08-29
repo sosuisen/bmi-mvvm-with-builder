@@ -39,7 +39,6 @@ This SNAPSHOT will soon be discontinued and replaced by a release version. Pleas
 
 - Install Java 23
 - Install Maven 3
-- You need to execute `mvn generate-sources` only once at the beginning.
 
 The command to execute the application is as follows:
 
@@ -47,13 +46,7 @@ The command to execute the application is as follows:
 mvn javafx:run
 ```
 
-### Build Distribution Package
-
-```bash
-mvn clean package
-```
-This creates:
-- A native executable in `target/jpackage/` (using jpackage).
+Your data is stored in the `.bmi-calculator` directory under your home directory.
 
 ## Project Structure
 
@@ -83,7 +76,8 @@ using simple dependency injection without frameworks.
 
 ## Database
 
-The application uses SQLite for local data storage with JOOQ for type-safe database access. The database schema is automatically generated and managed through JOOQ's code generation plugin.
+The application uses SQLite for local data storage with JOOQ for type-safe database access.
+The database schema is automatically generated and managed through JOOQ's code generation plugin.
 
 ## Internationalization
 
@@ -93,9 +87,13 @@ The application supports multiple languages through Java resource bundles:
 
 Language files are located in `src/main/resources/com/example/i18n/`.
 
-## Building Native Installers
+### Build Native Installers
 
-The project includes jpackage configuration for creating native installers:
+**Important**: This project currently contains SNAPSHOT libraries, which prevents it from building native installers correctly. Please wait for stable releases.
+
+The project includes jpackage configuration for creating native installers.
+
+This creates a native executable in `target/jpackage/`.
 
 ### Windows
 ```bash
@@ -122,8 +120,8 @@ Creates an APP_IMAGE, RPM, or DEB package
 mvn test
 ```
 
-
 ### Code Generation
+
 JOOQ code generation runs automatically during the `generate-sources` phase:
 ```bash
 mvn generate-sources
