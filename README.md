@@ -11,7 +11,9 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 - **History Management**: Store and view BMI calculation history.
 - **Multiple Languages**: Support for English and Japanese.
 - **Data Visualization**: View history in various formats (list, table, chart).
+- **Animation**: Animations for enhanced user experience.
 - **Database Storage**: SQLite database with JOOQ for data persistence.
+
 
 ## Screens
 
@@ -20,7 +22,7 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 ## Tech Stack
 
 - **Java 23** - Latest features and performance improvements.
-- **JavaFX 24.0.2** - Modern desktop UI framework with data bindings.
+- **JavaFX 24.0.2** - Modern desktop UI framework with data bindings and animations.
 - **JavaFX Builder API** - Fluent API for UI construction.
   - The JavaFX Builder API is built with [JavaFX Builder API Generator](https://github.com/sosuisen/javafx-builder-api-generator).
   - Note that this artifact has not yet been registered with Maven Central. You can try out the API with the -SNAPSHOT version.
