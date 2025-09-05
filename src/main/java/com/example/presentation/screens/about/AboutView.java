@@ -40,32 +40,36 @@ public class AboutView implements View {
 
     private Scene buildSceneGraph() {
         var url = "https://github.com/sosuisen/";
-        return SceneBuilder.withRoot(
-                VBoxBuilder.withChildren(
+        return SceneBuilder
+            .withRoot(
+                VBoxBuilder
+                    .withChildren(
                         LabelBuilder.create()
-                                .text("BMI Calculator")
-                                .style("-fx-font-weight: bold;")
-                                .build(),
+                            .text("BMI Calculator")
+                            .style("-fx-font-weight: bold;")
+                            .build(),
                         LabelBuilder.create()
-                                .text("Created by Hidekazu Kubota")
-                                .build(),
+                            .text("Created by Hidekazu Kubota")
+                            .build(),
                         HyperlinkBuilder.create()
-                                .text(url)
-                                .onAction(_ -> hostService.showDocument(url))
-                                .build(),
+                            .text(url)
+                            .onAction(_ -> hostService.showDocument(url))
+                            .build(),
                         ButtonBuilder.create()
-                                .text("OK")
-                                .onAction(_ -> close())
-                                .build())
-                        .alignment(Pos.CENTER)
-                        .build())
-                .width(WIDTH)
-                .height(HEIGHT)
-                .onKeyPressed(e -> {
-                    if (e.getCode() == KeyCode.ESCAPE)
-                        close();
-                })
-                .build();
+                            .text("OK")
+                            .onAction(_ -> close())
+                            .build()
+                    )
+                    .alignment(Pos.CENTER)
+                    .build()
+            )
+            .width(WIDTH)
+            .height(HEIGHT)
+            .onKeyPressed(e -> {
+                if (e.getCode() == KeyCode.ESCAPE)
+                    close();
+            })
+            .build();
     }
 
     private void close() {

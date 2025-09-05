@@ -11,17 +11,17 @@ public class TableCellValueFactories {
     /*
      * Return a CellValueFactory that converts a record to the cell's type.
      * 
-     * PropertyValueFactory can only manage a property or a non-property field with
-     * a traditional JavaBeans getter (getXXX or isXXX method).
-     * With PropertyValueFactory, changes are bidirectional for property fields and
-     * unidirectional for non-property fields.
-     * PropertyValueFactory cannot handle a record class.
-     * createReadOnlyCellValueFactory can manage a record class using a converter
-     * function to convert a record to the cell's type.
-     * Changes are naturally unidirectional for a record field.
+     * PropertyValueFactory can only manage a property or a non-property field with a traditional
+     * JavaBeans getter (getXXX or isXXX method). With PropertyValueFactory, changes are
+     * bidirectional for property fields and unidirectional for non-property fields.
+     * PropertyValueFactory cannot handle a record class. createReadOnlyCellValueFactory can manage
+     * a record class using a converter function to convert a record to the cell's type. Changes are
+     * naturally unidirectional for a record field.
      */
     public static <S, T> Callback<CellDataFeatures<S, T>, ObservableValue<T>> createReadOnlyCellValueFactory(
-            Function<S, T> converter) {
-        return dataFeatures -> new ReadOnlyObjectWrapper<>(converter.apply(dataFeatures.getValue()));
+        Function<S, T> converter) {
+        return dataFeatures -> new ReadOnlyObjectWrapper<>(
+            converter.apply(dataFeatures.getValue())
+        );
     }
 }

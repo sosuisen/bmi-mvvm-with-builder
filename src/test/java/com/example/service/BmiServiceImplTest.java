@@ -71,7 +71,8 @@ class BmiServiceImplTest {
     }
 
     @Test
-    void removeRecord_whenRepositoryThrowsException_propagatesException() throws RepositoryException {
+    void removeRecord_whenRepositoryThrowsException_propagatesException()
+        throws RepositoryException {
         // Given
         int id = 1;
         doThrow(new RepositoryException("DB error")).when(bmiRepository).removeRecord(id);
@@ -90,7 +91,8 @@ class BmiServiceImplTest {
     }
 
     @Test
-    void removeAllRecords_whenRepositoryThrowsException_propagatesException() throws RepositoryException {
+    void removeAllRecords_whenRepositoryThrowsException_propagatesException()
+        throws RepositoryException {
         // Given
         doThrow(new RepositoryException("DB error")).when(bmiRepository).removeAllRecords();
 
@@ -101,7 +103,8 @@ class BmiServiceImplTest {
     @Test
     void loadRecords_withEmptyList_returnsEmptyList() throws RepositoryException {
         // Given
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(new ArrayList<>());
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt()))
+            .thenReturn(new ArrayList<>());
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -111,10 +114,12 @@ class BmiServiceImplTest {
     }
 
     @Test
-    void loadRecords_withSingleRecord_returnsListWithOneElement_withCorrectDateAndDiff() throws RepositoryException {
+    void loadRecords_withSingleRecord_returnsListWithOneElement_withCorrectDateAndDiff()
+        throws RepositoryException {
         // Given
         BmiRecord record = new BmiRecord(1, 1.75, 70, LocalDate.now());
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(List.of(record));
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt()))
+            .thenReturn(List.of(record));
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -127,13 +132,15 @@ class BmiServiceImplTest {
     }
 
     @Test
-    void loadRecords_withMultipleRecords_returnsCorrectlyOrderedListWithDiffs() throws RepositoryException {
+    void loadRecords_withMultipleRecords_returnsCorrectlyOrderedListWithDiffs()
+        throws RepositoryException {
         // Given
         BmiRecord record1 = new BmiRecord(1, 1.70, 65, LocalDate.of(2023, 1, 10));
         BmiRecord record2 = new BmiRecord(2, 1.70, 68, LocalDate.of(2023, 1, 15));
         BmiRecord record3 = new BmiRecord(3, 1.70, 67, LocalDate.of(2023, 1, 20));
         List<BmiRecord> recordsFromRepo = List.of(record3, record2, record1);
-        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt())).thenReturn(recordsFromRepo);
+        when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), anyInt()))
+            .thenReturn(recordsFromRepo);
 
         // When
         List<BmiRecordWithDiff> result = bmiService.loadRecords(50);
@@ -158,7 +165,7 @@ class BmiServiceImplTest {
         int expectedLimit = 25;
         ArgumentCaptor<Integer> limitCaptor = ArgumentCaptor.forClass(Integer.class);
         when(bmiRepository.loadBmiRecords(eq(BmiRecordOrder.DATE_DESC), limitCaptor.capture()))
-                .thenReturn(new ArrayList<>());
+            .thenReturn(new ArrayList<>());
 
         // When
         bmiService.loadRecords(expectedLimit);

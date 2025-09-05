@@ -52,7 +52,7 @@ public class BmiServiceImpl implements BmiService {
 
     @Override
     public void upsertRecord(double heightMeter, double weightKg, LocalDate date)
-            throws RepositoryException {
+        throws RepositoryException {
         repository.upsertBmiRecord(heightMeter, weightKg, date);
     }
 }

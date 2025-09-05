@@ -20,43 +20,49 @@ import javafx.scene.chart.XYChart;
 
 public class HistoryChartComponent {
     public static LineChart<String, Number> getRoot(MainViewModel viewModel) {
-        var chartData = FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
-        chartData.addAll(viewModel.getBmiList().stream().map(HistoryChartComponent::bmiToChartData).toList());
+        var chartData =
+            FXCollections.observableArrayList(new ArrayList<XYChart.Data<String, Number>>());
+        chartData.addAll(
+            viewModel.getBmiList().stream().map(HistoryChartComponent::bmiToChartData).toList()
+        );
         FXCollections.sort(chartData, Comparator.comparing(XYChart.Data::getXValue));
 
         viewModel.getBmiList().addListener((ListChangeListener<BmiRecordWithDiff>) change -> {
             while (change.next()) {
                 if (change.wasRemoved()) {
                     for (var record : change.getRemoved()) {
-                        chartData.removeIf(data -> data.getXValue().equals(dateToXValue(record.date())));
+                        chartData
+                            .removeIf(data -> data.getXValue().equals(dateToXValue(record.date())));
                     }
                 }
                 if (change.wasAdded()) {
                     chartData.addAll(
-                            change.getAddedSubList().stream().map(HistoryChartComponent::bmiToChartData).toList());
+                        change.getAddedSubList().stream().map(HistoryChartComponent::bmiToChartData)
+                            .toList()
+                    );
                     FXCollections.sort(chartData, Comparator.comparing(XYChart.Data::getXValue));
                 }
             }
         });
 
         return LineChartBuilder
-                .create(
-                        CategoryAxisBuilder.create()
-                                .labelPropertyApply(
-                                        prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
-                                .build(),
-                        NumberAxisBuilder.create()
-                                .labelPropertyApply(
-                                        prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
-                                .build())
-                .addData(XYChartSeriesBuilder.<String, Number>create().data(chartData).build())
-                .title(I18n.text("history.chart.title"))
-                .legendVisible(false)
-                .animated(false)
-                .prefWidth(300)
-                .minWidth(200)
-                .build();
-
+            .withData(XYChartSeriesBuilder.<String, Number>create().data(chartData).build())
+            .xAxis(
+                CategoryAxisBuilder.create()
+                    .labelPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.xaxis")))
+                    .build()
+            )
+            .yAxis(
+                NumberAxisBuilder.create()
+                    .labelPropertyApply(prop -> prop.bind(I18n.textProperty("history.chart.yaxis")))
+                    .build()
+            )
+            .title(I18n.text("history.chart.title"))
+            .legendVisible(false)
+            .animated(false)
+            .prefWidth(300)
+            .minWidth(200)
+            .build();
     }
 
     private static String dateToXValue(LocalDate date) {

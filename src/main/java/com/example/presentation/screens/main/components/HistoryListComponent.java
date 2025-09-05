@@ -29,22 +29,23 @@ import javafx.util.Duration;
 public class HistoryListComponent {
     public static VBox getRoot(MainViewModel viewModel) {
         return VBoxBuilder
-                .withChildren(
-                        LabelBuilder.create()
-                                .textPropertyApply(
-                                        prop -> prop.bind(I18n.textProperty("history.list.title")))
-                                .build(),
-                        ListViewBuilder.<BmiRecordWithDiff>create()
-                                .items(viewModel.getBmiList())
-                                .cellFactory(HistoryListComponent::recordsCellFactory)
-                                .vGrowInVBox(Priority.ALWAYS)
-                                .build())
-                .padding(new Insets(3))
-                .build();
+            .withChildren(
+                LabelBuilder.create()
+                    .textPropertyApply(prop -> prop.bind(I18n.textProperty("history.list.title")))
+                    .build(),
+                ListViewBuilder.<BmiRecordWithDiff>create()
+                    .items(viewModel.getBmiList())
+                    .cellFactory(HistoryListComponent::recordsCellFactory)
+                    .vGrowInVBox(Priority.ALWAYS)
+                    .build()
+            )
+            .padding(new Insets(3))
+            .build();
 
     }
 
-    private static ListCell<BmiRecordWithDiff> recordsCellFactory(ListView<BmiRecordWithDiff> listView) {
+    private static ListCell<BmiRecordWithDiff> recordsCellFactory(
+        ListView<BmiRecordWithDiff> listView) {
         return new ListCell<BmiRecordWithDiff>() {
             @Override
             protected void updateItem(BmiRecordWithDiff item, boolean empty) {
@@ -54,11 +55,12 @@ public class HistoryListComponent {
                     setGraphic(null);
                 } else {
                     var row = HBoxBuilder
-                            .withChildren(
-                                    createBmiLabel(item),
-                                    createDetailBox(item),
-                                    createDateLabel(item))
-                            .build();
+                        .withChildren(
+                            createBmiLabel(item),
+                            createDetailBox(item),
+                            createDateLabel(item)
+                        )
+                        .build();
 
                     setGraphic(row);
                 }
@@ -70,60 +72,73 @@ public class HistoryListComponent {
         final double labelRadius = 18;
 
         return LabelBuilder.create()
-                .text(String.format("%.1f", bmiRecord.bmi()))
-                .stylePropertyApply(
-                        prop -> prop.bind(
-                                new AnimatedBmiLabelStyle(bmiRecord.obesity(), labelRadius).getAnimatedStringBinding()))
-                .prefHeight(labelRadius * 2)
-                .prefWidth(labelRadius * 2)
-                .marginInHBox(new Insets(7, 20, 7, 10))
-                .build();
+            .text(String.format("%.1f", bmiRecord.bmi()))
+            .stylePropertyApply(
+                prop -> prop.bind(
+                    new AnimatedBmiLabelStyle(bmiRecord.obesity(), labelRadius)
+                        .getAnimatedStringBinding()
+                )
+            )
+            .prefHeight(labelRadius * 2)
+            .prefWidth(labelRadius * 2)
+            .marginInHBox(new Insets(7, 20, 7, 10))
+            .build();
     }
 
     private static VBox createDetailBox(BmiRecordWithDiff bmiRecord) {
-        var headlineStyle = """
-                -fx-font-weight: bold;
-                -fx-font-size: 16;
-                """ +
-                "-fx-text-fill: %s;"
-                        .formatted(ObesityColor.getDarkColor(bmiRecord.obesity()));
+        var headlineStyle =
+            """
+            -fx-font-weight: bold;
+            -fx-font-size: 16;
+            """
+                + "-fx-text-fill: %s;"
+                    .formatted(ObesityColor.getDarkColor(bmiRecord.obesity()));
 
-        return VBoxBuilder.withChildren(
+        return VBoxBuilder
+            .withChildren(
                 LabelBuilder.create()
-                        .textPropertyApply(
-                                prop -> prop.bind(I18n
-                                        .textProperty(
-                                                "main.obesity.category." + bmiRecord.obesity().toResourceString())))
-                        .style(headlineStyle)
-                        .build(),
+                    .textPropertyApply(
+                        prop -> prop.bind(
+                            I18n.textProperty(
+                                "main.obesity.category." + bmiRecord.obesity().toResourceString()
+                            )
+                        )
+                    )
+                    .style(headlineStyle)
+                    .build(),
                 LabelBuilder.create()
-                        .textPropertyApply(
-                                prop -> prop.bind(I18n
-                                        .textProperty(
-                                                "history.trend."
-                                                        + bmiRecord.trendDescription().toResourceString())
-                                        .map(text -> bmiRecord.trendDescription() == BmiRecordWithDiff.Trend.NONE
-                                                ? text
-                                                : "%s%.1f".formatted(text, bmiRecord.diff()))))
-                        .style("-fx-font-size: 12;")
-                        .build())
-                .build();
+                    .textPropertyApply(
+                        prop -> prop.bind(
+                            I18n.textProperty(
+                                "history.trend." + bmiRecord.trendDescription().toResourceString()
+                            ).map(
+                                text -> bmiRecord.trendDescription() == BmiRecordWithDiff.Trend.NONE
+                                    ? text
+                                    : "%s%.1f".formatted(text, bmiRecord.diff())
+                            )
+                        )
+                    )
+                    .style("-fx-font-size: 12;")
+                    .build()
+            )
+            .build();
     }
 
     private static Label createDateLabel(BmiRecordWithDiff bmiRecord) {
         return LabelBuilder.create()
-                .text(bmiRecord.date().toString())
-                .style("""
-                        -fx-font-size: 12;
-                        -fx-alignment: center-right;
-                        """)
-                .maxWidth(Double.MAX_VALUE)
-                .hGrowInHBox(Priority.ALWAYS)
-                .build();
+            .text(bmiRecord.date().toString())
+            .style("""
+                   -fx-font-size: 12;
+                   -fx-alignment: center-right;
+                   """)
+            .maxWidth(Double.MAX_VALUE)
+            .hGrowInHBox(Priority.ALWAYS)
+            .build();
 
     }
 
 }
+
 
 class AnimatedBmiLabelStyle {
     private final DoubleProperty cornerRadiusProperty;
@@ -159,26 +174,35 @@ class AnimatedBmiLabelStyle {
         cornerRadiusProperty = new SimpleDoubleProperty(labelRadius);
         insetProperty = new SimpleDoubleProperty(insetTransFrom);
 
-        styleBinding = Bindings.createStringBinding(() ->
-                "-fx-background-color: %s;".formatted(ObesityColor.getDarkColor(obesity)) +
+        styleBinding = Bindings.createStringBinding(
+            () -> "-fx-background-color: %s;".formatted(ObesityColor.getDarkColor(obesity)) +
                 "-fx-background-radius: %s;".formatted(cornerRadiusProperty.get()) +
                 "-fx-background-insets: %s;".formatted(insetProperty.get()) +
                 """
                 -fx-font-weight: bold;
                 -fx-alignment: center;
                 -fx-text-fill: white;
-                """, cornerRadiusProperty, insetProperty);
+                """,
+            cornerRadiusProperty, insetProperty
+        );
 
         animation = new Timeline(
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(cornerRadiusProperty, labelRadius),
-                        new KeyValue(insetProperty, insetTransFrom)),
-                new KeyFrame(Duration.seconds(0.6),
-                        new KeyValue(cornerRadiusProperty, cornerRadiusTransTo),
-                        new KeyValue(insetProperty, insetTransTo)),
-                new KeyFrame(Duration.seconds(1.8),
-                        new KeyValue(cornerRadiusProperty, labelRadius),
-                        new KeyValue(insetProperty, insetTransFrom)));
+            new KeyFrame(
+                Duration.ZERO,
+                new KeyValue(cornerRadiusProperty, labelRadius),
+                new KeyValue(insetProperty, insetTransFrom)
+            ),
+            new KeyFrame(
+                Duration.seconds(0.6),
+                new KeyValue(cornerRadiusProperty, cornerRadiusTransTo),
+                new KeyValue(insetProperty, insetTransTo)
+            ),
+            new KeyFrame(
+                Duration.seconds(1.8),
+                new KeyValue(cornerRadiusProperty, labelRadius),
+                new KeyValue(insetProperty, insetTransFrom)
+            )
+        );
         animation.setCycleCount(Timeline.INDEFINITE);
 
     }

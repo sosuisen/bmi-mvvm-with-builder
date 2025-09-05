@@ -21,7 +21,7 @@ import javafx.collections.ObservableList;
  * Manage current BMI list and its reload logic.
  */
 public class BmiCommonAppModel {
-    public static final Integer[] HISTORY_LIMIT = { 20, 50, 100 };
+    public static final Integer[] HISTORY_LIMIT = {20, 50, 100};
 
     private final BmiService bmiService;
 
@@ -49,22 +49,23 @@ public class BmiCommonAppModel {
         historyLimit.subscribe(this::reloadRecords);
     }
 
-    public ObjectBinding<Optional<Double>> getBmiBinding(DoubleProperty heightMeter, DoubleProperty weightKg) {
+    public ObjectBinding<Optional<Double>> getBmiBinding(DoubleProperty heightMeter,
+        DoubleProperty weightKg) {
         return Bindings.createObjectBinding(
-                () -> bmiService.calculateBmi(heightMeter.get(), weightKg.get()),
-                heightMeter, weightKg);
+            () -> bmiService.calculateBmi(heightMeter.get(), weightKg.get()),
+            heightMeter, weightKg
+        );
     }
 
     /**
      * Returns the latest BMI record from the list.
      *
-     * @return The latest {@link BmiRecordWithDiff} if available, otherwise
-     *         {@code null}.
+     * @return The latest {@link BmiRecordWithDiff} if available, otherwise {@code null}.
      */
     public BmiRecordWithDiff getLatestRecord() {
         return !bmiList.isEmpty()
-                ? bmiList.getFirst()
-                : null;
+            ? bmiList.getFirst()
+            : null;
     }
 
     public void saveRecord(double heightMeter, double weightKg, LocalDate date) {

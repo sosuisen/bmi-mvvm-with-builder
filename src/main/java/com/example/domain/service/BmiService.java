@@ -11,10 +11,9 @@ public interface BmiService {
      * Calculates the Body Mass Index (BMI) based on height and weight.
      *
      * @param heightMeter The height in meters.
-     * @param weightKg    The weight in kilograms.
-     * @return An {@link Optional} containing the calculated BMI if inputs are
-     *         valid,
-     *         otherwise an empty Optional.
+     * @param weightKg The weight in kilograms.
+     * @return An {@link Optional} containing the calculated BMI if inputs are valid, otherwise an
+     *         empty Optional.
      */
     public Optional<Double> calculateBmi(double heightMeter, double weightKg);
 
@@ -34,8 +33,8 @@ public interface BmiService {
     public void removeAllRecords() throws RepositoryException;
 
     /**
-     * Loads a limited number of BMI records from the repository, including
-     * differences from the previous record.
+     * Loads a limited number of BMI records from the repository, including differences from the
+     * previous record.
      * 
      * The records are loaded in a descending order.
      *
@@ -49,9 +48,10 @@ public interface BmiService {
      * Inserts or updates a BMI record in the repository.
      *
      * @param heightMeter The height in meters.
-     * @param weightKg    The weight in kilograms.
-     * @param date        The date of the BMI record.
+     * @param weightKg The weight in kilograms.
+     * @param date The date of the BMI record.
      * @throws RepositoryException If an error occurs during the upsert process.
      */
-    public void upsertRecord(double heightMeter, double weightKg, LocalDate date) throws RepositoryException;
+    public void upsertRecord(double heightMeter, double weightKg, LocalDate date)
+        throws RepositoryException;
 }

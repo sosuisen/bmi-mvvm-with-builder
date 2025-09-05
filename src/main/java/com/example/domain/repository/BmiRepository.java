@@ -24,22 +24,21 @@ public interface BmiRepository {
     void removeAllRecords() throws RepositoryException;
 
     /**
-     * Inserts or updates a BMI record in the repository.
-     * If a record with the same date already exists, it will be updated.
+     * Inserts or updates a BMI record in the repository. If a record with the same date already
+     * exists, it will be updated.
      *
      * @param height_meter The height in meters.
-     * @param weight_kg    The weight in kilograms.
-     * @param localDate    The date of the BMI record.
+     * @param weight_kg The weight in kilograms.
+     * @param localDate The date of the BMI record.
      * @throws RepositoryException If an error occurs during the upsert process.
      */
     void upsertBmiRecord(double height_meter, double weight_kg, LocalDate localDate)
-            throws RepositoryException;
+        throws RepositoryException;
 
     /**
      * Loads a limited number of BMI records from the repository, ordered by date.
      *
-     * @param order The order in which to sort the records (ascending or descending
-     *              by date).
+     * @param order The order in which to sort the records (ascending or descending by date).
      * @param limit The maximum number of records to retrieve.
      * @return A list of {@link BmiRecord} objects.
      * @throws RepositoryException If an error occurs during the loading process.
@@ -49,8 +48,7 @@ public interface BmiRepository {
     /**
      * Loads all BMI records from the repository, ordered by date.
      *
-     * @param order The order in which to sort the records (ascending or descending
-     *              by date).
+     * @param order The order in which to sort the records (ascending or descending by date).
      * @return A list of {@link BmiRecord} objects.
      * @throws RepositoryException If an error occurs during the loading process.
      */

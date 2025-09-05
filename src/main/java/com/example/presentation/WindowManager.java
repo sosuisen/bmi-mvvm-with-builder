@@ -8,5 +8,5 @@ public interface WindowManager {
     void registerView(View view) throws NullPointerException;
 
     <T extends View> void showWindow(Class<T> viewClass, Stage stage)
-            throws NullPointerException;
+        throws NullPointerException;
 }

@@ -27,12 +27,12 @@ public enum I18n {
     /**
      * Sets the resource bundle with the given base name and locale.
      *
-     * @param locale   the locale
-     * @throws NullPointerException     if baseName or locale is null
+     * @param locale the locale
+     * @throws NullPointerException if baseName or locale is null
      * @throws IllegalArgumentException if baseName is empty
      */
     public void setResources(Locale locale)
-            throws NullPointerException, IllegalArgumentException {
+        throws NullPointerException, IllegalArgumentException {
         Objects.requireNonNull(locale, "locale must not be null");
         // When locale is "fr",
         // 1) search Messages_fr.properties

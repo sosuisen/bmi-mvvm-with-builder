@@ -40,8 +40,10 @@ public class MainViewModel {
     private final DoubleProperty inputWeight = new SimpleDoubleProperty();
 
     // BMI
-    private final ObjectProperty<Optional<Double>> bmi = new SimpleObjectProperty<>(Optional.empty());
-    private final ObjectProperty<Optional<String>> obesity = new SimpleObjectProperty<>(Optional.empty());
+    private final ObjectProperty<Optional<Double>> bmi =
+        new SimpleObjectProperty<>(Optional.empty());
+    private final ObjectProperty<Optional<String>> obesity =
+        new SimpleObjectProperty<>(Optional.empty());
 
     // Date
     private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(LocalDate.now());
@@ -83,27 +85,43 @@ public class MainViewModel {
     }
 
     public MainViewModel(WindowManager windowManager,
-            BmiCommonAppModel commonViewModel, ConfigAppModel configAppModel) {
+        BmiCommonAppModel commonViewModel, ConfigAppModel configAppModel) {
         this.windowManager = windowManager;
         this.configAppModel = configAppModel;
         this.bmiCommonAppModel = commonViewModel;
 
         bmi.bind(bmiCommonAppModel.getBmiBinding(heightMeter, weightKg));
 
-        heightMeter.bind(inputHeight
-                .map(value -> configAppModel.unitSystemProperty().get().convertHeightToSI(value.doubleValue())));
+        heightMeter.bind(
+            inputHeight
+                .map(
+                    value -> configAppModel.unitSystemProperty().get()
+                        .convertHeightToSI(value.doubleValue())
+                )
+        );
 
-        weightKg.bind(inputWeight
-                .map(value -> configAppModel.unitSystemProperty().get().convertWeightToSI(value.doubleValue())));
+        weightKg.bind(
+            inputWeight
+                .map(
+                    value -> configAppModel.unitSystemProperty().get()
+                        .convertWeightToSI(value.doubleValue())
+                )
+        );
 
         var latestRecord = commonViewModel.getLatestRecord();
 
-        inputHeight.set(latestRecord != null
-                ? configAppModel.unitSystemProperty().get().convertHeightFromSI(latestRecord.heightMeter())
-                : 0.0);
-        inputWeight.set(latestRecord != null
-                ? configAppModel.unitSystemProperty().get().convertWeightFromSI(latestRecord.weightKg())
-                : 0.0);
+        inputHeight.set(
+            latestRecord != null
+                ? configAppModel.unitSystemProperty().get()
+                    .convertHeightFromSI(latestRecord.heightMeter())
+                : 0.0
+        );
+        inputWeight.set(
+            latestRecord != null
+                ? configAppModel.unitSystemProperty().get()
+                    .convertWeightFromSI(latestRecord.weightKg())
+                : 0.0
+        );
 
         configAppModel.unitSystemProperty().subscribe(newValue -> {
             inputHeight.set(newValue.convertHeightFromSI(heightMeter.get()));
@@ -111,13 +129,18 @@ public class MainViewModel {
         });
 
         obesity.bind(
-                bmi.map(opt -> opt.map(ObesityCategory::getCategory)
-                        .map(ObesityCategory::toResourceString)));
+            bmi.map(
+                opt -> opt.map(ObesityCategory::getCategory)
+                    .map(ObesityCategory::toResourceString)
+            )
+        );
 
     }
 
     public void saveBmiRecord() {
-        bmi.get().ifPresent(_ -> bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get()));
+        bmi.get().ifPresent(
+            _ -> bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get())
+        );
     }
 
     public double convertHeightFromSI(double height) {
@@ -139,33 +162,36 @@ public class MainViewModel {
     public void openSettingsWindow(Stage currentStage) {
         Point2D newPosition;
         if (currentStage.getX() > SettingsView.WIDTH) {
-            newPosition = new Point2D(currentStage.getX() - SettingsView.WIDTH, currentStage.getY());
+            newPosition =
+                new Point2D(currentStage.getX() - SettingsView.WIDTH, currentStage.getY());
         } else {
-            newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
+            newPosition = new Point2D(currentStage.getX(), currentStage.getY())
+                .add(OFFSET_POSITION_OF_NEW_WINDOW);
         }
 
         // Open modeless dialog
         var newStage = StageBuilder.create()
-                .x(newPosition.getX())
-                .y(newPosition.getY())
-                .apply(stage -> stage.initOwner(currentStage))
-                .build();
+            .x(newPosition.getX())
+            .y(newPosition.getY())
+            .apply(stage -> stage.initOwner(currentStage))
+            .build();
 
         windowManager.showWindow(SettingsView.class, newStage);
     }
 
     public void openAboutWindow(Stage currentStage) {
-        var newPosition = new Point2D(currentStage.getX(), currentStage.getY()).add(OFFSET_POSITION_OF_NEW_WINDOW);
+        var newPosition = new Point2D(currentStage.getX(), currentStage.getY())
+            .add(OFFSET_POSITION_OF_NEW_WINDOW);
 
         // Open modal dialog
         var newStage = StageBuilder.create()
-                .x(newPosition.getX())
-                .y(newPosition.getY())
-                .apply(stage -> {
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initOwner(currentStage);
-                })
-                .build();
+            .x(newPosition.getX())
+            .y(newPosition.getY())
+            .apply(stage -> {
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(currentStage);
+            })
+            .build();
 
         windowManager.showWindow(AboutView.class, newStage);
     }

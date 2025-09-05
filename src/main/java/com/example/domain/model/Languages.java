@@ -4,17 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents the supported languages in the application.
- * Each enum constant corresponds to a language and its string representation
- * is used for resource keys or locales(e.g., "en", "ja").
+ * Represents the supported languages in the application. Each enum constant corresponds to a
+ * language and its string representation is used for resource keys or locales(e.g., "en", "ja").
  *
  * <p>
  * The resource bundles corresponding to the Languages should exist.
  * </p>
  */
 public enum Languages {
-    EN,
-    JA;
+    EN, JA;
 
     /**
      * Returns a list of all available language enum constants.
@@ -30,8 +28,7 @@ public enum Languages {
      *
      * @param value The string representation of the language (e.g., "en", "ja").
      * @return The {@link Languages} enum constant.
-     * @throws IllegalArgumentException if the provided string does not match any
-     *                                  language constant.
+     * @throws IllegalArgumentException if the provided string does not match any language constant.
      */
     public static Languages getLanguage(String value) {
         return Languages.valueOf(value.toUpperCase());
@@ -47,11 +44,10 @@ public enum Languages {
     }
 
     /**
-     * Converts the enum constant to its lowercase string representation, suitable
-     * for language codes.
+     * Converts the enum constant to its lowercase string representation, suitable for language
+     * codes.
      *
-     * @return The lowercase string representation of the language (e.g., "en",
-     *         "ja").
+     * @return The lowercase string representation of the language (e.g., "en", "ja").
      */
     public String toLanguageString() {
         return toString().toLowerCase();

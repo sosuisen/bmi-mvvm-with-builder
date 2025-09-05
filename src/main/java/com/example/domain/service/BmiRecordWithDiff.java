@@ -8,11 +8,9 @@ import com.example.domain.model.BmiRecord;
 import com.example.domain.model.ObesityCategory;
 
 /**
- * Represents a BMI record along with its difference from a previous record.
- * The previous means the record that is chronologically before the current
- * record.
- * This record implements the {@link Bmi} interface to provide common BMI
- * properties.
+ * Represents a BMI record along with its difference from a previous record. The previous means the
+ * record that is chronologically before the current record. This record implements the {@link Bmi}
+ * interface to provide common BMI properties.
  */
 public record BmiRecordWithDiff(BmiRecord record, BmiRecord prevRecord) implements Bmi {
     public enum Trend {
@@ -32,13 +30,11 @@ public record BmiRecordWithDiff(BmiRecord record, BmiRecord prevRecord) implemen
     }
 
     /**
-     * Return the difference between current and previous BMI values;
-     * return 0 if prevRecord is null.
+     * Return the difference between current and previous BMI values; return 0 if prevRecord is
+     * null.
      */
     public double diff() {
-        if (!hasPrevRecord()) {
-            return 0;
-        }
+        if (!hasPrevRecord()) { return 0; }
         return record.bmi() - prevRecord.bmi();
     }
 

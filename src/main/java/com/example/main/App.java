@@ -39,7 +39,8 @@ public class App extends Application {
         var configService = new ConfigServiceImpl(new ConfigRepositoryPropertyImpl());
 
         try {
-            I18n.getInstance().setResources(Locale.of(configService.getLanguage().toLanguageString()));
+            I18n.getInstance()
+                .setResources(Locale.of(configService.getLanguage().toLanguageString()));
         } catch (Exception e) {
             AlertDialog.showErrorAndExit("Cannot load language", e);
             return;
@@ -67,9 +68,13 @@ public class App extends Application {
         /*
          * Register each view along with its own view model to the WindowManager.
          */
-        windowManager.registerView(new SettingsView(new SettingsViewModel(bmiCommonAppModel, configAppModel)));
+        windowManager.registerView(
+            new SettingsView(new SettingsViewModel(bmiCommonAppModel, configAppModel))
+        );
 
-        windowManager.registerView(new MainView(new MainViewModel(windowManager, bmiCommonAppModel, configAppModel)));
+        windowManager.registerView(
+            new MainView(new MainViewModel(windowManager, bmiCommonAppModel, configAppModel))
+        );
 
         windowManager.registerView(new AboutView(getHostServices()));
 

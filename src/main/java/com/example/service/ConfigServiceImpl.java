@@ -21,10 +21,8 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     /**
-     * Get the selected unit system from the repository.
-     * If the repository has no unit system, use SI.
-     * If the app cannot handle the selected unit system,
-     * return SI.
+     * Get the selected unit system from the repository. If the repository has no unit system, use
+     * SI. If the app cannot handle the selected unit system, return SI.
      * 
      * @throws RepositoryException
      */
@@ -37,9 +35,7 @@ public class ConfigServiceImpl implements ConfigService {
             unitType = null;
         }
 
-        if (unitType == null) {
-            return new SIUnitsWithCentimeters();
-        }
+        if (unitType == null) { return new SIUnitsWithCentimeters(); }
 
         for (var unitSystem : UnitSystem.class.getPermittedSubclasses()) {
             if (unitSystem.getSimpleName().equals(unitType)) {
@@ -59,9 +55,8 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     /**
-     * Get the selected language from the repository.
-     * If the repository has no language, use the default OS language.
-     * If the app cannot handle the selected language, return the app's default
+     * Get the selected language from the repository. If the repository has no language, use the
+     * default OS language. If the app cannot handle the selected language, return the app's default
      * language.
      * 
      * @throws RepositoryException

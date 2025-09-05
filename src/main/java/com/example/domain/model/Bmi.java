@@ -3,20 +3,18 @@ package com.example.domain.model;
 import java.time.LocalDate;
 
 /**
- * Represents the core properties and calculations related to Body Mass Index
- * (BMI).
- * This interface defines methods for calculating BMI and provides access to
- * height, weight, date, and obesity category.
+ * Represents the core properties and calculations related to Body Mass Index (BMI). This interface
+ * defines methods for calculating BMI and provides access to height, weight, date, and obesity
+ * category.
  */
 public interface Bmi {
     /**
      * Calculates the Body Mass Index (BMI) given height and weight.
      *
      * @param heightMeter The height in meters. Must be greater than 0.
-     * @param weightKg    The weight in kilograms. Must be greater than 0.
+     * @param weightKg The weight in kilograms. Must be greater than 0.
      * @return The calculated BMI value.
-     * @throws IllegalArgumentException If heightMeter or weightKg is less than or
-     *                                  equal to 0.
+     * @throws IllegalArgumentException If heightMeter or weightKg is less than or equal to 0.
      */
     static double calcBmi(double heightMeter, double weightKg) {
         if (heightMeter <= 0 || weightKg <= 0)

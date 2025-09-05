@@ -5,8 +5,7 @@ import com.example.domain.model.Languages;
 import com.example.domain.model.unit.UnitSystem;
 
 /**
- * Service interface for managing application configuration, such as unit system
- * and language.
+ * Service interface for managing application configuration, such as unit system and language.
  */
 public interface ConfigService {
     /**

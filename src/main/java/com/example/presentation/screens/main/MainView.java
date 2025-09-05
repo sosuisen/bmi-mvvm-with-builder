@@ -44,20 +44,23 @@ public class MainView implements View {
 
     private Scene buildSceneGraph() {
         return SceneBuilder
-                .withRoot(
-                        VBoxBuilder
-                                .withChildren(
-                                        MenuBarComponent.getRoot(viewModel, this),
-                                        HBoxBuilder
-                                                .withChildren(
-                                                        CalculatorComponent.getRoot(viewModel),
-                                                        HistoryComponent.getRoot(viewModel))
-                                                .vGrowInVBox(Priority.ALWAYS)
-                                                .build())
-                                .build())
-                .width(660)
-                .height(480)
-                .addStylesheetsText(GlobalCSS.CSS)
-                .build();
+            .withRoot(
+                VBoxBuilder
+                    .withChildren(
+                        MenuBarComponent.getRoot(viewModel, this),
+                        HBoxBuilder
+                            .withChildren(
+                                CalculatorComponent.getRoot(viewModel),
+                                HistoryComponent.getRoot(viewModel)
+                            )
+                            .vGrowInVBox(Priority.ALWAYS)
+                            .build()
+                    )
+                    .build()
+            )
+            .width(660)
+            .height(480)
+            .addStylesheetsText(GlobalCSS.CSS)
+            .build();
     }
 }

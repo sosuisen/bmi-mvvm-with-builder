@@ -30,28 +30,30 @@ public class AlertDialog {
             default -> "error.unexpected";
         };
 
-        Platform.runLater(() ->
-                AlertBuilder.create(Alert.AlertType.ERROR)
+        Platform.runLater(
+            () -> AlertBuilder.create(Alert.AlertType.ERROR)
                 .title(I18n.text("error"))
                 .headerText(I18n.text("error"))
                 .height(240)
                 .width(480)
                 .apply(alert -> {
                     alert.getDialogPane()
-                            .setExpandableContent(new Label(I18n.text(resourceName) + ": " + e.getMessage()));
+                        .setExpandableContent(
+                            new Label(I18n.text(resourceName) + ": " + e.getMessage())
+                        );
                     alert.getDialogPane().setExpanded(true);
                 })
                 .build()
-                .showAndWait());
+                .showAndWait()
+        );
 
     }
 
     /**
-     * Shows an error dialog with the given message and exception, then exits the
-     * application.
+     * Shows an error dialog with the given message and exception, then exits the application.
      *
      * @param message the error message to display
-     * @param e       the exception to display
+     * @param e the exception to display
      * @throws NullPointerException if message or e is null
      */
     public static void showErrorAndExit(String message, Exception e) throws NullPointerException {
@@ -61,17 +63,18 @@ public class AlertDialog {
 
         Platform.runLater(() -> {
             AlertBuilder.create(Alert.AlertType.ERROR)
-                    .title(I18n.text("error"))
-                    .headerText(I18n.text("error"))
-                    .height(240)
-                    .width(480)
-                    .apply(alert -> {
-                        alert.getDialogPane().setExpandableContent(new Label(message + ": " + e.getMessage()));
-                        alert.getDialogPane().setExpanded(true);
-                    })
-                    .onHidden(_ -> Platform.exit())
-                    .build()
-                    .show();
+                .title(I18n.text("error"))
+                .headerText(I18n.text("error"))
+                .height(240)
+                .width(480)
+                .apply(alert -> {
+                    alert.getDialogPane()
+                        .setExpandableContent(new Label(message + ": " + e.getMessage()));
+                    alert.getDialogPane().setExpanded(true);
+                })
+                .onHidden(_ -> Platform.exit())
+                .build()
+                .show();
         });
 
     }

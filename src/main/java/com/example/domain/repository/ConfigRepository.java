@@ -16,7 +16,7 @@ public interface ConfigRepository {
     /**
      * Sets a configuration value for a given key.
      *
-     * @param key   The key of the configuration item.
+     * @param key The key of the configuration item.
      * @param value The value to set.
      * @throws RepositoryException If an error occurs during the setting process.
      */

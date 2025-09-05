@@ -19,7 +19,8 @@ public class WindowManagerImpl implements WindowManager {
     }
 
     @Override
-    public <T extends View> void showWindow(Class<T> viewClass, Stage stage) throws NullPointerException {
+    public <T extends View> void showWindow(Class<T> viewClass, Stage stage)
+        throws NullPointerException {
         Objects.requireNonNull(stage);
         var view = views.get(Objects.requireNonNull(viewClass));
         if (view != null) {

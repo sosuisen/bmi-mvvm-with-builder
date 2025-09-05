@@ -53,118 +53,143 @@ public class SettingsView implements View {
     }
 
     private static final String CSS = """
-            .grid-pane {
-                -fx-background-color: #f0f0f0;
-                -fx-border-width: 1;
-                -fx-border-color: black;
-                -fx-border-style: solid;
-            }
-            """;
+                                      .grid-pane {
+                                          -fx-background-color: #f0f0f0;
+                                          -fx-border-width: 1;
+                                          -fx-border-color: black;
+                                          -fx-border-style: solid;
+                                      }
+                                      """;
 
     private Scene buildSceneGraph() {
         var rowConstraint = RowConstraintsBuilder.create()
-                .vgrow(Priority.SOMETIMES)
-                .minHeight(30)
-                .maxHeight(50)
-                .build();
+            .vgrow(Priority.SOMETIMES)
+            .minHeight(30)
+            .maxHeight(50)
+            .build();
 
-        return SceneBuilder.withRoot(
+        return SceneBuilder
+            .withRoot(
                 GridPaneBuilder.create()
-                        .padding(new Insets(3))
-                        .addRow(0,
-                                LabelBuilder.create()
-                                        .textPropertyApply(
-                                                prop -> prop.bind(I18n.textProperty("settings.language")))
-                                        .hAlignmentInGridPane(HPos.CENTER)
-                                        .build(),
-                                ComboBoxBuilder.withItems(
-                                        Languages.getLanguageList())
-                                        .valuePropertyApply(prop -> prop
-                                                .bindBidirectional(viewModel.languageProperty()))
-                                        .converterPropertyApply(prop -> prop.bind(Bindings
-                                                .createObjectBinding(LanguagesSystemConverter::new,
-                                                        I18n.INSTANCE.resourcesProperty())))
-                                        .build())
-                        .addRow(1,
-                                LabelBuilder.create()
-                                        .textPropertyApply(
-                                                prop -> prop.bind(I18n.textProperty("settings.unitsystem")))
-                                        .hAlignmentInGridPane(HPos.CENTER)
-                                        .build(),
-                                ComboBoxBuilder.withItems(
-                                        UnitSystem.getAll())
-                                        .valuePropertyApply(prop -> prop
-                                                .bindBidirectional(viewModel.unitSystemProperty()))
-                                        .converterPropertyApply(prop -> prop.bind(Bindings
-                                                .createObjectBinding(UnitSystemStringConverter::new,
-                                                        I18n.INSTANCE.resourcesProperty())))
-                                        .build())
-                        .addRow(2,
-                                LabelBuilder.create()
-                                        .textPropertyApply(prop -> prop
-                                                .bind(I18n.textProperty("settings.clearrecords.label")))
-                                        .hAlignmentInGridPane(HPos.CENTER)
-                                        .build(),
-                                ButtonBuilder.create()
-                                        .id("clear-button")
-                                        .textPropertyApply(prop -> prop
-                                                .bind(I18n.textProperty("settings.clearrecords.button")))
-                                        .style("""
-                                                -fx-corner-radius: 12px;
-                                                """)
-                                        .addStyleClass("button-danger")
-                                        .hAlignmentInGridPane(HPos.CENTER)
-                                        .onAction(_ -> removeAllRecords())
-                                        .build())
-                        .addColumnConstraints(
-                                ColumnConstraintsBuilder.create()
-                                        .minWidth(120)
-                                        .build(),
-                                ColumnConstraintsBuilder.create()
-                                        .hgrow(Priority.ALWAYS)
-                                        .build())
-                        .addRowConstraints(rowConstraint, rowConstraint, rowConstraint)
-                        .build())
-                .width(WIDTH)
-                .height(HEIGHT)
-                .addStylesheetsText(CSS)
-                .addStylesheetsText(GlobalCSS.CSS)
-                .onKeyPressed(e -> {
-                    if (e.getCode() == KeyCode.ESCAPE) {
-                        ((Stage) scene.getWindow()).close();
-                    }
-                })
-                .build();
+                    .padding(new Insets(3))
+                    .addRow(
+                        0,
+                        LabelBuilder.create()
+                            .textPropertyApply(
+                                prop -> prop.bind(I18n.textProperty("settings.language"))
+                            )
+                            .hAlignmentInGridPane(HPos.CENTER)
+                            .build(),
+                        ComboBoxBuilder.withItems(
+                            Languages.getLanguageList()
+                        )
+                            .valuePropertyApply(
+                                prop -> prop.bindBidirectional(viewModel.languageProperty())
+                            )
+                            .converterPropertyApply(
+                                prop -> prop.bind(
+                                    Bindings.createObjectBinding(
+                                        LanguagesSystemConverter::new,
+                                        I18n.INSTANCE.resourcesProperty()
+                                    )
+                                )
+                            )
+                            .build()
+                    )
+                    .addRow(
+                        1,
+                        LabelBuilder.create()
+                            .textPropertyApply(
+                                prop -> prop.bind(I18n.textProperty("settings.unitsystem"))
+                            )
+                            .hAlignmentInGridPane(HPos.CENTER)
+                            .build(),
+                        ComboBoxBuilder.withItems(
+                            UnitSystem.getAll()
+                        )
+                            .valuePropertyApply(
+                                prop -> prop.bindBidirectional(viewModel.unitSystemProperty())
+                            )
+                            .converterPropertyApply(
+                                prop -> prop.bind(
+                                    Bindings.createObjectBinding(
+                                        UnitSystemStringConverter::new,
+                                        I18n.INSTANCE.resourcesProperty()
+                                    )
+                                )
+                            )
+                            .build()
+                    )
+                    .addRow(
+                        2,
+                        LabelBuilder.create()
+                            .textPropertyApply(
+                                prop -> prop.bind(I18n.textProperty("settings.clearrecords.label"))
+                            )
+                            .hAlignmentInGridPane(HPos.CENTER)
+                            .build(),
+                        ButtonBuilder.create()
+                            .id("clear-button")
+                            .textPropertyApply(
+                                prop -> prop.bind(I18n.textProperty("settings.clearrecords.button"))
+                            )
+                            .style("""
+                                   -fx-corner-radius: 12px;
+                                   """)
+                            .addStyleClass("button-danger")
+                            .hAlignmentInGridPane(HPos.CENTER)
+                            .onAction(_ -> removeAllRecords())
+                            .build()
+                    )
+                    .addColumnConstraints(
+                        ColumnConstraintsBuilder.create()
+                            .minWidth(120)
+                            .build(),
+                        ColumnConstraintsBuilder.create()
+                            .hgrow(Priority.ALWAYS)
+                            .build()
+                    )
+                    .addRowConstraints(rowConstraint, rowConstraint, rowConstraint)
+                    .build()
+            )
+            .width(WIDTH)
+            .height(HEIGHT)
+            .addStylesheetsText(CSS)
+            .addStylesheetsText(GlobalCSS.CSS)
+            .onKeyPressed(e -> {
+                if (e.getCode() == KeyCode.ESCAPE) {
+                    ((Stage) scene.getWindow()).close();
+                }
+            })
+            .build();
     }
 
     private void removeAllRecords() {
         AlertBuilder.create(Alert.AlertType.CONFIRMATION)
-                .title(I18n.text("settings.clearrecords.label"))
-                .headerText(I18n.text("settings.clearrecords.confirm"))
-                .apply(alert -> {
-                    var okBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-                    okBtn.setDefaultButton(false);
-                    var cancelBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
-                    cancelBtn.setDefaultButton(true);
-                })
-                .build()
-                .showAndWait()
-                .filter(buttonType -> buttonType == ButtonType.OK)
-                .ifPresent(_ -> {
-                    try {
-                        viewModel.removeAllRecords();
-                    } catch (RepositoryException e) {
-                        AlertDialog.showError(e);
-                    }
-                });
+            .title(I18n.text("settings.clearrecords.label"))
+            .headerText(I18n.text("settings.clearrecords.confirm"))
+            .apply(alert -> {
+                var okBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                okBtn.setDefaultButton(false);
+                var cancelBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+                cancelBtn.setDefaultButton(true);
+            })
+            .build()
+            .showAndWait()
+            .filter(buttonType -> buttonType == ButtonType.OK)
+            .ifPresent(_ -> {
+                try {
+                    viewModel.removeAllRecords();
+                } catch (RepositoryException e) {
+                    AlertDialog.showError(e);
+                }
+            });
     }
 
     static class LanguagesSystemConverter extends StringConverter<Languages> {
         @Override
         public String toString(Languages language) {
-            return I18n.text(
-                    "language." + language
-                            .toLanguageString());
+            return I18n.text("language." + language.toLanguageString());
         }
 
         @Override
@@ -176,9 +201,7 @@ public class SettingsView implements View {
     static class UnitSystemStringConverter extends StringConverter<UnitSystem> {
         @Override
         public String toString(UnitSystem unitSystem) {
-            return I18n.text(
-                    "unitsystem." + unitSystem
-                            .toResourceString());
+            return I18n.text("unitsystem." + unitSystem.toResourceString());
         }
 
         @Override
