@@ -62,7 +62,8 @@ public class AlertDialog {
         e.printStackTrace();
 
         Platform.runLater(() -> {
-            AlertBuilder.create(Alert.AlertType.ERROR)
+            AlertBuilder
+                .create(Alert.AlertType.ERROR)
                 .title(I18n.text("error"))
                 .headerText(I18n.text("error"))
                 .height(240)

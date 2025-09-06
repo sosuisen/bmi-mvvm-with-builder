@@ -22,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Priority;
@@ -165,18 +166,25 @@ public class SettingsView implements View {
     }
 
     private void removeAllRecords() {
-        AlertBuilder.create(Alert.AlertType.CONFIRMATION)
+        var clearButtonType =
+            new ButtonType(I18n.text("settings.clearrecords.button"), ButtonData.OK_DONE);
+        AlertBuilder
+            .withButtonTypes(
+                clearButtonType,
+                ButtonType.CANCEL
+            )
+            .alertType(Alert.AlertType.CONFIRMATION)
             .title(I18n.text("settings.clearrecords.label"))
             .headerText(I18n.text("settings.clearrecords.confirm"))
             .apply(alert -> {
-                var okBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                var okBtn = (Button) alert.getDialogPane().lookupButton(clearButtonType);
                 okBtn.setDefaultButton(false);
                 var cancelBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
                 cancelBtn.setDefaultButton(true);
             })
             .build()
             .showAndWait()
-            .filter(buttonType -> buttonType == ButtonType.OK)
+            .filter(buttonType -> buttonType == clearButtonType)
             .ifPresent(_ -> {
                 try {
                     viewModel.removeAllRecords();
