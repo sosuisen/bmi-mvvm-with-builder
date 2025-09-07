@@ -131,7 +131,7 @@ public class BmiRepositoryJooqImpl implements BmiRepository {
                 .limit(limit)
                 .fetchInto(BmiRecord.class);
         } catch (Exception e) {
-            throw new RepositoryException("Failed to load records.");
+            throw new RepositoryException("Failed to load records.", e);
         }
     }
 }
