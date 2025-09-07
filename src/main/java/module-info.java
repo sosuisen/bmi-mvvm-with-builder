@@ -1,6 +1,5 @@
 module com.example.app {
     requires javafx.controls;
-    requires javafx.graphics;
     requires io.github.sosuisen.api.jfxbuilder.controls;
     requires io.github.sosuisen.api.jfxbuilder.graphics;
 
