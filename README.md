@@ -65,8 +65,13 @@ src/main/java/com/example/
 
 src/main/resources/com/example/
 └── i18n/            # Internationalization resources
-
 ```
+
+## JPMS
+
+The `main` branch is a non-modular project.
+If you are interested in a modular project, switch to the `modular-project` branch.
+
 ## Architecture
 
 This application follows the **MVVM (Model-View-ViewModel)** pattern,
