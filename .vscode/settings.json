@@ -6,5 +6,6 @@
     "[java]": {
         "editor.defaultFormatter": "redhat.java",
         "editor.formatOnSave": true,
-    }
+    },
+    "java.maven.downloadSources": true,
 }
