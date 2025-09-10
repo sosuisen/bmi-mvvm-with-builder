@@ -10,8 +10,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.plugin.version>0.0.8</javafx.plugin.version>
-    <javafx.version>24.0.2</javafx.version>
-    <javafx.builder.version>24.0.0-SNAPSHOT</javafx.builder.version>
+    <javafx.version>21.0.8</javafx.version>
+    <javafx.builder.version>21.0.0-SNAPSHOT</javafx.builder.version>
     <maven.compiler.release>23</maven.compiler.release>
     <main.class>com.example.main.Launcher</main.class>
   </properties>
