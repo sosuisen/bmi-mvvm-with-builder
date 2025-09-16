@@ -22,13 +22,16 @@ public class AlertDialog {
         Objects.requireNonNull(e, "e must not be null");
         System.err.println(e.getMessage());
 
-        var resourceName = switch (e) {
-            case RepositoryException _ -> "error.repository";
-            case NullPointerException _ -> "error.unexpected";
-            case IllegalArgumentException _ -> "error.unexpected";
-            case IllegalStateException _ -> "error.unexpected";
-            default -> "error.unexpected";
-        };
+        String resourceName;
+        if (e instanceof RepositoryException) {
+            resourceName = "error.repository";
+        } else if (e instanceof NullPointerException || 
+                   e instanceof IllegalArgumentException || 
+                   e instanceof IllegalStateException) {
+            resourceName = "error.unexpected";
+        } else {
+            resourceName = "error.unexpected";
+        }
 
         Platform.runLater(
             () -> AlertBuilder.create(Alert.AlertType.ERROR)
@@ -73,7 +76,7 @@ public class AlertDialog {
                         .setExpandableContent(new Label(message + ": " + e.getMessage()));
                     alert.getDialogPane().setExpanded(true);
                 })
-                .onHidden(_ -> Platform.exit())
+                .onHidden(event -> Platform.exit())
                 .build()
                 .show();
         });

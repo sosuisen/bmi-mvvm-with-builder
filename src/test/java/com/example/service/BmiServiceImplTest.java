@@ -126,9 +126,9 @@ class BmiServiceImplTest {
 
         // Then
         assertEquals(1, result.size());
-        assertEquals(record.date(), result.getFirst().date());
-        assertEquals(0, result.getFirst().diff());
-        assertNull(result.getFirst().prevRecord());
+        assertEquals(record.date(), result.get(0).date());
+        assertEquals(0, result.get(0).diff());
+        assertNull(result.get(0).prevRecord());
     }
 
     @Test

@@ -53,11 +53,11 @@ public class AboutView implements View {
                             .build(),
                         HyperlinkBuilder.create()
                             .text(url)
-                            .onAction(_ -> hostService.showDocument(url))
+                            .onAction(event -> hostService.showDocument(url))
                             .build(),
                         ButtonBuilder.create()
                             .text("OK")
-                            .onAction(_ -> close())
+                            .onAction(event -> close())
                             .build()
                     )
                     .alignment(Pos.CENTER)

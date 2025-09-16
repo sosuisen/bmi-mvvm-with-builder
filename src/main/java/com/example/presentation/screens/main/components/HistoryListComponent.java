@@ -109,12 +109,18 @@ public class HistoryListComponent {
                 LabelBuilder.create()
                     .textPropertyApply(
                         prop -> prop.bind(
-                            I18n.textProperty(
-                                "history.trend." + bmiRecord.trendDescription().toResourceString()
-                            ).map(
-                                text -> bmiRecord.trendDescription() == BmiRecordWithDiff.Trend.NONE
-                                    ? text
-                                    : "%s%.1f".formatted(text, bmiRecord.diff())
+                            Bindings.createStringBinding(
+                                () -> {
+                                    String text = I18n.textProperty(
+                                        "history.trend." + bmiRecord.trendDescription().toResourceString()
+                                    ).get();
+                                    return bmiRecord.trendDescription() == BmiRecordWithDiff.Trend.NONE
+                                        ? text
+                                        : "%s%.1f".formatted(text, bmiRecord.diff());
+                                },
+                                I18n.textProperty(
+                                    "history.trend." + bmiRecord.trendDescription().toResourceString()
+                                )
                             )
                         )
                     )
@@ -154,22 +160,36 @@ class AnimatedBmiLabelStyle {
         this.obesity = obesity;
 
         // When the corner radius decreases, the appearance looks fat.
-        double cornerRadiusTransTo = switch (obesity) {
-            case ObesityCategory.HIGH -> 10;
-            case ObesityCategory.NORMAL -> 18;
-            case ObesityCategory.LOW -> 18;
-            case ObesityCategory.NONE -> 18;
-        };
+        double cornerRadiusTransTo;
+        switch (obesity) {
+            case HIGH:
+                cornerRadiusTransTo = 10;
+                break;
+            case NORMAL:
+            case LOW:
+            case NONE:
+                cornerRadiusTransTo = 18;
+                break;
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + obesity);
+        }
 
         double insetTransFrom = 0;
 
         // When the corner radius increases, the appearance looks thin.
-        double insetTransTo = switch (obesity) {
-            case ObesityCategory.HIGH -> 0;
-            case ObesityCategory.NORMAL -> 0;
-            case ObesityCategory.LOW -> 2;
-            case ObesityCategory.NONE -> 0;
-        };
+        double insetTransTo;
+        switch (obesity) {
+            case HIGH:
+            case NORMAL:
+            case NONE:
+                insetTransTo = 0;
+                break;
+            case LOW:
+                insetTransTo = 2;
+                break;
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + obesity);
+        }
 
         cornerRadiusProperty = new SimpleDoubleProperty(labelRadius);
         insetProperty = new SimpleDoubleProperty(insetTransFrom);

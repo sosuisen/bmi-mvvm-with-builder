@@ -11,7 +11,7 @@ import javafx.util.Callback;
 public class TableCellFactories {
     public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> createTextCellFactory(
         Function<T, String> formatter) {
-        return _ -> new TableCell<>() {
+        return tableView -> new TableCell<>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
@@ -26,7 +26,7 @@ public class TableCellFactories {
 
     public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> createButtonCellFactory(
         Consumer<T> callback, String resourceKey, String[] styleClass) {
-        return _ -> new TableCell<>() {
+        return tableView -> new TableCell<>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
@@ -36,7 +36,7 @@ public class TableCellFactories {
                     setGraphic(
                         ButtonBuilder.create()
                             .textPropertyApply(prop -> prop.bind(I18n.textProperty(resourceKey)))
-                            .onAction(_ -> callback.accept(item))
+                            .onAction(event -> callback.accept(item))
                             .addStyleClass(styleClass)
                             .build()
                     );

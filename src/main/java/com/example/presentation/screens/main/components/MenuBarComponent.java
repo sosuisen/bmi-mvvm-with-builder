@@ -22,7 +22,7 @@ public class MenuBarComponent {
                                 prop -> prop.bind(I18n.textProperty("menu.settings"))
                             )
                             .onAction(
-                                _ -> viewModel
+                                event -> viewModel
                                     .openSettingsWindow((Stage) mainView.getScene().getWindow())
                             )
                             .build(),
@@ -30,7 +30,7 @@ public class MenuBarComponent {
                             .textPropertyApply(
                                 prop -> prop.bind(I18n.textProperty("menu.close"))
                             )
-                            .onAction(_ -> Platform.exit())
+                            .onAction(event -> Platform.exit())
                             .build()
                     )
                     .textPropertyApply(prop -> prop.bind(I18n.textProperty("menu.file")))
@@ -42,7 +42,7 @@ public class MenuBarComponent {
                                 prop -> prop.bind(I18n.textProperty("menu.about"))
                             )
                             .onAction(
-                                _ -> viewModel
+                                event -> viewModel
                                     .openAboutWindow((Stage) mainView.getScene().getWindow())
                             )
                             .build()

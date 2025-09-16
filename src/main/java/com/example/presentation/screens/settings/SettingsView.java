@@ -139,7 +139,7 @@ public class SettingsView implements View {
                                    """)
                             .addStyleClass("button-danger")
                             .hAlignmentInGridPane(HPos.CENTER)
-                            .onAction(_ -> removeAllRecords())
+                            .onAction(event -> removeAllRecords())
                             .build()
                     )
                     .addColumnConstraints(
@@ -185,7 +185,7 @@ public class SettingsView implements View {
             .build()
             .showAndWait()
             .filter(buttonType -> buttonType == clearButtonType)
-            .ifPresent(_ -> {
+            .ifPresent(buttonType -> {
                 try {
                     viewModel.removeAllRecords();
                 } catch (RepositoryException e) {

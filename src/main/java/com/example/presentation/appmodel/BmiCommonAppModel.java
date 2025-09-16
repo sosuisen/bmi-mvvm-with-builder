@@ -46,7 +46,7 @@ public class BmiCommonAppModel {
     public BmiCommonAppModel(BmiService bmiService) {
         this.bmiService = bmiService;
         reloadRecords();
-        historyLimit.subscribe(this::reloadRecords);
+        historyLimit.addListener((obs, oldValue, newValue) -> reloadRecords());
     }
 
     public ObjectBinding<Optional<Double>> getBmiBinding(DoubleProperty heightMeter,
@@ -64,7 +64,7 @@ public class BmiCommonAppModel {
      */
     public BmiRecordWithDiff getLatestRecord() {
         return !bmiList.isEmpty()
-            ? bmiList.getFirst()
+            ? bmiList.get(0)
             : null;
     }
 

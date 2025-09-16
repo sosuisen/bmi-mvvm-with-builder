@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,14 @@ public class BmiServiceImpl implements BmiService {
 
     @Override
     public List<BmiRecordWithDiff> loadRecords(int limit) throws RepositoryException {
+        var records = repository.loadBmiRecords(BmiRecordOrder.DATE_DESC, limit);
+        var reversedRecords = new ArrayList<>(records);
+        Collections.reverse(reversedRecords);
+        
         var recordsWithDiff = new ArrayList<BmiRecordWithDiff>();
         BmiRecord prevRecord = null;
-        for (var record : repository.loadBmiRecords(BmiRecordOrder.DATE_DESC, limit).reversed()) {
-            recordsWithDiff.addFirst(new BmiRecordWithDiff(record, prevRecord));
+        for (var record : reversedRecords) {
+            recordsWithDiff.add(0, new BmiRecordWithDiff(record, prevRecord));
             prevRecord = record;
         }
         return recordsWithDiff;

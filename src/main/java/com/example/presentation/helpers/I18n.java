@@ -56,9 +56,10 @@ public enum I18n {
     }
 
     private StringProperty getStringProperty(String key) {
-        return stringProperties.computeIfAbsent(key, _ -> {
+        return stringProperties.computeIfAbsent(key, k -> {
             var prop = new SimpleStringProperty();
-            resources.subscribe(_ -> prop.set(getString(key)));
+            resources.addListener((obs, oldValue, newValue) -> prop.set(getString(key)));
+            prop.set(getString(key));
             return prop;
         });
     }

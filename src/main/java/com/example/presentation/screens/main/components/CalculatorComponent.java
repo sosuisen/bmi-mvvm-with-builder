@@ -1,6 +1,5 @@
 package com.example.presentation.screens.main.components;
 
-import com.example.domain.model.unit.UnitSystem;
 import com.example.presentation.helpers.Formatters;
 import com.example.presentation.helpers.I18n;
 import com.example.presentation.screens.main.MainViewModel;
@@ -18,8 +17,6 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.util.converter.NumberStringConverter;
-
-import java.util.Optional;
 
 public class CalculatorComponent {
     private static final String CSS =
@@ -64,7 +61,10 @@ public class CalculatorComponent {
                 LabelBuilder.create()
                     .textPropertyApply(
                         prop -> prop.bind(
-                            viewModel.unitSystemProperty().map(UnitSystem::getHeightUnit)
+                            Bindings.createObjectBinding(
+                                () -> viewModel.unitSystemProperty().get().getHeightUnit(),
+                                viewModel.unitSystemProperty()
+                            )
                         )
                     )
                     .build()
@@ -88,7 +88,10 @@ public class CalculatorComponent {
                 LabelBuilder.create()
                     .textPropertyApply(
                         prop -> prop.bind(
-                            viewModel.unitSystemProperty().map(UnitSystem::getWeightUnit)
+                            Bindings.createObjectBinding(
+                                () -> viewModel.unitSystemProperty().get().getWeightUnit(),
+                                viewModel.unitSystemProperty()
+                            )
                         )
                     )
                     .build()
@@ -105,8 +108,10 @@ public class CalculatorComponent {
                     .maxWidth(Double.MAX_VALUE)
                     .textPropertyApply(
                         prop -> prop.bind(
-                            viewModel.bmiProperty().map(
-                                opt -> opt.map(bmi -> String.format("%.1f", bmi)).orElse("-")
+                            Bindings.createObjectBinding(
+                                () -> viewModel.bmiProperty().get()
+                                    .map(bmi -> String.format("%.1f", bmi)).orElse("-"),
+                                viewModel.bmiProperty()
                             )
                         )
                     )
@@ -125,11 +130,9 @@ public class CalculatorComponent {
                     .textPropertyApply(
                         prop -> prop.bind(
                             Bindings.createStringBinding(
-                                () -> viewModel.obesityProperty().map(
-                                    opt -> opt.map(
-                                        category -> I18n.text("main.obesity.category." + category)
-                                    ).orElse("-")
-                                ).getValue(),
+                                () -> viewModel.obesityProperty().get()
+                                    .map(category -> I18n.text("main.obesity.category." + category))
+                                    .orElse("-"),
                                 viewModel.obesityProperty(),
                                 I18n.INSTANCE.resourcesProperty()
                             )
@@ -152,7 +155,7 @@ public class CalculatorComponent {
                     .rowIndexInGridPane(4)
                     .columnIndexInGridPane(2)
                     .textPropertyApply(prop -> prop.bind(I18n.textProperty("main.today")))
-                    .onAction((_ -> viewModel.setToday()))
+                    .onAction(event -> viewModel.setToday())
                     .hAlignmentInGridPane(HPos.CENTER)
                     .build()
             )
@@ -167,9 +170,14 @@ public class CalculatorComponent {
                     .addStyleClass("button-safe")
                     .hAlignmentInGridPane(HPos.CENTER)
                     .disablePropertyApply(
-                        prop -> prop.bind(viewModel.bmiProperty().map(Optional::isEmpty))
+                        prop -> prop.bind(
+                            Bindings.createObjectBinding(
+                                () -> viewModel.bmiProperty().get().isEmpty(),
+                                viewModel.bmiProperty()
+                            )
+                        )
                     )
-                    .onAction(_ -> viewModel.saveBmiRecord())
+                    .onAction(event -> viewModel.saveBmiRecord())
                     .build()
             )
             .addColumnConstraints(

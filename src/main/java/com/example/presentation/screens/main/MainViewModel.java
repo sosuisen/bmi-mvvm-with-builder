@@ -13,6 +13,7 @@ import com.example.presentation.screens.about.AboutView;
 import com.example.presentation.screens.settings.SettingsView;
 
 import io.github.sosuisen.jfxbuilder.graphics.StageBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -93,19 +94,19 @@ public class MainViewModel {
         bmi.bind(bmiCommonAppModel.getBmiBinding(heightMeter, weightKg));
 
         heightMeter.bind(
-            inputHeight
-                .map(
-                    value -> configAppModel.unitSystemProperty().get()
-                        .convertHeightToSI(value.doubleValue())
-                )
+            Bindings.createObjectBinding(
+                () -> configAppModel.unitSystemProperty().get()
+                    .convertHeightToSI(inputHeight.get()),
+                inputHeight
+            )
         );
 
         weightKg.bind(
-            inputWeight
-                .map(
-                    value -> configAppModel.unitSystemProperty().get()
-                        .convertWeightToSI(value.doubleValue())
-                )
+            Bindings.createObjectBinding(
+                () -> configAppModel.unitSystemProperty().get()
+                    .convertWeightToSI(inputWeight.get()),
+                inputWeight
+            )
         );
 
         var latestRecord = commonViewModel.getLatestRecord();
@@ -123,15 +124,16 @@ public class MainViewModel {
                 : 0.0
         );
 
-        configAppModel.unitSystemProperty().subscribe(newValue -> {
+        configAppModel.unitSystemProperty().addListener((obs, oldValue, newValue) -> {
             inputHeight.set(newValue.convertHeightFromSI(heightMeter.get()));
             inputWeight.set(newValue.convertWeightFromSI(weightKg.get()));
         });
 
         obesity.bind(
-            bmi.map(
-                opt -> opt.map(ObesityCategory::getCategory)
-                    .map(ObesityCategory::toResourceString)
+            Bindings.createObjectBinding(
+                () -> bmi.get().map(ObesityCategory::getCategory)
+                    .map(ObesityCategory::toResourceString),
+                bmi
             )
         );
 
@@ -139,7 +141,7 @@ public class MainViewModel {
 
     public void saveBmiRecord() {
         bmi.get().ifPresent(
-            _ -> bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get())
+            bmiValue -> bmiCommonAppModel.saveRecord(heightMeter.get(), weightKg.get(), date.get())
         );
     }
 

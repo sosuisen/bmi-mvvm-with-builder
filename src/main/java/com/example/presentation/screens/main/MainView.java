@@ -24,9 +24,9 @@ public class MainView implements View {
         this.viewModel = Objects.requireNonNull(viewModel);
         scene = buildSceneGraph();
 
-        viewModel.errorProperty().subscribe(err -> {
-            if (err != null) {
-                AlertDialog.showError(err);
+        viewModel.errorProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                AlertDialog.showError(newValue);
                 viewModel.errorProperty().set(null);
             }
         });

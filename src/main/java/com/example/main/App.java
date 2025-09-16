@@ -40,7 +40,7 @@ public class App extends Application {
 
         try {
             I18n.getInstance()
-                .setResources(Locale.of(configService.getLanguage().toLanguageString()));
+                .setResources(Locale.forLanguageTag(configService.getLanguage().toLanguageString()));
         } catch (Exception e) {
             AlertDialog.showErrorAndExit("Cannot load language", e);
             return;

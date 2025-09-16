@@ -22,7 +22,7 @@ public class ConfigAppModel {
 
         language.set(configService.getLanguage());
 
-        unitSystem.addListener((_, _, newValue) -> {
+        unitSystem.addListener((obs, oldValue, newValue) -> {
             try {
                 configService.setUnitSystem(newValue);
                 // Reload to call a cellfactory to display converted values
@@ -33,10 +33,10 @@ public class ConfigAppModel {
             }
         });
 
-        language.addListener((_, _, newValue) -> {
+        language.addListener((obs, oldValue, newValue) -> {
             try {
                 configService.setLanguage(newValue);
-                I18n.getInstance().setResources(Locale.of(newValue.toLanguageString()));
+                I18n.getInstance().setResources(Locale.forLanguageTag(newValue.toLanguageString()));
                 // Reload to call a cellfactory to display converted values
                 // based on the new language.
                 bmiListAppModel.reloadRecords();
