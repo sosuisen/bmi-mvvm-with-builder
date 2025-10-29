@@ -46,10 +46,12 @@ domain.service -[dashed]-> domain.model
 
 domain.repository -[dashed]-> domain.model
 
-service --|> domain.service
+service ..|> domain.service
 
-service --|> domain.repository
+service --[dashed]-> domain.repository
 
-repository --|> domain.repository
+repository ..|> domain.repository
+
+service --[hidden]left-> repository
 
 @enduml
