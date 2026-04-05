@@ -20,24 +20,17 @@ This BMI (Body Mass Index) calculator showcases modern JavaFX development with M
 
 ## Tech Stack
 
-- **Java 23**: Multiplatform (Windows, macOS, Linux)
-- **JavaFX 24**: Modern desktop UI framework with data bindings and animations.
+- **Java 25**: Multiplatform (Windows, macOS, Linux)
+- **JavaFX 25**: Modern desktop UI framework with data bindings and animations.
 - **JavaFX Builder API**: Fluent API for UI construction.
   - The JavaFX Builder API is built with [JavaFX Builder API Generator](https://github.com/sosuisen/javafx-builder-api).
-  - Please note that this API has not yet been registered with Maven Central. You can try it out using the -SNAPSHOT version.
 - **MVVM Architecture**: Clean separation of concerns.
 - **SQLite + JOOQ**: Lightweight database with type-safe queries.
 - **Maven**: Dependency management and build automation.
 
-## Quick Start
-
-⚠️ **Important**: Currently, this project depends on the SNAPSHOT version of the [JavaFX Builder API](https://github.com/sosuisen/javafx-builder-api).
-
-This SNAPSHOT will soon be discontinued and replaced by a release version. Please plan to update accordingly.
-
 ### Run the Application
 
-- Install Java 23
+- Install Java 25
 - Install Maven 3
 
 The command to execute the application is as follows:
@@ -93,8 +86,6 @@ The application supports multiple languages through Java resource bundles:
 Language files are located in `src/main/resources/com/example/i18n/`.
 
 ### Build Native Installers
-
-**Important**: This project currently contains SNAPSHOT libraries, which prevents it from building native installers correctly. Please wait for stable releases.
 
 The project includes jpackage configuration for creating native installers.
 
