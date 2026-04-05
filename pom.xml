@@ -10,25 +10,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.plugin.version>0.0.8</javafx.plugin.version>
-    <javafx.version>25</javafx.version>
-    <javafx.builder.version>25.0.0-SNAPSHOT</javafx.builder.version>
-    <maven.compiler.release>23</maven.compiler.release>
+    <javafx.version>25.0.2</javafx.version>
+    <javafx.builder.version>25.0.0</javafx.builder.version>
+    <maven.compiler.release>25</maven.compiler.release>
     <main.class>com.example.main.Launcher</main.class>
   </properties>
-
-  <repositories>
-    <repository>
-      <name>Central Portal Snapshots</name>
-      <id>central-portal-snapshots</id>
-      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <dependencies>
     <dependency>
